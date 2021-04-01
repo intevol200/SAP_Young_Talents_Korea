@@ -53,3 +53,8 @@ __주석__
 - 한줄 주석: *
 - 전체 주석: CTRL + <
 - 주석 해제: CTRL + >
+
+>WRITE: 'HELLO WORLD',/ "안녕하세요  
+>       'BYE',/  
+>\*       'TEST',/  
+>       'TEST'.  
