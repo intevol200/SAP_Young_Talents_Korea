@@ -116,3 +116,10 @@ __변수 선언__
 __CONSTANTS__
 - CONSTANTS c_hello TYPE string VALUE 'Hello World'.  
 변하지 않는 변수
+
+>CONSTANTS c_hello TYPE string VALUE 'abc'.  
+>CONSTANTS c_age TYPE i VALUE 123.  
+>  
+>WRITE c_hello.  
+>NEW-Line.  
+>WRITE c_age.  
