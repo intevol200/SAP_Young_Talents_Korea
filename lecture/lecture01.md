@@ -36,3 +36,10 @@ PROGRAM 작성법
 >REPORT ZBC100_27_TEST.  
 >WRITE 'HELLO WORLD'.  
 >WRITE 'TEST'.
+
+| 단축키 | 기능 |
+|---|---|
+| CTRL + S | SAVE |
+| CTRL + F2 | SYNTAX CHECK |
+| CTRL + F3 | ACTIVATE |
+| F8 | DIRECT PROCESSING |
