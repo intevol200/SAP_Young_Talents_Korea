@@ -114,5 +114,5 @@ __변수 선언__
 기본값으로 "ABC"를 입력
 
 __CONSTANTS__
-- CONSTANTS c_hello TYPE string VALUE 'Hello World'.
+- CONSTANTS c_hello TYPE string VALUE 'Hello World'.  
 변하지 않는 변수
