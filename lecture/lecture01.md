@@ -88,3 +88,15 @@ __데이터 타입__
 | t | 시간 | HHMMSS |
 | i | 정수 | 정수만 입력 가능 |
 | p | 실수 | 소숫점자리 표현 가능 |
+
+
+>REPORT zbc100_27_hello.  
+>  
+>PARAMETERS: pa_num1 TYPE i,  
+>            pa_num2 TYPE i.  
+>  
+>DATA gv_result TYPE p LENGTH 16 DECIMALS 2.  
+>  
+>gv_result = pa_num1 * pa_num2.  
+>  
+>WRITE: 'result: ', gv_result.  
