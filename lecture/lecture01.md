@@ -54,14 +54,14 @@ __주석__
 - 전체 주석: CTRL + <
 - 주석 해제: CTRL + >
 
->REPORT ZBC100_27_TEST.  
->  
->PARAMETERS PA_NAME TYPE STRING.  
->  
->WRITE: 'HELLO WORLD',/ "안녕하세요  
->       'BYE', PA_NAME,/  
->\*       'TEST',/  
->       'TEST'.  
+>REPORT zbc100_27_test.
+>
+>PARAMETERS pa_name TYPE string.
+>
+>WRITE: 'HELLO WORLD',/ "안녕하세요
+>       'BYE', pa_name,/
+>\*       'TEST',/
+>       'TEST'.
 
 ---
 - SHIFT + F1: 대소문자 자동 변환
