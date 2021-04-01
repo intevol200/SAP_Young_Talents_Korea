@@ -100,3 +100,16 @@ __데이터 타입__
 >gv_result = pa_num1 * pa_num2.  
 >  
 >WRITE: 'result: ', gv_result.  
+
+---
+__전역 변수__
+- PARAMETERS pa_mat TYPE mara-matnr.  
+MARA 테이블에 있는 MATNR 변수를 불러와 pa_mat이라는 이름의 변수로 사용함
+
+- DATA gv_var2 LIKE gv_var1.  
+다른 변수에서 사용된 type 형태를 불러와 다른 변수의 type으로 사용
+
+__변수 선언__
+- DATA gv_text TYPE string VALUE 'ABC'.  
+기본값으로 "ABC"를 입력
+
