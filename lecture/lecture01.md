@@ -3,11 +3,33 @@ _개발 과정_
 2. QA
 3. PRD
 
-- CTS(Change Trasfer System): 프로그램을 개발할 때 통합하기 위해 다음 단계로 넘기는 것
+- CTS(Change Transport System): 프로그램을 개발할 때 통합하기 위해 다음 단계로 넘기는 것
 - 패키지: 의미있는 기능을 가진 단위
 - 프로그램
+
 ---
 - 네이밍 규칙
   - X-: 공식적인 개발
   - Y-: 비공식적 개발(테스트 등)
   - 기타의 경우는 자신만의 네이밍 규칙을 만들어 개발
+
+---
+CTS(SE09) 작성법
+1. TRANSPORT ORGANIZER
+2. WORKBENCH REQUEST
+3. CREATE
+4. SHORT DESCRIPTION 입력
+
+---
+PACKAGE(SE80) 작성법
+1. SELECT CATEGORY (PACKAGE)
+2. ENTER PACKAGE NAME
+3. ENTER
+
+---
+PROGRAM 작성법
+1. CREATE PROGRAM
+2. ENTER PROGRAM NAME
+3. SELECT TYPE
+4. SAVE
+
