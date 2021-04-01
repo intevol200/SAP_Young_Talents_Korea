@@ -37,6 +37,9 @@ PROGRAM 작성법
 >WRITE 'HELLO WORLD'.  
 >WRITE 'TEST'.
 
+>WRITE: 'HELLO WORLD',  
+>       'TEST'.
+
 | 단축키 | 기능 |
 |---|---|
 | CTRL + S | SAVE |
