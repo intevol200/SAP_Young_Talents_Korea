@@ -47,6 +47,8 @@ __PROGRAM 작성법__
 | CTRL + F3 | ACTIVATE |
 | F8 | DIRECT PROCESSING |
 
+---
 __주석__
 - 주석: "
 - 한줄 주석: *
+- 주석 단축키" CTRL + < / CTRL + >
