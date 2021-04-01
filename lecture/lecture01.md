@@ -1,4 +1,4 @@
-_개발 과정_
+__개발 과정__
 1. DEV
 2. QA
 3. PRD
@@ -14,20 +14,20 @@ _개발 과정_
   - 기타의 경우는 자신만의 네이밍 규칙을 만들어 개발
 
 ---
-CTS(SE09) 작성법
+__CTS(SE09) 작성법__
 1. TRANSPORT ORGANIZER
 2. WORKBENCH REQUEST
 3. CREATE
 4. SHORT DESCRIPTION 입력
 
 ---
-PACKAGE(SE80) 작성법
+__PACKAGE(SE80) 작성법__
 1. SELECT CATEGORY (PACKAGE)
 2. ENTER PACKAGE NAME
 3. ENTER
 
 ---
-PROGRAM 작성법
+__PROGRAM 작성법__
 1. CREATE PROGRAM
 2. ENTER PROGRAM NAME
 3. SELECT TYPE
@@ -46,3 +46,7 @@ PROGRAM 작성법
 | CTRL + F2 | SYNTAX CHECK |
 | CTRL + F3 | ACTIVATE |
 | F8 | DIRECT PROCESSING |
+
+__주석__
+- 주석: "
+- 한줄 주석: *
