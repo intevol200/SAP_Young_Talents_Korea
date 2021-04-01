@@ -77,3 +77,14 @@ __TEXT ELEMENT 입력__
 2. TRANSLATION
 3. SELECT TARGET LANGUAGE
 4. ENTER TRANSLATED LANGUAGE 
+
+---
+__데이터 타입__
+| TYPE | 의미 | 사용 |
+|---|---|---|
+| string | 가변 문자열 | 어떤 문자도 입력 가능 |
+| c | 고정 문자열 | 정해진 길이만큼 입력 가능 |
+| d | 날짜 | YYYYMMDD |
+| t | 시간 | HHMMSS |
+| i | 정수 | 정수만 입력 가능 |
+| p | 실수 | 소숫점자리 표현 가능 |
