@@ -1,0 +1,38 @@
+{
+  "uaa": {
+    "tenantmode": "dedicated",
+    "sburl": "https://internal-xsuaa.authentication.us10.hana.ondemand.com",
+    "subaccountid": "bef77f0d-5cc4-49ac-b713-72b71375ebc6",
+    "credential-type": "instance-secret",
+    "clientid": "sb-28b60b40-2363-4100-90b9-1fceeb21fe57!b27716|abap-trial-service-broker!b3132",
+    "xsappname": "28b60b40-2363-4100-90b9-1fceeb21fe57!b27716|abap-trial-service-broker!b3132",
+    "clientsecret": "B8Bmqk1v4N794U26plHZI6Eh9zo=",
+    "url": "https://a631b323trial.authentication.us10.hana.ondemand.com",
+    "uaadomain": "authentication.us10.hana.ondemand.com",
+    "verificationkey": "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApouonOTHEYysOsoCEBPocc1adW11TVSx86eNHvg2cximzi5oPAFPoqRwD6DDWxz5ZqSdyffEbuRVoEuL8G6Q7M75Oll0hLJYY2jSq8+WPi7pcoIhAoUeNgwYnQSJef57IBWffuckvPcCQBlYpBiUAqCDkr8zpNZ+s1SC9Mzs6EICQ8NeG+krrC06yN1033qiMPvkqZEYk8gPolwIdUXjGbk+q6oGBClJLrraQgUY1mPMt6m3mMQxBO6CdqrYn90qfwThQzQ1zu+9zpW7P4lGMTJ7frdznXT7op3CY9rC3Mv+9V/POoL2VYVsXKRfV7bEJHMGHRAX8BtyjYDHnyPJSQIDAQAB-----END PUBLIC KEY-----",
+    "apiurl": "https://api.authentication.us10.hana.ondemand.com",
+    "identityzone": "a631b323trial",
+    "identityzoneid": "bef77f0d-5cc4-49ac-b713-72b71375ebc6",
+    "tenantid": "bef77f0d-5cc4-49ac-b713-72b71375ebc6",
+    "zoneid": "bef77f0d-5cc4-49ac-b713-72b71375ebc6"
+  },
+  "url": "https://b89f3d6f-189f-4d97-aae5-d589fa4eb266.abap.us10.hana.ondemand.com",
+  "sap.cloud.service": "com.sap.cloud.abap",
+  "systemid": "TRL",
+  "endpoints": {
+    "abap": "https://b89f3d6f-189f-4d97-aae5-d589fa4eb266.abap.us10.hana.ondemand.com"
+  },
+  "catalogs": {
+    "abap": {
+      "path": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2",
+      "type": "sap_abap_catalog_v1"
+    }
+  },
+  "binding": {
+    "env": "cf",
+    "version": "1.0.1.1",
+    "type": "oauth",
+    "id": "8532636c-52af-4b8f-8b11-01f41348bd3f"
+  },
+  "preserve_host_header": true
+}
