@@ -1,0 +1,87 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_03
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_03.
+
+*DATA gv_edu_name(4) TYPE c VALUE 'IITP'.
+*
+*WRITE gv_edu_name.
+*
+*gv_edU_name = 'JJTP'.
+*WRITE gv_edU_name.
+
+* ---------------------------
+
+WRITE: /15 TEXT-001, " Hello
+       35 sy-datum,
+       /15 '###'(T02),
+       35 sy-uname.
+
+
+
+*TYPES tv_skill(5) TYPE c.
+*
+**tv_skill = 'ABAP'.
+*
+*DATA: gv_skill      TYPE tv_skill,
+*      gv_skill_temp TYPE tv_skill.
+*
+**DATA: gv_skill      TYPE c,
+**      gv_skill_temp TYPE c.
+**
+**DATA: gv_skill(5)   TYPE c,
+**      gv_skill_temp LIKE tv_skill.
+*
+*DATA: gv_connid TYPE spfli-connid.
+*
+*DATA: gv_mat1 TYPE mara-matnr,
+*      gv_mat2 LIKE gv_mat1,
+*      gv_mat3 LIKE gv_mat2.
+
+*gv_mat1 = 'ssss'.
+*gv_mat2 = 'qqqq'.
+*gv_mat3 = 'aaaa'.
+*
+*WRITE: gv_mat1, gv_mat2, gv_mat3.
+
+* ---------------------------
+
+*data gv_d type p DECIMALS 2.
+*WRITE gv_d.
+
+*----------------------------
+
+*PARAMETERS pa_num TYPE i.
+*
+*DATA gv_result TYPE i.
+**MOVE pa_num TO gv_result.
+*
+**ADD 1 TO gv_result.
+**gv_result = gv_result + 1.
+*gv_result = pa_num.
+*
+*DO 10 TIMES.
+*  gv_result = gv_result + 1.
+*  WRITE: gv_result.
+*ENDDO.
+*
+*NEW-LINE.
+*
+*WRITE 'Your input:'.
+*WRITE pa_num.
+*
+*NEW-LINE.
+*
+*WRITE 'Result:    '.
+*WRITE gv_result.
+
+*Text elements
+*----------------------------------------------------------
+* 001 Hello
+* 002 manager
+* T02 ###
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

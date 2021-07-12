@@ -1,0 +1,16 @@
+*&---------------------------------------------------------------------*
+*& Include MZCLA27_82_TOP                           - Report SAPMZCLA27_82
+*&---------------------------------------------------------------------*
+REPORT SAPMZCLA27_82.
+
+DATA: OK_CODE TYPE SY-UCOMM.
+
+TABLES: ZTASPFLI27.
+DATA: GS_LIST TYPE ZTASPFLI27,
+      GT_LIST LIKE TABLE OF GS_LIST.
+
+DATA: GO_CON TYPE REF TO CL_GUI_CUSTOM_CONTAINER,
+      GO_ALV TYPE REF TO CL_GUI_ALV_GRID.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

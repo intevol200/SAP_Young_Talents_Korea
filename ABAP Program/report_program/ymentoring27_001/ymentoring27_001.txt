@@ -1,0 +1,28 @@
+*&---------------------------------------------------------------------*
+*& Report YMENTORING_001
+*&---------------------------------------------------------------------*
+REPORT ymentoring27_001.
+
+TABLES: bkpf.
+
+SELECTION-SCREEN BEGIN OF BLOCK bl01 WITH FRAME TITLE TEXT-001.
+
+  PARAMETERS: p_int LIKE bkpf-monat.
+
+SELECTION-SCREEN END OF BLOCK bl01.
+
+
+DATA: lv_cnt     TYPE i, " 1 ~ 9.
+      lv_result TYPE i. " ###.
+
+DO 9 TIMES.
+
+  lv_cnt = lv_cnt + 1.
+  lv_result = p_int * lv_cnt.
+
+  WRITE : p_int, 'x', lv_cnt, '=', lv_result, /.
+
+ENDDO.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,52 @@
+*&---------------------------------------------------------------------*
+*& Include MZEDU27_0001_TOP                         - Module Pool      SAPMZEDU27_0001
+*&---------------------------------------------------------------------*
+PROGRAM sapmzedu27_0001.
+
+* Common Use
+DATA: ok_code TYPE sy-ucomm.
+
+* ### ## ##
+DATA: gv_timer(2), "### ## ##
+      gv_flag     TYPE icons-text, "## ###
+      gv_flagname TYPE char30, "### function #
+      gv_status   TYPE icons-text, "### ## ###
+      gv_statname TYPE char30. "### function #
+
+CLASS my DEFINITION.
+  PUBLIC SECTION.
+    METHODS : run_handler FOR EVENT finished OF cl_gui_timer.
+ENDCLASS. "my DEFINITION
+DATA timer TYPE REF TO cl_gui_timer.
+DATA myh TYPE REF TO my.
+
+*----------------------------------------------------------------------*
+* CLASS my IMPLEMENTATION
+*----------------------------------------------------------------------*
+CLASS my IMPLEMENTATION.
+  METHOD run_handler.
+    CHECK gv_timer IS NOT INITIAL.
+    CALL METHOD timer->run.
+    CALL METHOD cl_gui_cfw=>set_new_ok_code
+      EXPORTING
+        new_code = 'REFT'.
+
+    gv_flagname = 'ICON_COMPLETE'. "## ### ##
+    gv_statname = 'ICON_LED_GREEN'. "### ### ##
+
+    CALL FUNCTION 'ICON_CREATE' "### ###
+      EXPORTING
+        name   = gv_statname
+      IMPORTING
+        result = gv_status.
+
+    CALL FUNCTION 'ICON_CREATE' "### ###
+      EXPORTING
+        name   = gv_flagname
+      IMPORTING
+        result = gv_flag.
+  ENDMETHOD. "run_handler
+ENDCLASS. "my IMPLEMENTATION
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

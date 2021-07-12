@@ -1,0 +1,46 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_114
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_115.
+
+DATA GO_EMP TYPE REF TO ZCL_A27_EMP02.
+DATA GO_CREW TYPE REF TO ZCL_A27_CREW02.
+DATA GO_MAN TYPE REF TO ZCL_A27_MAN02.
+DATA GT_LIST LIKE TABLE OF GO_EMP.
+DATA GS_LIST LIKE LINE OF GT_LIST.
+DATA GV_SAL TYPE INT4.
+
+PARAMETERS P_DAYS TYPE INT1.
+
+START-OF-SELECTION.
+  CREATE OBJECT GO_EMP
+    EXPORTING
+      IV_PERNR = '20210001'
+      IV_ENAME = 'CHOI'.
+  APPEND GO_EMP TO GT_LIST.
+
+  CREATE OBJECT GO_CREW
+    EXPORTING
+      IV_PERNR = '20210001'
+      IV_ENAME = 'CHOI CREW'.
+  APPEND GO_CREW TO GT_LIST.
+
+  CREATE OBJECT GO_MAN
+    EXPORTING
+      IV_PERNR = '2000001'
+      IV_ENAME = 'CHOI MAN'.
+  APPEND GO_MAN TO GT_LIST.
+
+  CLEAR: GO_EMP, GO_CREW, GO_MAN.
+
+  LOOP AT GT_LIST INTO GS_LIST.
+    CLEAR GV_SAL.
+    GV_SAL = GS_LIST->PAY_SALARY( EXPORTING IV_DAYS = P_DAYS ).
+
+    WRITE: / GV_SAL.
+  ENDLOOP.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

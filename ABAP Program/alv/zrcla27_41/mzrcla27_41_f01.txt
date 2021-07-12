@@ -1,0 +1,294 @@
+*&---------------------------------------------------------------------*
+*& Include          MZRCLA9903_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_emp_list
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM GET_EMP_LIST .
+
+  CLEAR GT_LIST.
+  SELECT *
+    FROM ZTEMP AS A JOIN ZTDEP_T AS B
+      ON A~DEPID = B~DEPID
+    INTO CORRESPONDING FIELDS OF TABLE GT_LIST
+   WHERE PERNR IN SO_ENO[]
+    AND SPRAS EQ SY-LANGU.
+
+
+  IF PA_GEN1 = 'X' AND
+     PA_GEN2 = 'X'. " ##/## ##
+
+  ELSEIF PA_GEN1 = 'X'. "### ##
+    DELETE GT_LIST WHERE GESCH = '2'.
+  ELSEIF PA_GEN2 = 'X'. "### ##
+    DELETE GT_LIST WHERE GESCH <> '2'.
+  ENDIF.
+
+  IF GT_LIST IS INITIAL.
+    "& & & : Data is not found.
+    MESSAGE I000(ZMCLA00).
+    RETURN.
+  ENDIF.
+
+*  CLEAR gt_list.
+*  SELECT *
+*    FROM ztemp
+*    INTO CORRESPONDING FIELDS OF TABLE gt_list
+*   WHERE pernr IN so_eno[]
+*     AND gesch = pa_gen.
+*  IF sy-subrc <> 0.
+*    "& & & : Data is not found.
+*    MESSAGE i000(zmcla00).
+*    RETURN.
+*  ENDIF.
+
+*  CLEAR gt_list.
+*  SELECT *
+*    FROM ztemp
+*    INTO CORRESPONDING FIELDS OF TABLE gt_list
+*   WHERE pernr IN so_eno[].
+*
+*  DELETE gt_list WHERE gesch <> pa_gen.
+*  IF gt_list IS INITIAL.
+*    "& & & : Data is not found.
+*    MESSAGE i000(zmcla00).
+*    RETURN.
+*  ENDIF.
+  PERFORM GET_DISPLAY_DATA TABLES GT_LIST.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_alv_0100
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM SET_ALV_0100 .
+
+  CREATE OBJECT GO_CON
+    EXPORTING
+      CONTAINER_NAME              = 'MYCON'
+    EXCEPTIONS
+      CNTL_ERROR                  = 1
+      CNTL_SYSTEM_ERROR           = 2
+      CREATE_ERROR                = 3
+      LIFETIME_ERROR              = 4
+      LIFETIME_DYNPRO_DYNPRO_LINK = 5
+      OTHERS                      = 6.
+  IF SY-SUBRC <> 0.
+* MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*            WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+    "### ## ### #######. ## ######.
+    MESSAGE A010(ZMCAL00).
+  ENDIF.
+
+  IF GO_ALV IS NOT INITIAL.
+    RETURN.
+  ENDIF.
+
+  CREATE OBJECT GO_ALV
+    EXPORTING
+      I_PARENT          = GO_CON
+    EXCEPTIONS
+      ERROR_CNTL_CREATE = 1
+      ERROR_CNTL_INIT   = 2
+      ERROR_CNTL_LINK   = 3
+      ERROR_DP_CREATE   = 4
+      OTHERS            = 5.
+  IF SY-SUBRC <> 0.
+*    MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+*               WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_alv_0100
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM DISPLAY_ALV_0100 .
+*  IF go_alv IS INITIAL.
+*    RETURN.
+*  ENDIF.
+
+  GS_LAYO-ZEBRA = 'X'.
+  GS_LAYO-CWIDTH_OPT = 'X'.
+
+  PERFORM set_fcat CHANGING gt_fcat. "TABLES gt_fcat.
+
+  CALL METHOD GO_ALV->SET_TABLE_FOR_FIRST_DISPLAY
+    EXPORTING
+*     i_buffer_active               =
+*     i_bypassing_buffer            =
+*     i_consistency_check           =
+      I_STRUCTURE_NAME              = 'ZSA00_ALV04' "structure Name
+*     is_variant                    =
+*     i_save                        =
+*     i_default                     = 'X'
+      IS_LAYOUT                     = GS_LAYO
+*     is_print                      =
+*     it_special_groups             =
+*     it_toolbar_excluding          =
+*     it_hyperlink                  =
+*     it_alv_graphics               =
+*     it_except_qinfo               =
+*     ir_salv_adapter               =
+    CHANGING
+      IT_OUTTAB                     = GT_LIST          " List
+      IT_FIELDCATALOG               = GT_FCAT
+*     it_sort                       =
+*     it_filter                     =
+    EXCEPTIONS
+      INVALID_PARAMETER_COMBINATION = 1
+      PROGRAM_ERROR                 = 2
+      TOO_MANY_LINES                = 3
+      OTHERS                        = 4.
+  IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_display_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> GT_LIST
+*&---------------------------------------------------------------------*
+FORM GET_DISPLAY_DATA  TABLES   PT_LIST LIKE GT_LIST.
+  "TYPE zsta00_alv04. "STRUCTURE zsa00_alv04.
+
+  DATA LS_LIST LIKE LINE OF PT_LIST.
+  LOOP AT PT_LIST INTO LS_LIST.
+    " Grade Text
+    PERFORM GET_DOMAIN_FIXED_VALUE USING 'ZDGRADE'
+                                         LS_LIST-GRADE
+                                   CHANGING LS_LIST-GRADE_T.
+
+    PERFORM GET_DOMAIN_FIXED_VALUE USING 'ZDASKILL'
+                                             LS_LIST-SKILL
+                                       CHANGING LS_LIST-SKILL_T.
+
+    MODIFY PT_LIST FROM LS_LIST.
+    CLEAR LS_LIST.
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_domain_fixed_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> LS_LIST_GRADE
+*&      <-- LS_LIST_GRADE_T
+*&---------------------------------------------------------------------*
+FORM GET_DOMAIN_FIXED_VALUE  USING    VALUE(P_DONAME)
+                                      VALUE(P_CODE)
+                             CHANGING VALUE(P_TEXT).
+  DATA: LS_DOMAIN  TYPE DD07V,
+        LT_DOMAIN  LIKE TABLE OF LS_DOMAIN,
+        LV_DOMNAME TYPE DD07L-DOMNAME.
+
+  LV_DOMNAME = P_DONAME.
+
+  CALL FUNCTION 'GET_DOMAIN_VALUES'
+    EXPORTING
+      DOMNAME         = LV_DOMNAME
+*     TEXT            = 'X'
+*     FILL_DD07L_TAB  = ' '
+    TABLES
+      VALUES_TAB      = LT_DOMAIN
+*     VALUES_DD07L    =
+    EXCEPTIONS
+      NO_VALUES_FOUND = 1
+      OTHERS          = 2.
+  IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+  ENDIF.
+
+  READ TABLE LT_DOMAIN WITH KEY DOMVALUE_L = P_CODE
+  INTO LS_DOMAIN.
+  IF SY-SUBRC = 0.
+    P_TEXT = LS_DOMAIN-DDTEXT.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form USE_CUSTOM_FIELD
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM SET_FCAT_VALUE  USING    VALUE(P_end)
+                                VALUE(P_field)
+                                VALUE(P_Value)
+                       CHANGING PS_FCAT TYPE LVC_S_FCAt
+                                PT_FCAT TYPE LVC_T_FCAT.
+
+  CASE P_FIELD.
+    WHEN 'FIELDNAME'.
+      PS_FCAT-FIELDNAME = P_VALUE.
+    WHEN 'NO_OUT'.
+      PS_FCAT-NO_OUT = P_VALUE.
+    WHEN 'COLTEXT'.
+      PS_FCAT-COLTEXT = P_VALUE.
+    WHEN 'COL_POS'.
+      PS_FCAT-COL_POS = P_VALUE.
+  ENDCASE.
+
+  IF P_END = 'E'.
+    APPEND PS_FCAT TO PT_FCAT.
+    CLEAR PS_FCAT.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_FCAT
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> GT_FCAT
+*&---------------------------------------------------------------------*
+FORM SET_FCAT    CHANGING PT_FCAT TYPE LVC_T_FCAT.
+  DATA: LS_FCAT LIKE LINE OF PT_FCAT.
+
+  IF PT_FCAT IS NOT INITIAL. RETURN. ENDIF.
+
+*  "DEPID
+  PERFORM SET_FCAT_VALUE USING '' 'FIELDNAME' 'DEPID'
+                         CHANGING LS_FCAT PT_FCAT.
+  PERFORM SET_FCAT_VALUE USING 'E' 'NO_OUT' 'X'
+                       CHANGING LS_FCAT PT_FCAT.
+
+*  "GRADE
+  PERFORM SET_FCAT_VALUE: USING '' 'FIELDNAME' 'GRADE'
+                          CHANGING LS_FCAT PT_FCAT,
+                          USING 'E' 'NO_OUT' 'X'
+                          CHANGING LS_FCAT PT_FCAT.
+
+*  "GESCH
+  PERFORM SET_FCAT_VALUE: USING '' 'FIELDNAME' 'GESCH'
+                          CHANGING LS_FCAT PT_FCAT,
+                          USING 'E' 'NO_OUT' 'X'
+                          CHANGING LS_FCAT PT_FCAT.
+
+*  "SKILL
+  PERFORM SET_FCAT_VALUE: USING '' 'FIELDNAME' 'SKILL'
+                          CHANGING LS_FCAT PT_FCAT,
+                          USING 'E' 'NO_OUT' 'X'
+                          CHANGING LS_FCAT PT_FCAT.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

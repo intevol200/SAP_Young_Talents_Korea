@@ -1,0 +1,63 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRTU00_14_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_airline
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_airline USING VALUE(p_car)
+                       VALUE(p_con)
+                 CHANGING VALUE(p_subrc)
+                          VALUE(ps_info) LIKE gs_info.
+  CLEAR p_subrc.
+
+  SELECT SINGLE *
+    FROM spfli
+    INTO CORRESPONDING FIELDS OF ps_info
+   WHERE carrid = p_car
+     AND connid = p_con.
+  IF sy-subrc IS NOT INITIAL.
+    p_subrc = 4.
+    MESSAGE i000(zmcla00) WITH p_car p_con.
+    RETURN.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_date
+*&---------------------------------------------------------------------*
+FORM get_date  USING    VALUE(p_carrid)
+                        VALUE(p_connid)
+               CHANGING VALUE(ps_info) TYPE spfli.
+
+  CLEAR ps_info.
+
+  SELECT SINGLE *
+    FROM spfli
+    INTO CORRESPONDING FIELDS OF ps_info
+    WHERE carrid = p_carrid
+    AND connid = p_connid.
+
+  IF sy-subrc <> 0.
+    RETURN.
+  ENDIF.
+
+  PERFORM display_data USING ps_info.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> PS_INFO
+*&---------------------------------------------------------------------*
+FORM display_data  USING VALUE(ps_info) TYPE spfli.
+  cl_demo_output=>display_data( gs_info ).
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

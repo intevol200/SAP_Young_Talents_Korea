@@ -1,0 +1,28 @@
+*&---------------------------------------------------------------------*
+*& Module Pool      SAPMZCLA27_70
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE MZCLA27_70_TOP.    " Global Data
+
+INCLUDE MZCLA27_70_O01.  " PBO-Modules
+INCLUDE MZCLA27_70_I01.  " PAI-Modules
+INCLUDE MZCLA27_70_F01.  " FORM-Routines
+
+LOAD-OF-PROGRAM.
+  PERFORM SET_DEFAULT_DATA CHANGING ZSA27_70.
+
+*GUI Texts
+*----------------------------------------------------------
+* T100 --> Airline Booking List
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: PN
+*016   & & & &
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

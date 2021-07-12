@@ -1,0 +1,60 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_32
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_32.
+
+*DATA: BEGIN OF gs_info,
+*        stdno(8),
+*        sname(20),
+*        email     TYPE string,
+*      END OF gs_info.
+*
+*DATA gt_info LIKE TABLE OF gs_info.
+*
+*
+**TYPES: BEGIN OF ts_info,
+**         stdno(8)  TYPE n,
+**         sname(20),
+**       END OF ts_info.
+**
+**DATA gs_info2 TYPE ts_info.
+**DATA gt_info2 TYPE TABLE OF ts_info.
+*
+*gs_info-stdno = '20152184'.
+*gs_info-sname = '###'.
+*APPEND gs_info TO gt_info.
+*
+*CLEAR gs_info.
+*
+*gs_info-stdno = '2000000'.
+*gs_info-sname = '###'.
+*APPEND gs_info TO gt_info.
+*
+*CLEAR gs_info.
+*APPEND gs_info TO gt_info.
+*
+*LOOP AT gt_info INTO gs_info.
+*  WRITE: / gs_info-stdno, gs_info-sname.
+*  CLEAR gs_info.
+*ENDLOOP.
+*
+**READ TABLE gt_info INDEX 1 INTO gs_info.
+**cl_demo_output=>display_data( gs_info ).
+
+DATA: gt_flightinfo TYPE bc400_t_flights,
+      gs_flightinfo LIKE LINE OF gt_flightinfo.
+
+LOOP AT gt_flightinfo INTO gs_flightinfo.
+  WRITE: / gs_flightinfo-carrid,
+           gs_flightinfo-connid,
+           gs_flightinfo-fldate,
+           gs_flightinfo-seatsmax,
+           gs_flightinfo-seatsocc,
+           gs_flightinfo-percentage,
+           '%'.
+ENDLOOP.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,47 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_99
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_99.
+
+* Sample 1
+DATA: GV_A TYPE C LENGTH 10,
+      GV_B TYPE I.
+
+FIELD-SYMBOLS <F_NAME> TYPE ANY.
+
+ASSIGN GV_A TO <F_NAME>.
+
+<F_NAME> = '10'.
+
+ASSIGN GV_B TO <F_NAME>.
+<F_NAME> = 99.
+
+WRITE: GV_A, GV_B.
+
+* Sample 2
+DATA: BEGIN OF GS_INFO,
+        MON01 TYPE C LENGTH 10,
+        MON02 TYPE C LENGTH 10,
+        MON03 TYPE C LENGTH 10,
+      END OF GS_INFO,
+      GV_FNAME TYPE C LENGTH 20,
+      GV_N(2)  TYPE N.
+
+FIELD-SYMBOLS <FS_MONTH> TYPE ANY.
+
+DO 3 TIMES.
+  GV_N = GV_N + 1.
+  CLEAR GV_FNAME.
+  CONCATENATE 'GS_INFO-MON' GV_N INTO GV_FNAME.
+  ASSIGN (GV_FNAME) TO <FS_MONTH>.
+
+  <FS_MONTH> = 10 + SY-INDEX.
+
+ENDDO.
+
+WRITE:/ GS_INFO-MON01, GS_INFO-MON02, GS_INFO-MON03.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,25 @@
+*&---------------------------------------------------------------------*
+*& Include ZRTU27_EXAM01_TOP                        - Report ZRTU27_EXAM01
+*&---------------------------------------------------------------------*
+REPORT zrtu27_exam01.
+
+TYPES: BEGIN OF st_major,
+         mcode   TYPE zinfo_major_t-mcode,
+         mcode_t TYPE zinfo_major_t-mcode,
+       END OF st_major,
+       BEGIN OF st_regi,
+         regiyear TYPE zinfo_regi-regiyear,
+         regisemi TYPE zinfo_regi-regisemi,
+       END OF st_regi.
+
+DATA: gs_info TYPE zcla27_exam01,
+      gt_info TYPE TABLE OF zcla27_exam01.
+
+DATA: gt_major   TYPE TABLE OF st_major,
+      gt_subject TYPE TABLE OF zinfo_subject_t,
+      gt_prof    TYPE TABLE OF zinfo_prof.
+
+PARAMETERS: pa_stdid LIKE gs_info-stdid.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

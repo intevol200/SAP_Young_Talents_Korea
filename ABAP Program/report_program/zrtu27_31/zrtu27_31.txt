@@ -1,0 +1,18 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_31
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_31.
+
+DATA: gs_scarr TYPE scarr.
+DATA: gs_spfli type spfli.
+
+gs_scarr-carrid = 'AA'.
+
+MOVE-CORRESPONDING gs_scarr to gs_spfli.
+
+cl_demo_output=>display_data( gs_spfli ).
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

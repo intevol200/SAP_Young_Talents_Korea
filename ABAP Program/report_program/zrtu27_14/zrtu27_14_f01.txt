@@ -1,0 +1,44 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRTU27_14_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form s_query
+*&---------------------------------------------------------------------*
+*FORM s_query .
+*  SELECT SINGLE *
+*      FROM spfli
+*      INTO CORRESPONDING FIELDS OF gs_info
+*      WHERE carrid = pa_car
+*        AND connid = pa_con.
+*  IF sy-subrc IS NOT INITIAL.
+*    MESSAGE i100(zmcla27) WITH pa_car pa_con.
+*    RETURN.
+*  ENDIF.
+*ENDFORM.
+*&---------------------------------------------------------------------*
+*&------------- USING# CHANGING# #### ### -------------------------*
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+FORM s_query CHANGING VALUE(pv_car)
+                      VALUE(pv_con)
+                            cs_info LIKE gs_info.
+  SELECT SINGLE *
+      FROM spfli
+      INTO CORRESPONDING FIELDS OF cs_info
+      WHERE carrid = pv_car
+        AND connid = pv_con.
+
+  IF sy-subrc IS NOT INITIAL.
+    MESSAGE i100(zmcla27) WITH pv_car pv_con.
+    RETURN.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form show_value
+*&---------------------------------------------------------------------*
+FORM show_result CHANGING VALUE(ps_info).
+  cl_demo_output=>display_data( ps_info ).
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

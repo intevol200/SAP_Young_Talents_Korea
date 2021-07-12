@@ -1,0 +1,71 @@
+*&---------------------------------------------------------------------*
+*& Include          ZBA27_01_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form SET_BDC_DATA
+*&---------------------------------------------------------------------*
+FORM SET_BDC_DATA .
+  CLEAR: GS_BDC, GT_BDC.
+
+  PERFORM DYNPRO_NUMBER USING 'SAPMZCLA27_82'
+                              '0100'
+                              'X'
+                        CHANGING GS_BDC
+                                 GT_BDC.
+
+  PERFORM FNAM_FVAL USING 'BDC_OKCODE'
+                          '=CREATE'
+                    CHANGING GS_BDC
+                             GT_BDC.
+
+  PERFORM DYNPRO_NUMBER USING 'SAPMZCLA27_82'
+                              '0200'
+                              'X'
+                        CHANGING GS_BDC
+                                 GT_BDC.
+
+  PERFORM FNAM_FVAL USING 'ZTASPFLI27-CARRID'
+                          GS_SPFLI-CARRID
+                    CHANGING GS_BDC
+                             GT_BDC.
+
+  PERFORM FNAM_FVAL USING 'ZTASPFLI27-CONNID'
+                          GS_SPFLI-CONNID
+                    CHANGING GS_BDC
+                             GT_BDC.
+
+  PERFORM FNAM_FVAL USING 'BDC_OKCODE'
+                          '=SAVE'
+                    CHANGING GS_BDC
+                             GT_BDC.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form DYNPRO_NUMBER
+*&---------------------------------------------------------------------*
+FORM DYNPRO_NUMBER USING VALUE(P_PROGRAM)
+                         VALUE(P_DYNPRO)
+                         VALUE(P_DYNBEGIN)
+                   CHANGING PS_BDC LIKE GS_BDC
+                            PT_BDC LIKE GT_BDC.
+
+  PS_BDC-PROGRAM = P_PROGRAM.
+  PS_BDC-DYNPRO = P_DYNPRO.
+  PS_BDC-DYNBEGIN = P_DYNBEGIN.
+  APPEND PS_BDC TO PT_BDC.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form FNAM_FVAL
+*&---------------------------------------------------------------------*
+FORM FNAM_FVAL  USING    VALUE(P_FNAM)
+                         VALUE(P_FVAL)
+                CHANGING PS_BDC LIKE GS_BDC
+                         PT_BDC LIKE GT_BDC.
+
+  CLEAR PS_BDC.
+  GS_BDC-FNAM = P_FNAM.
+  GS_BDC-FVAL = P_FVAL.
+  APPEND PS_BDC TO PT_BDC.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

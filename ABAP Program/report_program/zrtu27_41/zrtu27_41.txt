@@ -1,0 +1,47 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_41
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_41.
+
+DATA: gs_std TYPE ztclastd27,
+      gt_std LIKE TABLE OF gs_std.
+
+*SELECT-OPTIONS so_sno FOR gs_std-stdno.
+PARAMETERS pa_sno type ZDESTDNO27.
+
+INITIALIZATION.
+
+AT SELECTION-SCREEN OUTPUT.
+
+AT SELECTION-SCREEN.
+
+START-OF-SELECTION.
+  CLEAR gt_std.
+
+  SELECT *
+    FROM ztclastd27
+    INTO CORRESPONDING FIELDS OF TABLE gt_std
+    WHERE stdno = pa_sno.
+
+  cl_demo_output=>display_data( gt_std ).
+
+
+*DATA: gs_cla TYPE ztclasbj27,
+*      gt_cla LIKE TABLE OF gs_cla.
+*
+*SELECT-OPTIONS so_code FOR gs_cla-c_code.
+*
+*START-OF-SELECTION.
+*  CLEAR gt_cla.
+*
+*  SELECT *
+*    FROM ztclasbj27
+*    INTO CORRESPONDING FIELDS OF TABLE gt_cla
+*    WHERE c_code IN so_code.
+*
+*  cl_demo_output=>display_data( gt_cla ).
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,45 @@
+*&---------------------------------------------------------------------*
+*& Report ZRT27_09
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrt27_09.
+
+*DATA: gv_flag. "Global ##
+*
+*PERFORM display_data.
+**WRITE: lv_flag. "Local ### #### ### ## ###
+*
+*WRITE: / 'aaa'.
+*
+*FORM display_data .
+*  DATA lv_flag.
+*  WRITE: gv_flag,
+*         'Subroutine'.
+*ENDFORM.
+
+DATA: gv_a TYPE i,
+      gv_b TYPE i,
+      gv_r TYPE i.
+
+gv_a = 10.
+gv_b = 20.
+
+WRITE: gv_r.
+
+PERFORM test USING gv_a
+                   gv_b
+             CHANGING gv_r.
+
+FORM test USING VALUE(p_a)
+                VALUE(p_b)
+          CHANGING p_r.
+
+  p_a = p_a + 1.
+  p_r = p_a + p_b.
+
+  WRITE: / 'Subroutine: ', gv_r.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

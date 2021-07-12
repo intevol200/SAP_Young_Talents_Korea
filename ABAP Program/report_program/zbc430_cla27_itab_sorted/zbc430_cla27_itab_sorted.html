@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=EUC-KR" />
+<title>ZBC430_CLA27_ITAB_SORTED</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZBC430_CLA27_ITAB_SORTED</h2>
+<h3> Description: Program ZBC430_CLA27_ITAB_SORTED</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZBC430_CLA27_ITAB_SORTED<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zbc430_cla27_itab_sorted.<br />
+<br />
+DATA it_flight TYPE zit_sflight_cla27.<br />
+DATA wa_sflight TYPE sflight.<br />
+<br />
+WRITE / 'Printout in tableorder of Database'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;array&nbsp;fetch<br />
+   </div>
+   <div class="code">
+SELECT *<br />
+&nbsp;&nbsp;FROM&nbsp;sflight<br />
+&nbsp;&nbsp;INTO&nbsp;wa_sflight<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;=&nbsp;'JL'.<br />
+<br />
+&nbsp;&nbsp;WRITE:&nbsp;/&nbsp;wa_sflight-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wa_sflight-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wa_sflight-fldate,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wa_Sflight-price,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wa_sflight-currency,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wa_sflight-planetype.<br />
+ENDSELECT.<br />
+<br />
+ULINE.<br />
+<br />
+SELECT *<br />
+&nbsp;&nbsp;INTO&nbsp;TABLE&nbsp;it_flight<br />
+&nbsp;&nbsp;FROM&nbsp;sflight<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;=&nbsp;'JL'.<br />
+WRITE: / 'Printout in tableorder of sorted ITAB:'.<br />
+<br />
+LOOP AT it_flight INTO wa_sflight.<br />
+&nbsp;&nbsp;WRITE:&nbsp;/&nbsp;wa_sflight-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wa_sflight-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wa_sflight-fldate,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wa_Sflight-price,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wa_sflight-currency,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wa_sflight-planetype.<br />
+ENDLOOP.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*DATA&nbsp;wa_pers&nbsp;TYPE&nbsp;person.<br />
+*DATA&nbsp;wa_tel&nbsp;LIKE&nbsp;LINE&nbsp;OF&nbsp;wa_pers-telephone.<br />
+*<br />
+*wa_pers-name-firstname&nbsp;=&nbsp;'Walter'.<br />
+*wa_pers-name-firstname&nbsp;=&nbsp;'Schweizer'.<br />
+*wa_tel-number&nbsp;=&nbsp;'+49-6227-727272'.<br />
+*INSERT&nbsp;wa_tel&nbsp;INTO&nbsp;TABLE&nbsp;wa_pers-telephone.<br />
+*<br />
+*wa_tel-number&nbsp;=&nbsp;'+49-6227-742888'.<br />
+*INSERT&nbsp;wa_tel&nbsp;INTO&nbsp;TABLE&nbsp;wa_pers-telephone.<br />
+*<br />
+*READ&nbsp;TABLE&nbsp;wa_pers-telephone&nbsp;INDEX&nbsp;1&nbsp;INTO&nbsp;wa_tel.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,196 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRCLA27_03_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_emp_list
+*&---------------------------------------------------------------------*
+FORM get_emp_list .
+  CLEAR gt_list.
+
+  SELECT *
+    FROM ztemp
+    INTO CORRESPONDING FIELDS OF TABLE gt_list
+    WHERE pernr IN so_eno[]
+    AND depid IN so_depno[]
+    AND grade = pa_grade
+    AND begda IN so_begda[].
+
+  IF pa_gen1 = 'X'. "##
+
+  ELSEIF pa_gen2 = 'X'. " ### ##
+    DELETE gt_list WHERE gesch = '2'.
+
+  ELSEIF pa_gen3 = 'X'. "### ##
+    DELETE gt_list WHERE gesch <> '2'.
+  ENDIF.
+
+*  DELETE gt_list WHERE gesch <> pa_gen.
+*  IF gt_list IS INITIAL.
+*    MESSAGE i000(zmcla27).
+*    RETURN.
+*  ENDIF.
+
+  PERFORM get_display_data TABLES gt_list.
+
+  IF sy-subrc <> 0.
+    MESSAGE i000(zmcla27).
+    RETURN.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_alv_0100
+*&---------------------------------------------------------------------*
+FORM set_alv_0100 .
+
+  CREATE OBJECT go_con
+    EXPORTING
+      container_name              = 'MYCON'
+    EXCEPTIONS
+      cntl_error                  = 1
+      cntl_system_error           = 2
+      create_error                = 3
+      lifetime_error              = 4
+      lifetime_dynpro_dynpro_link = 5
+      OTHERS                      = 6.
+  IF sy-subrc <> 0.
+    "### ## ### #######. ## ######.
+    MESSAGE a010(zmcla27).
+  ENDIF.
+
+  IF go_alv IS NOT INITIAL.
+    RETURN.
+  ENDIF.
+
+  CREATE OBJECT go_alv
+    EXPORTING
+      i_parent          = go_con
+    EXCEPTIONS
+      error_cntl_create = 1
+      error_cntl_init   = 2
+      error_cntl_link   = 3
+      error_dp_create   = 4
+      OTHERS            = 5.
+
+  IF sy-subrc <> 0.
+
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_alv_0100
+*&---------------------------------------------------------------------*
+FORM display_alv_0100 .
+  IF go_alv IS INITIAL.
+    RETURN.
+  ENDIF.
+
+  gs_layo-zebra = 'X'.
+  gs_layo-cwidth_opt = 'X'.
+
+  CALL METHOD go_alv->set_table_for_first_display
+    EXPORTING
+*     i_buffer_active               =
+*     i_bypassing_buffer            =
+*     i_consistency_check           =
+      i_structure_name              = 'ZSA27_ALV03_1'
+*     is_variant                    =
+*     i_save                        =
+*     i_default                     = 'X'
+      is_layout                     = gs_layo
+*     is_print                      =
+*     it_special_groups             =
+*     it_toolbar_excluding          =
+*     it_hyperlink                  =
+*     it_alv_graphics               =
+*     it_except_qinfo               =
+*     ir_salv_adapter               =
+    CHANGING
+      it_outtab                     = gt_list
+    EXCEPTIONS
+      invalid_parameter_combination = 1
+      program_error                 = 2
+      too_many_lines                = 3
+      OTHERS                        = 4.
+  IF sy-subrc <> 0.
+*   Implement suitable error handling here
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_display_data
+*&---------------------------------------------------------------------*
+FORM get_display_data  TABLES   pt_list LIKE gt_list.
+
+  DATA: ls_list LIKE LINE OF pt_list,
+        gs_dep_t  TYPE ztdep_t,
+        gt_dep_t  LIKE TABLE OF gs_dep_t,
+        gs_dep  TYPE ztdep,
+        gt_dep  LIKE TABLE OF gs_dep.
+
+  SELECT *
+    FROM ztdep_t
+    INTO CORRESPONDING FIELDS OF TABLE gt_dep_t
+    WHERE spras EQ sy-langu.
+
+  SELECT *
+    from ztdep
+    into CORRESPONDING FIELDS OF TABLE gt_dep.
+
+  LOOP AT pt_list INTO ls_list.
+    PERFORM get_domain_fixed_value USING 'ZDGRADE'
+                                         ls_list-grade
+                                   CHANGING ls_list-grade_t.
+
+    PERFORM get_domain_fixed_value USING 'ZDASKILL'
+                                         ls_list-skill
+                                   CHANGING ls_list-skill_t.
+
+    PERFORM get_domain_fixed_value USING 'GESCH'
+                                     ls_list-gesch
+                               CHANGING ls_list-gesch_t.
+
+    READ TABLE gt_dep_t INTO gs_dep_t WITH KEY depid = ls_list-depid.
+    ls_list-dtext = gs_dep_t-dtext.
+
+    READ TABLE gt_dep INTO gs_dep WITH KEY depid = ls_list-depid.
+    ls_list-sal_waers = gs_dep-waers.
+
+    MODIFY pt_list FROM ls_list.
+    CLEAR ls_list.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_domain_fixed_value
+*&---------------------------------------------------------------------*
+FORM get_domain_fixed_value  USING    VALUE(p_doname)
+                                      VALUE(p_code)
+                             CHANGING VALUE(p_text).
+
+  DATA: ls_domain  TYPE dd07v,
+        lt_domain  LIKE TABLE OF ls_domain,
+        lv_domname TYPE dd07v-domname.
+
+  lv_domname = p_doname.
+
+  CALL FUNCTION 'GET_DOMAIN_VALUES'
+    EXPORTING
+      domname         = lv_domname
+    TABLES
+      values_tab      = lt_domain
+    EXCEPTIONS
+      no_values_found = 1
+      OTHERS          = 2.
+
+  IF sy-subrc <> 0.
+* Implement suitable error handling here
+  ENDIF.
+
+  READ TABLE lt_domain INTO ls_domain WITH KEY domvalue_l = p_code.
+
+  IF sy-subrc = 0.
+    p_text = ls_domain-ddtext.
+  ENDIF.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

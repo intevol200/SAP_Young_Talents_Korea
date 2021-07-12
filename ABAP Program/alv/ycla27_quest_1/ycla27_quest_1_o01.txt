@@ -1,0 +1,107 @@
+*&---------------------------------------------------------------------*
+*& Include          YCLA31_FORM1_O01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      MODULE  STATUS_0100  OUTPUT
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+MODULE STATUS_0100 OUTPUT.
+
+  SET PF-STATUS 'PF_0100'.
+  SET TITLEBAR  'TT_0100'.
+
+ENDMODULE. " STATUS_0100 OUTPUT
+
+*&---------------------------------------------------------------------*
+*&      MODULE  ALV_INIT_DISPLAY_0100  OUTPUT
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+MODULE ALV_INIT_DISPLAY_0100 OUTPUT.
+
+  "-- ###  GRID# BOUND#### ####.
+  IF GR_GRID1 IS NOT BOUND.
+
+    "-- GRID# INSTANCE# ####.
+    PERFORM CREATE_INSTANCE_0100.
+
+    "-- GRID# LAYOUT ### ####.
+    PERFORM INIT_LAYOUT_0100.
+
+    "-- ALV Standard toolbar button cotrol
+    PERFORM SET_GRID_EXCLUDE_0100.
+
+    "-- ALV Sort
+    PERFORM ALV_SORT_0100.
+
+    "-- Field Attribute# #### ##### ## ##
+    PERFORM APPEND_FIELDCAT_0100.
+
+    "-- ALV Events ##
+    PERFORM REGIST_ALV_EVENT_0100 USING GR_GRID1.
+
+    "-- ALV Display
+    PERFORM DISPLAY_ALV_GRID_0100.
+
+  ELSE.
+
+    PERFORM REFRESH_GRID_0100.
+
+  ENDIF.
+
+ENDMODULE. " ALV_INIT_DISPLAY_0100 OUTPUT
+
+*&---------------------------------------------------------------------*
+*&      MODULE  STATUS_0110  OUTPUT
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+MODULE STATUS_0110 OUTPUT.
+
+  SET PF-STATUS 'PF_0110'.
+  SET TITLEBAR  'TT_0110'.
+
+ENDMODULE. " STATUS_0110 OUTPUT
+
+*&---------------------------------------------------------------------*
+*&      MODULE  ALV_INIT_DISPLAY_0110  OUTPUT
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+MODULE ALV_INIT_DISPLAY_0110 OUTPUT.
+
+  "-- ###  GRID# BOUND#### ####.
+  IF GR_GRID2 IS NOT BOUND.
+
+    "-- GRID# INSTANCE# ####.
+    PERFORM CREATE_INSTANCE_0110.
+
+    "-- GRID# LAYOUT ### ####.
+    PERFORM INIT_LAYOUT_0110.
+
+    "-- ALV Standard toolbar button cotrol
+*    PERFORM SET_GRID_EXCLUDE_0110.
+
+    "-- ALV Sort
+    PERFORM ALV_SORT_0110.
+
+    "-- Field Attribute# #### ##### ## ##
+    PERFORM APPEND_FIELDCAT_0110.
+
+    "-- ALV Events ##
+    PERFORM REGIST_ALV_EVENT_0100 USING GR_GRID2.
+
+    "-- ALV Display
+    PERFORM DISPLAY_ALV_GRID_0110.
+
+  ELSE.
+
+    PERFORM REFRESH_GRID_0110.
+
+  ENDIF.
+
+ENDMODULE. " ALV_INIT_DISPLAY_0110 OUTPUT
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

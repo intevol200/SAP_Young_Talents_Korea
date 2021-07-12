@@ -1,0 +1,75 @@
+*&---------------------------------------------------------------------*
+*& Report ZRADB27_01
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRADB27_01.
+
+DATA: GS_ZTASCARR27 TYPE ZTASCARR27,
+      GT_ZTASCARR27 LIKE TABLE OF GS_ZTASCARR27.
+
+SELECT *
+  FROM SCARR
+  INTO CORRESPONDING FIELDS OF TABLE GT_ZTASCARR27.
+*GS_ZTASCARR27-CARRID = 'KA'.
+*GS_ZTASCARR27-CARRNAME = 'Korea'.
+*GS_ZTASCARR27-CURRCODE = 'KKK'.
+*APPEND GS_ZTASCARR27 TO GT_ZTASCARR27.
+*
+*CLEAR GS_ZTASCARR27.
+*GS_ZTASCARR27-CARRID = 'AA'.
+*GS_ZTASCARR27-CARRNAME = 'American'.
+*APPEND GS_ZTASCARR27 TO GT_ZTASCARR27.
+*
+*CLEAR GS_ZTASCARR27.
+
+*MODIFY ZTASCARR27 FROM TABLE GT_ZTASCARR27.
+*IF SY-SUBRC <> 0.
+*  ROLLBACK WORK.
+*  RETURN.
+*ENDIF.
+*
+*WRITE SY-SUBRC.
+*COMMIT WORK.
+
+*LOOP AT GT_ZTASCARR27 INTO GS_ZTASCARR27.
+*  INSERT ZTASCARR27 FROM GS_ZTASCARR27.
+*
+*  IF SY-SUBRC <> 0.
+*    ROLLBACK WORK.
+*  ENDIF.
+*  CLEAR GS_ZTASCARR27.
+*ENDLOOP.
+
+DATA GV_SUBRC TYPE SY-SUBRC.
+CLEAR GV_SUBRC.
+
+LOOP AT GT_ZTASCARR27 INTO GS_ZTASCARR27.
+  INSERT ZTASCARR27 FROM GS_ZTASCARR27.
+
+  IF SY-SUBRC <> 0.
+    GV_SUBRC = 4.
+    EXIT.
+  ENDIF.
+
+  CLEAR GS_ZTASCARR27.
+ENDLOOP.
+
+IF GV_SUBRC <> 0.
+  ROLLBACK WORK.
+  MESSAGE I016(PN) WITH 'Error'.
+  RETURN.
+ENDIF.
+
+COMMIT WORK.
+MESSAGE I016(PN) WITH 'Success'.
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: PN
+*016   & & & &
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

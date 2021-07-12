@@ -1,0 +1,18 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLALDB27
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLALDB27.
+
+NODES: SPFLI, SFLIGHT.
+
+START-OF-SELECTION.
+GET SPFLI.
+  WRITE:/ SPFLI-CARRID, SPFLI-CONNID.
+
+GET SFLIGHT.
+  WRITE:/ SFLIGHT-FLDATE.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

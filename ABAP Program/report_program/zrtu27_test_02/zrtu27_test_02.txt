@@ -1,0 +1,87 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_TEST_02
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_test_02.
+
+DATA: BEGIN OF gs_list,
+        carrid   TYPE spfli-carrid,
+        carrname TYPE scarr-carrname,
+        connid   TYPE spfli-connid,
+      END OF gs_list,
+      gt_list LIKE TABLE OF gs_list.
+
+DATA gv_carrname TYPE scarr-carrname.
+
+*PARAMETERS pa_car LIKE gs_list-carrid.
+SELECT-OPTIONS so_car FOR gs_list-carrid.
+
+INITIALIZATION.
+  so_car-sign = 'I'.
+  so_car-option = 'BT'.
+  so_car-low = 'AA'.
+  APPEND so_car TO so_car[].
+
+AT SELECTION-SCREEN OUTPUT. "PBO
+
+AT SELECTION-SCREEN. "PAI
+  IF so_car IS INITIAL.
+    MESSAGE e000(zmcla27).
+  ENDIF.
+
+START-OF-SELECTION. "event
+  PERFORM get_fli "USING pa_car
+                  CHANGING gt_list.
+
+  PERFORM get_carrname "USING pa_car
+                       CHANGING gv_carrname.
+
+  PERFORM add_name USING gv_carrname
+                   CHANGING gs_list
+                            gt_list.
+
+  cl_demo_output=>display_data( gt_list ).
+*&---------------------------------------------------------------------*
+*& Form get_fli
+*&---------------------------------------------------------------------*
+FORM get_fli "USING VALUE(lv_car)
+             CHANGING lt_list LIKE gt_list.
+  SELECT carrid connid "get spfli
+    FROM spfli "DB Table
+    INTO CORRESPONDING FIELDS OF TABLE lt_list
+   WHERE carrid IN so_car.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_carrname
+*&---------------------------------------------------------------------*
+FORM get_carrname "USING VALUE(lv_car)
+                  CHANGING lv_carrname.
+  SELECT SINGLE carrname
+    FROM scarr
+    INTO lv_carrname
+   WHERE carrid IN so_car.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form add_name
+*&---------------------------------------------------------------------*
+FORM add_name USING lv_carrname
+              CHANGING ls_list LIKE gs_list
+                       lt_list LIKE gt_list.
+  LOOP AT lt_list INTO ls_list.
+    ls_list-carrname = lv_carrname.
+    MODIFY lt_list FROM ls_list
+    TRANSPORTING carrname.
+    CLEAR ls_list.
+  ENDLOOP.
+ENDFORM.
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZMCLA27
+*000   & & & Data is not Found.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

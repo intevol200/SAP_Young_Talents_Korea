@@ -1,0 +1,40 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU00_14
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+
+INCLUDE zrtu27_15_top.
+*INCLUDE zrtu00_14_top                           .    " Global Data
+
+* INCLUDE ZRTU00_14_O01                           .  " PBO-Modules
+* INCLUDE ZRTU00_14_I01                           .  " PAI-Modules
+INCLUDE zrtu27_15_f01.
+*INCLUDE zrtu00_14_f01                           .  " FORM-Routines
+
+
+START-OF-SELECTION.
+
+PERFORM get_date USING pa_car pa_con
+                 CHANGING gs_info.
+
+*  PERFORM get_airline USING pa_car
+*                            pa_con
+*                      CHANGING gv_subrc
+*                               gs_info.
+*
+*  IF gv_subrc = 0.
+
+*    cl_demo_output=>display_data( gs_info ).
+*  ENDIF.
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZMCLA00
+*000   & & & : Data is not found.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

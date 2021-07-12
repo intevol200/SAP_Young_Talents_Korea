@@ -1,0 +1,15 @@
+*&---------------------------------------------------------------------*
+*& Include ZRTU27_TEST_01_TOP                       - Report ZRTU27_TEST_01
+*&---------------------------------------------------------------------*
+REPORT zrtu27_test_01.
+
+*DATA: BEGIN OF s_data,
+*        carrid   TYPE scarr-carrid,
+*        carrname TYPE scarr-carrname,
+*      END OF s_data,
+*      gt_fli LIKE TABLE OF s_data.
+*
+*PARAMETERS: pa_car LIKE s_data-carrid.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,133 @@
+*&---------------------------------------------------------------------*
+*& Include          MZRCLA9901F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_emp_list
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM GET_EMP_LIST CHANGING VALUE(P_SUBRC).
+  CLEAR GT_EMP.
+  SELECT *
+    FROM ZTEMP
+    INTO CORRESPONDING FIELDS OF TABLE GT_EMP
+   WHERE PERNR IN SO_EID[]. " Range ( SIGN / OPTION / LOW / HIGH )
+  IF SY-SUBRC <> 0.
+    P_SUBRC = 4.
+    MESSAGE I000(ZMCLA00).
+    RETURN.
+  ENDIF.
+
+  LOOP AT GT_EMP INTO GS_EMP.
+    CASE GS_EMP-WAERS.
+      WHEN 'KRW'.
+        IF GS_EMP-SALARY > '100000000'.
+          GS_EMP-LIGHT = '1'.
+        ELSEIF GS_EMP-SALARY > '50000000'.
+          GS_EMP-LIGHT = '2'.
+        ELSE.
+          GS_EMP-LIGHT = '3'.
+        ENDIF.
+    ENDCASE.
+
+    " Budget
+    SELECT SINGLE BUDGET WAERS "AS waers_dep
+      FROM ZTDEP
+      INTO (GS_EMP-BUDGET, GS_EMP-WAERS_DEP)
+*      INTO CORRESPONDING FIELDS OF gs_emp
+     WHERE DEPID = GS_EMP-DEPID.
+
+    " Dep Text
+    SELECT SINGLE DTEXT
+      FROM ZTDEP_T
+      INTO GS_EMP-DTEXT
+     WHERE DEPID = GS_EMP-DEPID
+       AND SPRAS = SY-LANGU.
+
+    MODIFY GT_EMP FROM GS_EMP.
+    CLEAR GS_EMP.
+
+  ENDLOOP.
+
+  SORT GT_EMP BY LIGHT.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_alv_0100
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM SET_ALV_0100 .
+
+  CREATE OBJECT GO_CON
+    EXPORTING
+      CONTAINER_NAME = 'MYCON'.
+
+  CREATE OBJECT GO_ALV
+    EXPORTING
+      I_PARENT = GO_CON.
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_alv_0100
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM DISPLAY_ALV_0100 .
+  DATA: LS_LAYO TYPE LVC_S_LAYO.
+  LS_LAYO-CWIDTH_OPT = 'X'.
+  LS_LAYO-EXCP_FNAME = 'LIGHT'.
+  LS_LAYO-EXCP_LED = 'X'.
+  LS_LAYO-INFO_FNAME = 'COLOR'.
+
+*  CLEAR: GS_FCAT.
+*
+*  GS_FCAT-FIELDNAME = 'SKILL_T'.
+*  GS_FCAT-COLTEXT = 'Skill Text'.
+*  APPEND GS_FCAT TO GT_FCAT.
+*
+*  CLEAR GS_FCAT.
+*  GS_FCAT-FIELDNAME = 'PERNR'.
+*  GS_fCAT-COLTEXT = 'P. No'.
+*  APPEND GS_FCAT TO GT_FCAT.
+
+  SORT GT_EMP BY SALARY DESCENDING.
+
+    READ TABLE GT_EMP INTO GS_EMP INDEX 1.
+
+    GS_EMP-COLOR = 'C611'.
+
+    MODIFY GT_EMP FROM GS_EMP INDEX 1.
+
+
+  CALL METHOD GO_ALV->SET_TABLE_FOR_FIRST_DISPLAY
+    EXPORTING
+      I_STRUCTURE_NAME              = 'ZSA00_ALV01' "SKILL_T ###
+      IS_LAYOUT                     = LS_LAYO
+    CHANGING
+      IT_OUTTAB                     = GT_EMP "SKILL_T ##
+*     IT_FIELDCATALOG               = GT_FCAT
+      IT_SORT                       = GT_SORT
+    EXCEPTIONS
+      INVALID_PARAMETER_COMBINATION = 1
+      PROGRAM_ERROR                 = 2
+      TOO_MANY_LINES                = 3
+      OTHERS                        = 4.
+  IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+  ENDIF.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

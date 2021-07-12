@@ -1,0 +1,76 @@
+*&---------------------------------------------------------------------*
+*& Report YCLA31_FORM1
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT YCLA27_FORM1 MESSAGE-ID ZCLA.
+
+
+*----------------------------------------------------------------------*
+* INCLUDE
+*----------------------------------------------------------------------*
+INCLUDE YCLA27_FORM1_TOP.
+INCLUDE YCLA27_FORM1_ALV.
+INCLUDE YCLA27_FORM1_SCR.
+INCLUDE YCLA27_FORM1_O01.
+INCLUDE YCLA27_FORM1_I01.
+INCLUDE YCLA27_FORM1_F01.
+
+*----------------------------------------------------------------------*
+* INITIALIZATION
+*----------------------------------------------------------------------*
+INITIALIZATION.
+  PERFORM INITIALIZATION.
+  PERFORM SCRFIELDS_FUNCTXT.
+
+*----------------------------------------------------------------------*
+* AT SELECTION-SCREEN OUTPUT
+*----------------------------------------------------------------------*
+AT SELECTION-SCREEN OUTPUT.
+  PERFORM MODIFY_SCREEN.
+
+*----------------------------------------------------------------------*
+* AT SELECTION-SCREEN ON VALUE-REQUEST
+*----------------------------------------------------------------------*
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR S_TEAM-LOW.
+  PERFORM F4_CONN.
+
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR S_TEAM-HIGH.
+  PERFORM F4_CONN.
+
+*----------------------------------------------------------------------*
+*  AT SELECTION-SCREEN.
+*----------------------------------------------------------------------*
+AT SELECTION-SCREEN.
+  PERFORM SCR_USER_COMMAND. "## Download
+
+*----------------------------------------------------------------------*
+* START-OF-SELECTION
+*----------------------------------------------------------------------*
+START-OF-SELECTION.
+
+  PERFORM SELECT_DATA.
+
+  PERFORM MODIFY_DATA.
+
+*----------------------------------------------------------------------*
+* END-OF-SELECTION
+*----------------------------------------------------------------------*
+END-OF-SELECTION.
+
+  IF GV_EXIT IS INITIAL.
+    CALL SCREEN 0100.
+  ENDIF.
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: 0K
+*000   & & & &
+*
+* Message class: PN
+*016   & & & &
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

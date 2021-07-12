@@ -1,0 +1,194 @@
+*&---------------------------------------------------------------------*
+*& Include          MZCLA27_80_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form SET_ALV
+*&---------------------------------------------------------------------*
+FORM SET_ALV.
+  CREATE OBJECT GO_CON
+    EXPORTING
+      CONTAINER_NAME              = 'AIR_CON'
+    EXCEPTIONS
+      CNTL_ERROR                  = 1
+      CNTL_SYSTEM_ERROR           = 2
+      CREATE_ERROR                = 3
+      LIFETIME_ERROR              = 4
+      LIFETIME_DYNPRO_DYNPRO_LINK = 5
+      OTHERS                      = 6.
+  IF SY-SUBRC <> 0.
+*   MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*              WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+  CREATE OBJECT GO_ALV
+    EXPORTING
+      I_PARENT          = GO_CON
+    EXCEPTIONS
+      ERROR_CNTL_CREATE = 1
+      ERROR_CNTL_INIT   = 2
+      ERROR_CNTL_LINK   = 3
+      ERROR_DP_CREATE   = 4
+      OTHERS            = 5.
+  IF SY-SUBRC <> 0.
+* MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*            WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form DISPLAY_ALV
+*&---------------------------------------------------------------------*
+FORM DISPLAY_ALV.
+  IF GO_ALV IS INITIAL. RETURN. ENDIF.
+
+  GS_LAYO-ZEBRA = 'X'.
+  GS_LAYO-CWIDTH_OPT = 'X'.
+  GS_LAYO-SEL_MODE = 'A'.
+
+  PERFORM SET_FIELDCAT CHANGING GS_FCAT
+                                GT_FCAT.
+
+  PERFORM SORT_BY_CARRID CHANGING GS_SORT
+                                  GT_SORT.
+
+  CALL METHOD GO_ALV->SET_TABLE_FOR_FIRST_DISPLAY
+    EXPORTING
+*     I_BUFFER_ACTIVE               =
+*     I_BYPASSING_BUFFER            =
+*     I_CONSISTENCY_CHECK           =
+      I_STRUCTURE_NAME              = 'ZTASCARR27'
+*     IS_VARIANT                    =
+*     I_SAVE                        =
+*     I_DEFAULT                     = 'X'
+      IS_LAYOUT                     = GS_LAYO
+*     IS_PRINT                      =
+*     IT_SPECIAL_GROUPS             =
+*     IT_TOOLBAR_EXCLUDING          =
+*     IT_HYPERLINK                  =
+*     IT_ALV_GRAPHICS               =
+*     IT_EXCEPT_QINFO               =
+*     IR_SALV_ADAPTER               =
+    CHANGING
+      IT_OUTTAB                     = GT_INFO
+      IT_FIELDCATALOG               = GT_FCAT
+      IT_SORT                       = GT_SORT
+*     IT_FILTER                     =
+    EXCEPTIONS
+      INVALID_PARAMETER_COMBINATION = 1
+      PROGRAM_ERROR                 = 2
+      TOO_MANY_LINES                = 3
+      OTHERS                        = 4.
+  IF SY-SUBRC <> 0.
+*   Implement suitable error handling here
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_DATA
+*&---------------------------------------------------------------------*
+FORM GET_DATA CHANGING PT_INFO LIKE GT_INFO.
+  SELECT *
+    FROM ZTASCARR27
+    INTO CORRESPONDING FIELDS OF TABLE PT_INFO
+    WHERE CARRID BETWEEN CARRID_B
+                     AND CARRID_E.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_DEFAULT_RANGE
+*&---------------------------------------------------------------------*
+FORM SET_DEFAULT_RANGE  CHANGING P_BEGIN
+                                 P_END.
+  P_BEGIN = 'AA'.
+  P_END = 'ZZ'.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_FIELDCAT
+*&---------------------------------------------------------------------*
+FORM SET_FIELDCAT  CHANGING PS_FCAT LIKE GS_FCAT
+                            PT_FCAT LIKE GT_FCAT.
+
+  CLEAR: PS_FCAT, PT_FCAT.
+
+  PERFORM SET_FIELD_NAME USING 'CARRID' 'Carrier ID'
+                         CHANGING PS_FCAT PT_FCAT.
+
+  PERFORM SET_FIELD_NAME USING 'CARRNAME' 'Carrier Name'
+                         CHANGING PS_FCAT PT_FCAT.
+
+  PERFORM SET_FIELD_NAME USING 'CURRCODE' 'Currency'
+                       CHANGING PS_FCAT PT_FCAT.
+
+  PERFORM SET_FIELD_NAME USING 'URL' 'URL'
+                       CHANGING PS_FCAT PT_FCAT.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_FIELD_NAME
+*&---------------------------------------------------------------------*
+FORM SET_FIELD_NAME  USING    VALUE(P_FIELDNAME)
+                              VALUE(P_CATNAME)
+                     CHANGING S_FCAT LIKE GS_FCAT
+                              T_FCAT LIKE GT_FCAT.
+
+  S_FCAT-FIELDNAME = P_FIELDNAME.
+  S_FCAT-COLTEXT = P_CATNAME.
+  APPEND S_FCAT TO T_FCAT.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form FREE_CONTROL_RESOURCES
+*&---------------------------------------------------------------------*
+FORM FREE_CONTROL_RESOURCES .
+  CALL METHOD GO_ALV->FREE.
+  CALL METHOD GO_CON->FREE.
+
+  FREE: GO_CON, GO_ALV.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SORT_BY_CARRID
+*&---------------------------------------------------------------------*
+FORM SORT_BY_CARRID CHANGING PS_SORT LIKE GS_SORT
+                             PT_SORT LIKE GT_SORT.
+  CLEAR: PS_SORT, PT_SORT.
+
+  PS_SORT-FIELDNAME = 'CARRID'.
+  PS_SORT-UP = 'X'.
+  APPEND PS_SORT TO PT_SORT.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form CHANGE_SELECTED_ROW
+*&---------------------------------------------------------------------*
+FORM CHANGE_SELECTED_ROW CHANGING P_FIELD LIKE ZTASCARR27
+                                  PS_INFO LIKE GS_INFO
+                                  PT_INFO LIKE GT_INFO.
+  DATA: LT_ROW TYPE LVC_T_ROID,
+        LS_ROW LIKE LINE OF LT_ROW,
+        LV_ROW TYPE I.
+
+  CALL METHOD GO_ALV->GET_SELECTED_ROWS
+    IMPORTING
+      ET_ROW_NO = LT_ROW.
+
+  LV_ROW = LINES( LT_ROW ).
+
+  IF LV_ROW IS INITIAL.
+    MESSAGE I016(PN) WITH 'Please Select a Data'.
+    EXIT.
+
+  ELSEIF LV_ROW > 2.
+    MESSAGE I016(PN) WITH 'Please Select a One Line Only'.
+    RETURN.
+  ENDIF.
+
+  READ TABLE LT_ROW INTO LS_ROW INDEX 1.
+  CHECK SY-SUBRC EQ 0.
+
+  READ TABLE PT_INFO INTO PS_INFO INDEX LS_ROW-ROW_ID.
+  CHECK SY-SUBRC EQ 0.
+
+  P_FIELD = PS_INFO.
+
+  CALL SCREEN 300.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

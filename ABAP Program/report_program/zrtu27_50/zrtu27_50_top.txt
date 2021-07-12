@@ -1,0 +1,19 @@
+*&---------------------------------------------------------------------*
+*& Include ZRTU27_50_TOP                            - Report ZRTU27_50
+*&---------------------------------------------------------------------*
+REPORT zrtu27_50.
+
+* Booking List
+DATA: gs_book TYPE zstu27_50,
+      gt_book LIKE TABLE OF gs_book.
+
+* Condition
+PARAMETERS pa_car LIKE gs_book-carrid. "OBLIGATORY. "TYPE zstu27_50-carrid.
+SELECT-OPTIONS: so_con FOR gs_book-connid, "Internal Table ( sign / option / low / high )
+                so_dat FOR gs_book-fldate.
+
+PARAMETERS pa_ct LIKE gs_book-custtype
+                      AS LISTBOX VISIBLE LENGTH 20.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,27 @@
+FUNCTION zftu27_01.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(IV_CARRID) TYPE  SCARR-CARRID
+*"  EXPORTING
+*"     REFERENCE(ES_INFO) TYPE  ZSTUINFO
+*"     REFERENCE(EV_SUBRC) TYPE  SY-SUBRC
+*"  EXCEPTIONS
+*"      NO_DATA
+*"----------------------------------------------------------------------
+
+* get airline info
+  SELECT SINGLE *
+    FROM scarr
+    INTO CORRESPONDING FIELDS OF @es_info
+    WHERE carrid = @iv_carrid.
+  IF sy-subrc <> 0.
+    RAISE no_data.
+    ev_subrc = 4.
+    RETURN.
+  ENDIF.
+
+ENDFUNCTION.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

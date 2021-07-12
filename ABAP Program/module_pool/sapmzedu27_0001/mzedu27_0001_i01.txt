@@ -1,0 +1,51 @@
+*&---------------------------------------------------------------------*
+*& Include          MZEDU27_0001_I01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0100  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0100 INPUT.
+  CASE ok_code.
+    WHEN 'ENTER' OR 'LAUNCH'.
+      IF gv_timer IS NOT INITIAL.
+        CALL SCREEN 101 STARTING AT 5 5.
+
+      ELSE.
+        MESSAGE i016(pn) WITH 'Enter the Number First!!!'.
+        RETURN.
+      ENDIF.
+
+    WHEN 'RELOAD'.
+      PERFORM set_default_screen.
+
+  ENDCASE.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0101  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0101 INPUT.
+  CASE ok_code.
+    WHEN 'ABORT'.
+      LEAVE TO SCREEN 0.
+  ENDCASE.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  EXIT  INPUT
+*&---------------------------------------------------------------------*
+MODULE exit INPUT.
+  CASE ok_code.
+    WHEN 'BACK'.
+      LEAVE PROGRAM.
+
+    WHEN 'EXIT' OR 'CANC'.
+      LEAVE TO SCREEN 0.
+  ENDCASE.
+
+ENDMODULE.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

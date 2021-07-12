@@ -1,0 +1,40 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCLA27_07_C01
+*&---------------------------------------------------------------------*
+
+CLASS LCL_EVENT DEFINITION.
+  PUBLIC SECTION.
+    METHODS: ON_DOUBLE_CLICK FOR EVENT DOUBLE_CLICK
+      OF CL_GUI_ALV_GRID
+      IMPORTING E_COLUMN ES_ROW_NO.
+
+ENDCLASS.
+
+CLASS LCL_EVENT IMPLEMENTATION.
+  METHOD: ON_DOUBLE_CLICK.
+
+    CASE E_COLUMN.
+      WHEN 'CARRID' OR 'LIGHT'.
+        READ TABLE GT_LIST INTO GS_LIST INDEX ES_ROW_NO-ROW_ID.
+
+        IF SY-SUBRC = 0.
+*         Get Read gt_menu
+          SELECT SINGLE *
+            FROM ZTCLA27REQ_1 AS A JOIN SMENU AS B
+            ON A~MENUNUMBER = B~MENUNUMBER
+            INTO CORRESPONDING FIELDS OF GS_JOIN
+            WHERE A~CARRID = GS_LIST-CARRID
+            AND A~CONNID = GS_LIST-CONNID
+            AND A~BOOKID = GS_LIST-BOOKID
+            AND A~FLDATE = GS_LIST-FLDATE.
+
+          CALL SCREEN 0101 STARTING AT 10 10.
+        ENDIF.
+    ENDCASE.
+  ENDMETHOD.
+ENDCLASS.
+
+DATA GO_EVENT TYPE REF TO LCL_EVENT.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,53 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_06
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_06.
+
+" Global Data Objects
+DATA gs_scarr TYPE scarr.
+PARAMETERS: pa_carr LIKE gs_scarr-carrid.
+
+" EVENT ##
+START-OF-SELECTION.
+  "OPEN SQL
+  SELECT SINGLE *
+    FROM scarr
+    INTO CORRESPONDING FIELDS OF gs_scarr
+  WHERE carrid = pa_carr.
+
+  IF sy-subrc <> 0.
+*    NEW-LINE.
+*    WRITE: gs_scarr-carrid,
+*           gs_scarr-carrname,
+*           gs_scarr-url.
+*  ELSE.
+*    WRITE: 'Sorry, no data found!'.
+*    MESSAGE 'Sorry, no data found!' TYPE 'S'.
+*    WRITE: 'test'.
+    MESSAGE i000(zmcla27) WITH pa_carr.
+    EXIT.
+  ENDIF.
+
+cl_demo_output=>display_data( gs_scarr ).
+
+*  CASE sy-subrc.
+*    WHEN 0.
+*      NEW-LINE.
+*      WRITE: gs_scarr-carrid,
+*             gs_scarr-carrname,
+*             gs_scarr-url.
+*    WHEN OTHERS.
+*      WRITE: 'Sorry, no data found!'.
+*  ENDCASE.
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZMCLA27
+*000   & & & Data is not Found.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,91 @@
+*&---------------------------------------------------------------------*
+*& Include          YTEST_ALV27_01_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form SET_SCARR
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM SET_SCARR .
+  CREATE OBJECT GO_CON
+    EXPORTING
+      CONTAINER_NAME              = 'ALV_SCARR'
+    EXCEPTIONS
+      CNTL_ERROR                  = 1
+      CNTL_SYSTEM_ERROR           = 2
+      CREATE_ERROR                = 3
+      LIFETIME_ERROR              = 4
+      LIFETIME_DYNPRO_DYNPRO_LINK = 5
+      OTHERS                      = 6.
+  IF SY-SUBRC <> 0.
+* MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*            WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+  CREATE OBJECT GO_ALV
+    EXPORTING
+      I_PARENT          = GO_CON
+    EXCEPTIONS
+      ERROR_CNTL_CREATE = 1
+      ERROR_CNTL_INIT   = 2
+      ERROR_CNTL_LINK   = 3
+      ERROR_DP_CREATE   = 4
+      OTHERS            = 5.
+  IF SY-SUBRC <> 0.
+* MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*            WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form DISPLAY_SCARR
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM DISPLAY_SCARR .
+CALL METHOD GO_ALV->SET_TABLE_FOR_FIRST_DISPLAY
+  EXPORTING
+    I_STRUCTURE_NAME              = 'SCARR'
+
+  CHANGING
+    IT_OUTTAB                     = GT_SCARR
+
+  EXCEPTIONS
+    INVALID_PARAMETER_COMBINATION = 1
+    PROGRAM_ERROR                 = 2
+    TOO_MANY_LINES                = 3
+    OTHERS                        = 4
+        .
+IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+ENDIF.
+
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_SCARR_DATA
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM GET_SCARR_DATA .
+  CLEAR GT_SCARR.
+
+  SELECT *
+    FROM SCARR
+    INTO CORRESPONDING FIELDS OF TABLE GT_SCARR.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

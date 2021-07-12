@@ -1,0 +1,48 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_01
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_01.
+
+*PARAMETERS pa_name TYPE c LENGTH 10.
+*
+*WRITE: pa_name,
+*       'Hello'.
+
+*PARAMETERS pa_car TYPE c LENGTH 3.
+*PARAMETERS pa_con TYPE n LENGTH 4.
+
+*PARAMETERS pa_car TYPE scarr-carrid.
+*PARAMETERS pa_con TYPE spfli-connid.
+
+*PARAMETERS pa_car TYPE sflight-carrid AS LISTBOX VISIBLE LENGTH 20.
+*PARAMETERS pa_con TYPE sflight-connid.
+
+*data gv_last type c LENGTH 10.
+*data gv_first type c LENGTH 10.
+*
+*gv_last = 'kang'.
+**move 'kang' to gv_last.
+*gv_first = gv_last.
+*
+*WRITE gv_first.
+
+
+DATA: gv_date   TYPE sy-datum VALUE '20210616',
+      gv_result TYPE sy-datum.
+
+CALL FUNCTION 'RP_CALC_DATE_IN_INTERVAL'
+  EXPORTING
+    date      = gv_date
+    days      = 0
+    months    = 1
+    signum    = '+'
+    years     = 0
+  IMPORTING
+    calc_date = gv_result.
+
+WRITE: gv_result.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

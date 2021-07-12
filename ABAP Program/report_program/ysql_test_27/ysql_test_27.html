@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=EUC-KR" />
+<title>YSQL_TEST_27</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: YSQL_TEST_27</h2>
+<h3> Description: testing sql function</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;YSQL_TEST_27<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT ysql_test_27.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*DATA:&nbsp;gt_scarr&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;scarr,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_scarr&nbsp;TYPE&nbsp;scarr.<br />
+*<br />
+*SELECT&nbsp;carrid,&nbsp;carrname<br />
+*&nbsp;&nbsp;FROM&nbsp;scarr<br />
+*&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;@gt_scarr.<br />
+*<br />
+*LOOP&nbsp;AT&nbsp;gt_scarr&nbsp;INTO&nbsp;gs_scarr.<br />
+*&nbsp;&nbsp;WRITE:&nbsp;/&nbsp;gs_scarr-carrid,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_scarr-carrname.<br />
+*ENDLOOP.<br />
+<br />
+*DATA:&nbsp;gt_sflight&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;sflight,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_sflight&nbsp;TYPE&nbsp;sflight.<br />
+*<br />
+*SELECT&nbsp;DISTINCT&nbsp;carrid<br />
+*&nbsp;&nbsp;FROM&nbsp;sflight<br />
+*&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;@gt_sflight.<br />
+*<br />
+*LOOP&nbsp;AT&nbsp;gt_sflight&nbsp;INTO&nbsp;gs_sflight.<br />
+*&nbsp;&nbsp;WRITE:&nbsp;/&nbsp;gs_sflight-carrid.<br />
+*ENDLOOP.<br />
+<br />
+*TYPES:&nbsp;BEGIN&nbsp;OF&nbsp;t_str,<br />
+*&nbsp;&nbsp;carrid&nbsp;TYPE&nbsp;sflight-carrid,<br />
+*&nbsp;&nbsp;carrname&nbsp;TYPE&nbsp;scarr-carrname,<br />
+*END&nbsp;OF&nbsp;t_str.<br />
+*<br />
+*DATA:&nbsp;gs_str&nbsp;TYPE&nbsp;t_str.<br />
+*<br />
+*SELECT&nbsp;SINGLE&nbsp;a~carrid,&nbsp;b~carrname<br />
+*&nbsp;&nbsp;FROM&nbsp;sflight&nbsp;AS&nbsp;a&nbsp;INNER&nbsp;JOIN&nbsp;scarr&nbsp;AS&nbsp;b<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON&nbsp;a~carrid&nbsp;EQ&nbsp;b~carrid<br />
+*&nbsp;&nbsp;WHERE&nbsp;a~carrid&nbsp;=&nbsp;'AA'<br />
+*&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;@gs_str.<br />
+*<br />
+*write:&nbsp;gs_str-carrid,&nbsp;gs_str-carrname.<br />
+<br />
+*PARAMETERS:&nbsp;m_weight&nbsp;TYPE&nbsp;p&nbsp;DECIMALS&nbsp;2,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y_weight&nbsp;TYPE&nbsp;p&nbsp;DECIMALS&nbsp;2.<br />
+*<br />
+*DATA:&nbsp;mSum&nbsp;TYPE&nbsp;p&nbsp;DECIMALS&nbsp;2,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mAvg&nbsp;TYPE&nbsp;p&nbsp;DECIMALS&nbsp;2.<br />
+*<br />
+*mSum&nbsp;=&nbsp;m_weight&nbsp;+&nbsp;y_weight.<br />
+*mAvg&nbsp;=&nbsp;(&nbsp;m_weight&nbsp;+&nbsp;y_weight&nbsp;)&nbsp;/&nbsp;2.<br />
+*<br />
+*WRITE:&nbsp;'SUM',&nbsp;mSum,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'AVERAGE',&nbsp;mAvg.<br />
+<br />
+*DATA:&nbsp;gv_date&nbsp;TYPE&nbsp;d.<br />
+*<br />
+*gv_date&nbsp;=&nbsp;sy-datum.<br />
+*<br />
+*WRITE:&nbsp;'##&nbsp;:',&nbsp;gv_date(4),&nbsp;/<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'#&nbsp;:',&nbsp;gv_date+4(2),&nbsp;/<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'#&nbsp;:',&nbsp;gv_date+6(2).<br />
+<br />
+   </div>
+   <div class="code">
+TYPES: BEGIN OF s_profile,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;TYPE&nbsp;string,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gender(1)&nbsp;TYPE&nbsp;c,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;birth&nbsp;TYPE&nbsp;sy-datum,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;age&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ko_age&nbsp;TYPE&nbsp;sy-datum,<br />
+END OF s_profile.<br />
+<br />
+DATA: prof TYPE s_profile,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date&nbsp;TYPE&nbsp;d.<br />
+<br />
+prof-name = '###'.<br />
+prof-gender = 'M'.<br />
+prof-birth = '19960922'.<br />
+prof-age = sy-datum(4) - prof-birth(4) + 1.<br />
+prof-ko_age = sy-datum - prof-birth - 365.<br />
+<br />
+WRITE: '## :', prof-name, /<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'##&nbsp;:',&nbsp;prof-gender,&nbsp;/<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'####&nbsp;:',&nbsp;prof-birth,&nbsp;/<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'##&nbsp;:',&nbsp;prof-age,&nbsp;/<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'###&nbsp;:',&nbsp;prof-ko_age+2(2).<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

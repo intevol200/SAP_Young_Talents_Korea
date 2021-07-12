@@ -1,0 +1,30 @@
+*&---------------------------------------------------------------------*
+*& Report YTEST_ALV27_01
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE YTEST_ALV27_01_TOP                      .    " Global Data
+
+INCLUDE YTEST_ALV27_01_O01                      .  " PBO-Modules
+INCLUDE YTEST_ALV27_01_I01                      .  " PAI-Modules
+INCLUDE YTEST_ALV27_01_F01                      .  " FORM-Routines
+
+INITIALIZATION.
+
+AT SELECTION-SCREEN OUTPUT.
+
+AT SELECTION-SCREEN.
+
+START-OF-SELECTION.
+  PERFORM GET_SCARR_DATA.
+
+  CHECK GT_SCARR IS NOT INITIAL.
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* T100 --> Airline Carrier List
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

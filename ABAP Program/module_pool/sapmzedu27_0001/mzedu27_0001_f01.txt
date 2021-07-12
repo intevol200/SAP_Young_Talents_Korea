@@ -1,0 +1,23 @@
+*&---------------------------------------------------------------------*
+*& Include          MZEDU27_0001_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form set_default_screen
+*&---------------------------------------------------------------------*
+FORM set_default_screen .
+  CLEAR: gv_timer, gv_flag. "###, ## ## ###
+
+  gv_flagname = 'ICON_COMPLETE'. "## ### ##
+  gv_statname = 'ICON_LED_YELLOW'. "### ### ##
+
+*  gv_statname = 'ICON_LED_GREEN'. "### ### ##
+
+  CALL FUNCTION 'ICON_CREATE' "### ###
+    EXPORTING
+      name   = gv_statname
+    IMPORTING
+      result = gv_status.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

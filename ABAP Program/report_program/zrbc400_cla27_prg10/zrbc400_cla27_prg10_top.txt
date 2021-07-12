@@ -1,0 +1,14 @@
+*&---------------------------------------------------------------------*
+*& Include ZRBC400_CLA27_PRG10_TOP                  - Report ZRBC400_CLA27_PRG10
+*&---------------------------------------------------------------------*
+REPORT ZRBC400_CLA27_PRG10.
+
+TYPES: t_data TYPE zscla00_demo.
+
+DATA: gs_data  TYPE t_data,
+      gt_table TYPE TABLE OF t_data.
+
+PARAMETERS: pa_car TYPE t_data-carrid.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

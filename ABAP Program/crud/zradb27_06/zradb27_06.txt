@@ -1,0 +1,62 @@
+*&---------------------------------------------------------------------*
+*& Report ZRADB27_06
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRADB27_06.
+
+CALL FUNCTION 'ENQUEUE_EZ_ZTASCARR27'
+  EXPORTING
+    MODE_ZTASCARR27 = 'E'
+*   MANDT           = SY-MANDT
+    CARRID          = 'AA'
+*   X_CARRID        = ' '
+*   _SCOPE          = '2'
+*   _WAIT           = ' '
+*   _COLLECT        = ' '
+* EXCEPTIONS
+*   FOREIGN_LOCK    = 1
+*   SYSTEM_FAILURE  = 2
+*   OTHERS          = 3
+  .
+IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+ENDIF.
+
+CALL FUNCTION 'ENQUEUE_EZ_ZTASCARR27'
+  EXPORTING
+    MODE_ZTASCARR27 = 'E'
+*   MANDT           = SY-MANDT
+    CARRID          = 'UA'
+*   X_CARRID        = ' '
+*   _SCOPE          = '2'
+*   _WAIT           = ' '
+*   _COLLECT        = ' '
+  EXCEPTIONS
+    FOREIGN_LOCK    = 1
+    SYSTEM_FAILURE  = 2
+    OTHERS          = 3.
+IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+ENDIF.
+
+CALL FUNCTION 'DEQUEUE_ALL'
+* EXPORTING
+*   _SYNCHRON       = ' '
+  .
+
+*CALL FUNCTION 'DEQUEUE_EZ_ZTASCARR27'
+* EXPORTING
+**   MODE_ZTASCARR00       = 'E'
+**   MANDT                 = SY-MANDT
+*   CARRID                = 'AA'
+**   X_CARRID              = ' '
+**   _SCOPE                = '3'
+**   _SYNCHRON             = ' '
+**   _COLLECT              = ' '
+*          .
+
+WRITE 'test'.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

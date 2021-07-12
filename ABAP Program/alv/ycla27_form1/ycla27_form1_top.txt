@@ -1,0 +1,228 @@
+*&---------------------------------------------------------------------*
+*& Include          YCLA31_FORM1_TOP
+*&---------------------------------------------------------------------*
+
+TABLES: SSCRFIELDS, YEDU31T0001, YEDU31T0002.
+
+TYPE-POOLS: ICON, ABAP.
+
+FIELD-SYMBOLS : <NEW_TAB>  TYPE TABLE,
+                <NEW_LINE> TYPE ANY.
+
+*----------------------------------------------------------------------*
+* CONSTANTS
+*----------------------------------------------------------------------*
+CONSTANTS: GC_E TYPE C VALUE 'E',
+           GC_X TYPE C VALUE 'X'.
+
+CONSTANTS: GC_GREEN(4)  VALUE '@5B@',
+           GC_YELLOW(4) VALUE '@5D@',
+           GC_RED(4)    VALUE '@5C@',
+           GC_INACT(4)  VALUE '@BZ@'.
+
+*----------------------------------------------------------------------*
+* TYPES
+*----------------------------------------------------------------------*
+*----------------------------------------------------------------------*
+* VARIABLE
+*----------------------------------------------------------------------*
+DATA: GV_EXIT   TYPE XFELD,
+      GV_ANSWER TYPE C,
+      OK_CODE   TYPE SY-UCOMM,   "##
+      OK_CODE2  TYPE SY-UCOMM,   "##
+      SAVE_OK   TYPE SY-UCOMM.   "##
+
+DATA: GV_PERCENTAGE TYPE I.
+
+DATA: GV_START   TYPE I,
+      GV_CURR    TYPE I,
+
+      GV_HOUR(2) TYPE N,
+      GV_MIN(2)  TYPE N,
+      GV_SEC(2)  TYPE N.
+
+DATA : GV_TIME1   TYPE I,
+       GV_TIME2   TYPE I,
+       GV_RUNTIME TYPE I.
+
+*----------------------------------------------------------------------*
+* STRUCTURE
+*----------------------------------------------------------------------*
+DATA: BEGIN OF GS_DATA,
+        TEAM     LIKE YEDU31T0001-TEAM,
+        BNAME    LIKE YEDU31T0001-BNAME,
+        NAME     LIKE YEDU31T0001-NAME,
+        DATUM    LIKE YEDU31T0002-DATUM,
+        CHECK(1) TYPE C,
+      END OF GS_DATA.
+
+DATA: BEGIN OF GS_DISPLAY,
+        TEAM     LIKE YEDU31T0001-TEAM,
+        BNAME    LIKE YEDU31T0001-BNAME,
+        NAME     LIKE YEDU31T0001-NAME,
+        DATUM    LIKE YEDU31T0002-DATUM,
+        CHECK(1) TYPE C,
+
+        COLOR(4), "ROW COLOR.
+        CTAB     TYPE LVC_T_SCOL, "CELL COLOR.
+      END OF GS_DISPLAY.
+
+DATA: BEGIN OF GS_SUB,
+        ICON LIKE ICON-ID,
+      END OF GS_SUB.
+
+"- Function Key
+DATA: GS_FUNTXT TYPE SMP_DYNTXT.
+
+*----------------------------------------------------------------------*
+* INTERNAL TABLE
+*----------------------------------------------------------------------*
+DATA: GT_DATA    LIKE TABLE OF GS_DATA,
+      GT_DISPLAY LIKE TABLE OF GS_DISPLAY.
+
+DATA: GT_SUB LIKE TABLE OF GS_SUB.
+
+DATA: GS_CELL TYPE LVC_S_SCOL.
+
+"BDC
+DATA : GS_MSG     LIKE FIMSG,
+       GT_MESSTAB LIKE BDCMSGCOLL OCCURS 0 WITH HEADER LINE,
+       GV_OPT     LIKE CTU_PARAMS,
+       GT_BDCDATA TYPE BDCDATA    OCCURS 0 WITH HEADER LINE.
+*----------------------------------------------------------------------*
+* RANGES
+*----------------------------------------------------------------------*
+*----------------------------------------------------------------------*
+* FIELD-SYMBOLS
+*----------------------------------------------------------------------*
+*----------------------------------------------------------------------*
+* MACRO (DEFINE)
+*----------------------------------------------------------------------*
+DEFINE _STYLE_DISABLED.
+  GS_STYLE-FIELDNAME = &1.
+  GS_STYLE-STYLE     = CL_GUI_ALV_GRID=>MC_STYLE_DISABLED.
+  INSERT GS_STYLE INTO TABLE GT_STYLE.
+END-OF-DEFINITION.
+
+DEFINE _STYLE_ENABLED.
+  GS_STYLE-FIELDNAME = &1.
+  GS_STYLE-STYLE     = CL_GUI_ALV_GRID=>MC_STYLE_ENABLED.
+  INSERT GS_STYLE INTO TABLE GT_STYLE.
+END-OF-DEFINITION.
+
+DEFINE _CELL_YELLOW.
+  GS_CELL-FNAME     = &1.
+  GS_CELL-COLOR-COL = '3'.
+  GS_CELL-COLOR-INT = '0'.
+  GS_CELL-COLOR-INV = '0'.
+  APPEND GS_CELL TO GS_DISPLAY-CTAB.
+END-OF-DEFINITION.
+
+DEFINE _CELL_RED.
+  GS_CELL-FNAME     = &1.
+  GS_CELL-COLOR-COL = '6'.
+  GS_CELL-COLOR-INT = '1'.
+  GS_CELL-COLOR-INV = '0'.
+  APPEND GS_CELL TO GS_DISPLAY-CTAB.
+END-OF-DEFINITION.
+
+DEFINE _PROG_INDICATOR.
+  CALL FUNCTION 'SAPGUI_PROGRESS_INDICATOR'
+    EXPORTING
+      PERCENTAGE = &1
+      TEXT       = &2.
+END-OF-DEFINITION.
+
+DEFINE _CALC_TIME.
+
+  CLEAR: GV_HOUR, GV_MIN, GV_SEC.
+
+  GV_HOUR =   &1 DIV 3600.
+  GV_MIN  = ( &1 MOD 3600 ) DIV 60.
+  GV_SEC  = ( &1 MOD 3600 ) MOD 60.
+
+  &2 = GV_HOUR && ':' && GV_MIN && ':' && GV_SEC.
+
+END-OF-DEFINITION.
+
+" ### ##.
+DEFINE _NUMERIC_CHECK.
+  CALL FUNCTION 'CATS_NUMERIC_INPUT_CHECK'
+    EXPORTING
+      INPUT      = &1
+    IMPORTING
+      OUTPUT     = &2
+    EXCEPTIONS
+      NO_NUMERIC = 1
+      OTHERS     = 2.
+END-OF-DEFINITION.
+
+
+DATA: GV_DATE   TYPE P0001-BEGDA,
+      GV_DAYS   TYPE P25SOP_HOLD_PRD,
+      GV_MONTHS TYPE P25SOP_HOLD_PRD VALUE 1,
+      GV_YEARS  TYPE P25SOP_HOLD_PRD,
+      GV_CALC   TYPE P0001-BEGDA.
+
+" ## + -.
+DEFINE _CALC_DATE.
+
+  GV_DATE   = &1.
+
+  GV_DAYS   = &2.
+  GV_MONTHS = &3.
+  GV_YEARS  = &4.
+
+CALL FUNCTION 'RP_CALC_DATE_IN_INTERVAL_SG'
+  EXPORTING
+    DATE     = GV_DATE
+    DAYS     = GV_DAYS
+    MONTHS   = GV_MONTHS
+    YEARS    = GV_YEARS
+    SIGNUM   = &5
+ IMPORTING
+   CALC_DATE = GV_CALC.
+
+  &6 = GV_CALC.
+
+END-OF-DEFINITION.
+
+DEFINE _ALPHA_INPUT.
+  CALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'
+    EXPORTING
+      INPUT  = &1
+    IMPORTING
+      OUTPUT = &2.
+END-OF-DEFINITION.
+
+DEFINE _ALPHA_OUUT.
+  CALL FUNCTION 'CONVERSION_EXIT_ALPHA_OUTPUT'
+    EXPORTING
+      INPUT  = &1
+    IMPORTING
+      OUTPUT = &2.
+END-OF-DEFINITION.
+
+
+DATA GV_CHAR LIKE FIST-SEARCHW.
+
+" #### ##.
+DEFINE _DEL_SPECIAL.
+
+  GV_CHAR = &1.
+
+  CALL FUNCTION 'SF_SPECIALCHAR_DELETE'
+  EXPORTING
+  WITH_SPECIALCHAR    = GV_CHAR
+  IMPORTING
+  WITHOUT_SPECIALCHAR = GV_CHAR
+  EXCEPTIONS
+  RESULT_WORD_EMPTY   = 1
+  OTHERS              = 2.
+
+  &1 = GV_CHAR.
+
+END-OF-DEFINITION.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

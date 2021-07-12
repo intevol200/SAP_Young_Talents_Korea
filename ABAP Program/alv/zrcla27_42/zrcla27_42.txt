@@ -1,0 +1,67 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_10
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE ZRCLA27_42_TOP.
+
+INCLUDE ZRCLA27_42_O01.
+INCLUDE ZRCLA27_42_I01.
+INCLUDE ZRCLA27_42_F01.
+
+INITIALIZATION.
+  PERFORM SET_DAFAULT_DATA.
+
+  SO_BID-SIGN = 'I'.
+  SO_BID-OPTION = 'BT'.
+  SO_BID-LOW = '191'.
+  SO_BID-HIGH = '200'.
+  APPEND SO_BID TO SO_BID[].
+
+AT SELECTION-SCREEN OUTPUT. "PBO
+  PERFORM OBLIGATORY_CHECK.
+
+AT SELECTION-SCREEN. "PAI
+
+START-OF-SELECTION.
+  PERFORM GET_LIST_DATA.
+
+  READ TABLE GT_INFO INDEX 1 TRANSPORTING NO FIELDS.
+
+  CHECK GT_INFO IS NOT INITIAL.
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* T100 --> ALV Demo ( Booking List )
+
+*Text elements
+*----------------------------------------------------------
+* B01 Condition
+* B02 Flight Class
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_CARR D       .
+* PA_CONN D       .
+* PA_FLD D       .
+* R01         Economy Class
+* R02         Business Class
+* R03         First Class
+* SO_BID D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: PN
+*016   & & & &
+*
+* Message class: ZMCLA27
+*000   & & & Data is not Found.
+*010   ### ## ### #######. ## ######.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

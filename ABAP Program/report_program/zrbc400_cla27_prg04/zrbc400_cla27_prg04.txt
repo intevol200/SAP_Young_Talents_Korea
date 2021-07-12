@@ -1,0 +1,118 @@
+*&---------------------------------------------------------------------*
+*& Report ZRBC400_CLA27_PRG04
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrbc400_cla27_prg04.
+
+*PARAMETERS: pa_name type string.
+*
+*data: gv_pmonth like sy-datum,
+*      gv_pten like sy-datum,
+*      gv_pweek like sy-datum.
+*
+*gv_pmonth = sy-datum + 30.
+*gv_pten = sy-datum + 10.
+*gv_pweek = sy-datum + 7.
+*
+*CASE pa_name.
+*  WHEN 'ABAP'.
+*    WRITE: 'Start Date: ', sy-datum, ', End Date: ', gv_pmonth.
+*  WHEN 'SAPUI5'.
+*    WRITE: 'Start Date: ', sy-datum, ', End Date: ', gv_pten.
+*  WHEN 'ETC'.
+*    WRITE: 'Start Date: ', sy-datum, ', End Date: ', gv_pweek.
+*  WHEN OTHERS.
+*    WRITE: 'This is a Wrong Value.'.
+*ENDCASE.
+
+* ----------------------------------------
+
+*PARAMETERS: pa_check(1) TYPE c,
+*            pa_name     TYPE string.
+*
+*DATA: gv_temp LIKE sy-datum.
+
+*IF pa_check = 'Y' OR pa_check IS INITIAL.
+*  CASE pa_name.
+*    WHEN 'ABAP'.
+*      gv_temp = sy-datum + 30.
+*    WHEN 'SAPUI5'.
+*      gv_temp = sy-datum + 10.
+*    WHEN 'ETC'.
+*      gv_temp = sy-datum + 7.
+*    WHEN OTHERS.
+*      WRITE: 'This is a Wrong Value.'(e01).
+*  ENDCASE.
+*  IF pa_name IS NOT INITIAL.
+*    WRITE: TEXT-100, ':', sy-datum, ', ', TEXT-200, ':', gv_temp.
+*  ENDIF.
+*
+*ELSEIF pa_check = 'N'.
+*  CASE pa_name.
+*    WHEN 'ABAP'.
+*      gv_temp = sy-datum + 40.
+*    WHEN 'SAPUI5'.
+*      gv_temp = sy-datum + 15.
+*    WHEN 'ETC'.
+*      gv_temp = sy-datum + 10.
+*  ENDCASE.
+*  IF pa_name IS NOT INITIAL.
+*    WRITE: TEXT-100, ':', sy-datum, ', ', TEXT-200, ':', gv_temp.
+*  ENDIF.
+*ENDIF.
+
+* -----------------------------------------------------------
+
+PARAMETERS: pa_check(1) TYPE c,
+            pa_name     TYPE string.
+
+DATA: gv_temp LIKE sy-datum.
+
+IF pa_check = 'Y' OR pa_check IS INITIAL.
+  PERFORM calc_date USING pa_name
+                    CHANGING gv_temp.
+ELSEIF pa_check = 'N'.
+  PERFORM calc_date2 USING pa_name
+                     CHANGING gv_temp.
+ENDIF.
+
+IF gv_temp IS NOT INITIAL.
+  WRITE: TEXT-100, ':', sy-datum, ', ', TEXT-200, ':', gv_temp.
+ENDIF.
+
+FORM calc_date  USING    pv_n
+                CHANGING cv_result.
+  CASE pv_n.
+    WHEN 'ABAP'.
+      cv_result = sy-datum + 30.
+    WHEN 'SAPUI5'.
+      cv_result = sy-datum + 10.
+    WHEN 'ETC'.
+      cv_result = sy-datum + 7.
+    WHEN OTHERS.
+      WRITE: 'This is a Wrong Value.'(e01).
+  ENDCASE.
+ENDFORM.
+
+FORM calc_date2  USING    pv_n2
+                 CHANGING cv_result2.
+  CASE pa_name.
+    WHEN 'ABAP'.
+      gv_temp = sy-datum + 40.
+    WHEN 'SAPUI5'.
+      gv_temp = sy-datum + 15.
+    WHEN 'ETC'.
+      gv_temp = sy-datum + 10.
+    WHEN OTHERS.
+      WRITE: 'This is a Wrong Value.'(e01).
+  ENDCASE.
+ENDFORM.
+
+*Text elements
+*----------------------------------------------------------
+* 100 Start Date
+* 200 End Date
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

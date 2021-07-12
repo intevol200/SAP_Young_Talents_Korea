@@ -1,0 +1,34 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_103
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_103.
+
+CLASS LCL_CREW DEFINITION.
+  PUBLIC SECTION.
+    DATA CNAME TYPE STRING.
+    CLASS-DATA CREW_CNT TYPE I.
+*    DATA CREW_CNT TYPE I.
+ENDCLASS.
+
+DATA GO_CREW1 TYPE REF TO LCL_CREW.
+DATA GO_CREW2 LIKE GO_CREW1.
+
+CREATE OBJECT GO_CREW1.
+GO_CREW1->CNAME = 'KANG'.
+*GO_CREW1->CREW_CNT = '1'.
+LCL_CREW=>CREW_CNT = '1'. "LCL_CREW## ## ##
+
+CREATE OBJECT GO_CREW2.
+GO_CREW2->CNAME = 'SHIN'.
+GO_CREW2->CREW_CNT = '2'.
+
+GO_CREW1 = GO_CREW2. "Casting
+GO_CREW2 = GO_CREW1. "Casting
+
+WRITE: GO_CREW1->CNAME, GO_CREW1->CREW_CNT,
+       GO_CREW2->CNAME, GO_CREW2->CREW_CNT.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

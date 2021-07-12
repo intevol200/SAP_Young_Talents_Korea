@@ -1,0 +1,31 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_031
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_031.
+
+*DATA: gv_d1 TYPE d, "Date Type
+*      gv_d2 TYPE sy-datum. "Date Type
+*
+**gv_d1 = sy-datum.
+*
+*write: gv_d1,
+*       gv_d2.
+
+DATA: BEGIN OF gs_str,
+  carrid type scarr-carrid,
+  carrname type scarr-carrname,
+  END OF gs_str,
+  gt_table like TABLE OF gs_str.
+
+SELECT carrid, carrname
+  from scarr
+  into TABLE @gt_table.
+
+LOOP AT gt_table into gs_str.
+  WRITE: / gs_str.
+ENDLOOP.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,42 @@
+*&---------------------------------------------------------------------*
+*& Include          MZCLA27_70_I01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0100  INPUT
+*&---------------------------------------------------------------------*
+MODULE USER_COMMAND_0100 INPUT.
+  CASE OK_CODE.
+    WHEN 'ENTER' OR 'SEARCH'.
+      PERFORM FREE_CONTROL_RESOURCES.
+
+      PERFORM GET_INFO USING ZSA27_70
+                       CHANGING GT_INFO.
+
+      PERFORM GET_CARRNAME CHANGING ZSA27_70
+                                    GT_INFO.
+
+      PERFORM GET_CUSTOMER_INFO CHANGING ZSA27_16.
+
+    WHEN 'CANC'.
+      CLEAR: ZSA27_70, GT_INFO.
+
+      PERFORM FREE_CONTROL_RESOURCES.
+      PERFORM SET_DEFAULT_DATA CHANGING ZSA27_70.
+
+  ENDCASE.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  EXIT  INPUT
+*&---------------------------------------------------------------------*
+MODULE EXIT INPUT.
+  CASE OK_CODE.
+    WHEN 'BACK'.
+      LEAVE PROGRAM.
+
+    WHEN 'EXIT'.
+      LEAVE TO SCREEN 0.
+  ENDCASE.
+ENDMODULE.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

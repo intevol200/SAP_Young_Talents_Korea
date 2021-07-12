@@ -1,0 +1,51 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_43
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_43.
+
+DATA gt_list TYPE TABLE OF zscla27_01
+             WITH NON-UNIQUE KEY stdno.
+
+DATA gs_list LIKE LINE OF gt_list.
+
+gs_list-stdno = '1'.
+APPEND gs_list TO gt_list.
+
+gs_list-stdno = '2'.
+APPEND gs_list TO gt_list.
+
+gs_list-stdno = '3'.
+APPEND gs_list TO gt_list.
+
+gs_list-stdno = '3'.
+APPEND gs_list TO gt_list.
+
+*DATA gs_deep type zscla00_02.
+*data gt_spfli like gs_deep-clist.
+*
+*select SINGLE carrid
+*  from scarr
+*  into CORRESPONDING FIELDS OF gs_deep
+*  where carrid = 'AA'.
+
+*DATA gt_flight type TABLE OF zit_sflight_cla27.
+*DATA gs_list like LINE OF gt_flight.
+*
+*gs_list-carrid = '1'.
+*APPEND gs_list TO gt_flight.
+*
+*gs_list-carrid = '2'.
+*APPEND gs_list TO gt_flight.
+*
+*gs_list-carrid = '3'.
+*APPEND gs_list TO gt_flight.
+*
+*gs_list-carrid = '3'.
+*APPEND gs_list TO gt_flight.
+
+cl_demo_output=>display_data( gt_list ).
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

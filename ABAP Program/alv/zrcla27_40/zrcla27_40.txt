@@ -1,0 +1,77 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA9901
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE MZRCLA27_40_TOP.
+
+INCLUDE MZRCLA27_40_O01.
+INCLUDE MZRCLA27_40_I01.
+INCLUDE MZRCLA27_40_F01.
+
+INITIALIZATION. "LOAD-OF-PROGRAM
+  GS_SORT-SPOS = '1'.
+  GS_SORT-FIELDNAME = 'LIGHT'.
+  GS_SORT-UP = 'X'.
+  APPEND GS_SORT TO GT_SORT.
+
+*  SO_EID-SIGN = 'I'.
+*  SO_EID-OPTION = 'BT'.
+*  SO_EID-LOW ='1'.
+*  SO_EID-HIGH = '9999999999'. "NO INTERBVALS ### HIGH ## ##
+*  APPEND SO_EID TO SO_EID[].
+
+
+AT SELECTION-SCREEN OUTPUT. "PBO
+*LOOP AT SCREEN.
+*  IF SCREEN-NAME = 'SO_EID-LOW'.
+*    SCREEN-INPUT = 0.
+*  ENDIF.
+*
+*  MODIFY SCREEN.
+*ENDLOOP.
+
+
+AT SELECTION-SCREEN. "PAI
+*  IF SO_EID IS INITIAL.
+*    MESSAGE W016(PN) WITH 'Check'.
+*  ENDIF.
+
+START-OF-SELECTION.
+  " Get Emp List
+  PERFORM GET_EMP_LIST CHANGING GV_SUBRC.
+  IF GV_SUBRC IS NOT INITIAL.
+    RETURN.
+  ENDIF.
+
+*  IF gt_emp IS NOT INITIAL.
+*    cl_demo_output=>display_data( gt_emp ).
+*  ENDIF.
+
+*  READ TABLE gt_emp INDEX 1 TRANSPORTING NO FIELDS.
+*  IF sy-subrc <> 0.
+*    RETURN.
+*  ENDIF.
+
+  " ALV
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* T100 --> ALV Demo( Emp List )
+
+
+*Selection texts
+*----------------------------------------------------------
+* SO_EID D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZMCLA00
+*000   & & & : Data is not found.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

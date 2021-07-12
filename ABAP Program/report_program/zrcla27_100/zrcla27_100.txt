@@ -1,0 +1,35 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_100
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_100.
+
+DATA GV_CAR TYPE SCARR-CARRID.
+
+CLASS LCL_CLASS DEFINITION.
+  PUBLIC SECTION. "##### ##
+    METHODS SET_DATA.
+  PROTECTED SECTION.
+    DATA CARRID TYPE SCARR-CARRID.
+ENDCLASS.
+
+CLASS LCL_CLASS IMPLEMENTATION.
+  METHOD SET_DATA.
+    ME->CARRID = GV_CAR.
+  ENDMETHOD.
+ENDCLASS.
+
+DATA GO_OBJECT TYPE REF TO LCL_CLASS.
+
+START-OF-SELECTION.
+  CREATE OBJECT GO_OBJECT.
+  GV_CAR = 'AA'.
+  GO_OBJECT->SET_DATA( ).
+
+  CALL FUNCTION 'ZFA27_100'
+    IMPORTING
+      EV_CARRID = GV_CAR.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

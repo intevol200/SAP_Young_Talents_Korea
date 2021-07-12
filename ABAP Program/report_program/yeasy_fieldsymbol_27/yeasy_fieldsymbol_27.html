@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=EUC-KR" />
+<title>YEASY_FIELDSYMBOL_27</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: YEASY_FIELDSYMBOL_27</h2>
+<h3> Description: Program YEASY_FIELDSYMBOL_27</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;YEASY_FIELDSYMBOL_27<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT yeasy_fieldsymbol_27.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*DATA:&nbsp;gv_var&nbsp;TYPE&nbsp;string&nbsp;VALUE&nbsp;'A'.<br />
+*<br />
+*"##&nbsp;##&nbsp;2#&nbsp;##&nbsp;(&lt;test&gt;,&nbsp;&lt;aaa&gt;)<br />
+*FIELD-SYMBOLS:&nbsp;&lt;test&gt;&nbsp;TYPE&nbsp;string,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;aaa&gt;&nbsp;&nbsp;TYPE&nbsp;string.<br />
+*"&nbsp;##&nbsp;##<br />
+*WRITE&nbsp;gv_var.<br />
+*<br />
+*"##&nbsp;##&nbsp;&lt;test&gt;#&nbsp;bbb#&nbsp;##<br />
+*ASSIGN&nbsp;gv_var&nbsp;TO&nbsp;&lt;test&gt;.<br />
+*&lt;test&gt;&nbsp;=&nbsp;'bbb'.<br />
+*<br />
+*WRITE&nbsp;&lt;test&gt;.<br />
+*<br />
+*"##&nbsp;##&nbsp;&lt;aaa&gt;#&nbsp;ccc#&nbsp;##<br />
+*ASSIGN&nbsp;gv_var&nbsp;TO&nbsp;&lt;aaa&gt;.<br />
+*&lt;aaa&gt;&nbsp;=&nbsp;'ccc'.<br />
+*<br />
+*WRITE&nbsp;&lt;aaa&gt;.<br />
+<br />
+*"###&nbsp;##&nbsp;##"<br />
+*DATA:&nbsp;gv_1&nbsp;TYPE&nbsp;c&nbsp;VALUE&nbsp;'A',<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_2&nbsp;TYPE&nbsp;c&nbsp;VALUE&nbsp;'B',<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_3&nbsp;TYPE&nbsp;c&nbsp;VALUE&nbsp;'C',<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_4&nbsp;TYPE&nbsp;c&nbsp;VALUE&nbsp;'D',<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_5&nbsp;TYPE&nbsp;c&nbsp;VALUE&nbsp;'E'.<br />
+*<br />
+*"#####&nbsp;###&nbsp;##&nbsp;##<br />
+*DATA&nbsp;gv_fname&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;10.<br />
+*DATA&nbsp;gv_idx&nbsp;TYPE&nbsp;n.<br />
+*<br />
+*"##&nbsp;##&nbsp;###&nbsp;####&nbsp;##<br />
+*"(###&nbsp;##&nbsp;###&nbsp;###&nbsp;##&nbsp;##)<br />
+*FIELD-SYMBOLS&nbsp;&lt;fs&gt;.<br />
+*<br />
+*DO&nbsp;5&nbsp;TIMES.<br />
+*&nbsp;&nbsp;CLEAR:&nbsp;gv_fname.&nbsp;"##&nbsp;###<br />
+*&nbsp;&nbsp;gv_fname&nbsp;=&nbsp;'GV_'.<br />
+*&nbsp;&nbsp;gv_idx&nbsp;=&nbsp;sy-index.<br />
+*&nbsp;&nbsp;CONCATENATE&nbsp;gv_fname&nbsp;gv_idx&nbsp;INTO&nbsp;gv_fname.&nbsp;"&nbsp;'GV_0'&nbsp;###&nbsp;###&nbsp;gv_fname#&nbsp;##<br />
+*<br />
+*&nbsp;"###&nbsp;###&nbsp;'GV_0'#&nbsp;###&nbsp;####&nbsp;#####&nbsp;##&nbsp;##&nbsp;&lt;fs&gt;#&nbsp;##<br />
+*&nbsp;&nbsp;ASSIGN&nbsp;(gv_fname)&nbsp;TO&nbsp;&lt;fs&gt;.<br />
+*<br />
+*&nbsp;&nbsp;WRITE:&nbsp;/&nbsp;gv_fname,&nbsp;':',&nbsp;&lt;fs&gt;.<br />
+*ENDDO.<br />
+<br />
+*FIELD-SYMBOLS&nbsp;&lt;FS&gt;.<br />
+*<br />
+*DATA:&nbsp;FNAME(11)&nbsp;TYPE&nbsp;C.<br />
+*DATA:&nbsp;SUM&nbsp;LIKE&nbsp;COSP-WTG001.<br />
+*DATA:&nbsp;NIDX&nbsp;&nbsp;TYPE&nbsp;N&nbsp;VALUE&nbsp;1&nbsp;LENGTH&nbsp;3.&nbsp;"&nbsp;##&nbsp;###&nbsp;3##.<br />
+*<br />
+*<br />
+*DO&nbsp;12&nbsp;TIMES.<br />
+*&nbsp;&nbsp;CONCATENATE&nbsp;'COSP-WTG'&nbsp;NIDX&nbsp;INTO&nbsp;FNAME.&nbsp;&nbsp;"&nbsp;&nbsp;####&nbsp;WTG#&nbsp;#######<br />
+*<br />
+*&nbsp;&nbsp;WRITE:&nbsp;/&nbsp;&nbsp;FNAME.<br />
+*&nbsp;&nbsp;ASSIGN&nbsp;(FNAME)&nbsp;TO&nbsp;&lt;FS&gt;.<br />
+*<br />
+*&nbsp;&nbsp;IF&nbsp;SY-SUBRC&nbsp;EQ&nbsp;0.&nbsp;&nbsp;"&nbsp;##&nbsp;assign&nbsp;####&nbsp;##.&nbsp;tables&nbsp;###&nbsp;##&nbsp;##&nbsp;###&nbsp;###&nbsp;###&nbsp;####.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;SUM&nbsp;=&nbsp;SUM&nbsp;+&nbsp;&lt;FS&gt;.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;:&nbsp;FNAME.&nbsp;",&nbsp;&lt;FS&gt;.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:&nbsp;&lt;FS&gt;.<br />
+*<br />
+*&nbsp;&nbsp;ENDIF.<br />
+*&nbsp;&nbsp;NIDX&nbsp;=&nbsp;NIDX&nbsp;+&nbsp;1.<br />
+*<br />
+*ENDDO.<br />
+<br />
+   </div>
+   <div class="code">
+"##### ##### ##<br />
+PARAMETERS: p_tname(30) DEFAULT 'SFLIGHT'.<br />
+<br />
+"### ## ## ##<br />
+DATA: dref TYPE REF TO data.<br />
+<br />
+FIELD-SYMBOLS: &lt;fs1&gt; TYPE any,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;fs2&gt;&nbsp;TYPE&nbsp;any.<br />
+<br />
+"### dref# p_tname# ## (### ##)<br />
+CREATE DATA dref TYPE (p_tname).<br />
+ASSIGN dref-&gt;* TO &lt;fs1&gt;. "dref# ## ## fs1# ##<br />
+<br />
+"## ### fs1# ##<br />
+SELECT * FROM (p_tname) INTO &lt;fs1&gt; UP TO 3 ROWS.<br />
+<br />
+&nbsp;&nbsp;DO.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"####&nbsp;###&nbsp;&lt;fs2&gt;#&nbsp;##<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;sy-index&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;fs1&gt;&nbsp;TO&nbsp;&lt;fs2&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;&lt;&gt;&nbsp;0.&nbsp;"##&nbsp;##&nbsp;##<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SKIP.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WRITE:&nbsp;&lt;fs2&gt;.&nbsp;"####&nbsp;&lt;fs2&gt;#&nbsp;###&nbsp;##<br />
+&nbsp;&nbsp;ENDDO.<br />
+ENDSELECT.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

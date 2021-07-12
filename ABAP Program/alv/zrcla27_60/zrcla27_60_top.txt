@@ -1,0 +1,23 @@
+*&---------------------------------------------------------------------*
+*& Include MZRCLA9960_TOP                           - Report ZRCLA9960
+*&---------------------------------------------------------------------*
+REPORT ZRCLA9960.
+* Common
+DATA OK_CODE TYPE SY-UCOMM.
+
+* List
+DATA: GS_LIST TYPE SPFLI,
+      GT_LIST LIKE TABLE OF GS_LIST.
+
+TABLES SCARR.
+
+SELECTION-SCREEN BEGIN OF BLOCK B1 WITH FRAME TITLE TEXT-H01.
+  SELECT-OPTIONS: SO_CAR FOR GS_LIST-CARRID.
+SELECTION-SCREEN END OF BLOCK B1.
+
+* ALV
+DATA: GO_CON TYPE REF TO CL_GUI_CUSTOM_CONTAINER,
+      GO_ALV TYPE REF TO CL_GUI_ALV_GRID.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

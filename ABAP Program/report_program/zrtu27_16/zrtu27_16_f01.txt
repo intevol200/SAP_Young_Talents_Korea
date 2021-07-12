@@ -1,0 +1,44 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRTU27_16_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form find_data
+*&---------------------------------------------------------------------*
+FORM find_data  USING VALUE(pv_id)
+                CHANGING pv_subrc
+                         ps_data TYPE zstuinfo.
+
+  CLEAR: pv_subrc, ps_data.
+
+  CALL FUNCTION 'ZFTU27_01'
+    EXPORTING
+      iv_carrid = pv_id
+    IMPORTING
+      es_info   = ps_data
+      ev_subrc  = pv_subrc
+    EXCEPTIONS
+      no_data   = 1
+      OTHERS    = 2.
+  IF sy-subrc <> 0.
+* Implement suitable error handling here
+  ENDIF.
+
+
+  PERFORM: chck_usd USING ps_data-currcode
+                    CHANGING ps_data-usdyn.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form chck_usd
+*&---------------------------------------------------------------------*
+FORM chck_usd  USING VALUE(p_currcode)
+               CHANGING p_usdyn.
+
+  IF p_currcode EQ 'USD'.
+    p_usdyn = 'Y'.
+  ELSE.
+    p_usdyn = 'N'.
+  ENDIF.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

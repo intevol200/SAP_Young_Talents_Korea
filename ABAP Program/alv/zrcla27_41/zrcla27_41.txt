@@ -1,0 +1,69 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA9903
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE MZRCLA27_41_TOP.
+*INCLUDE mzrcla9903_top                          .    " Global Data
+
+INCLUDE MZRCLA27_41_O01.
+*INCLUDE mzrcla9903_o01                          .  " PBO-Modules
+INCLUDE MZRCLA27_41_I01.
+*INCLUDE mzrcla9903_i01                          .  " PAI-Modules
+INCLUDE MZRCLA27_41_F01.
+*INCLUDE mzrcla9903_f01                          .  " FORM-Routines
+
+INITIALIZATION.
+  pa_gen1 = 'X'.
+  pa_gen2 = abap_true.
+
+AT SELECTION-SCREEN OUTPUT. "PBO
+
+AT SELECTION-SCREEN.
+  IF pa_gen1 IS INITIAL AND
+     pa_gen2 IS INITIAL.
+*    MESSAGE i
+*    STOP.
+    MESSAGE e016(pn) WITH 'Must Check Gender'.
+  ENDIF.
+
+START-OF-SELECTION.
+  " Get Emp
+  PERFORM get_emp_list.
+  READ TABLE gt_list INDEX 1 TRANSPORTING NO FIELDS.
+  IF sy-subrc <> 0.
+    RETURN.
+  ENDIF.
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* T100 --> Emp List
+
+*Text elements
+*----------------------------------------------------------
+* H01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_GEN1         Male
+* PA_GEN2         Female
+* SO_ENO D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: PN
+*016   & & & &
+*
+* Message class: ZMCAL00
+*010   ### ## ### #######. ## ######.
+*
+* Message class: ZMCLA00
+*000   & & & : Data is not found.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

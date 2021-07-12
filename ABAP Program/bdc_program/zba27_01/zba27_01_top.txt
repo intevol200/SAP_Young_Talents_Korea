@@ -1,0 +1,15 @@
+*&---------------------------------------------------------------------*
+*& Include ZBA27_01_TOP                             - Report ZBA27_01
+*&---------------------------------------------------------------------*
+REPORT ZBA27_01.
+
+"## LIST
+DATA: GS_SCARR TYPE SCARR,
+      GT_SCARR LIKE TABLE OF GS_SCARR.
+
+"BDC LIST
+DATA: GS_BDC TYPE BDCDATA,
+      GT_BDC LIKE TABLE OF GS_BDC.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

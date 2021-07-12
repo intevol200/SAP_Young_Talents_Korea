@@ -1,0 +1,23 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_16
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zrtu27_16_top.
+INCLUDE zrtu27_16_f01.
+
+START-OF-SELECTION.
+  PERFORM find_data USING gv_airid
+                    CHANGING sy-subrc
+                             gs_data.
+
+  IF sy-subrc IS NOT INITIAL.
+    WRITE: 'Wrong Value.'.
+    RETURN.
+  ELSE.
+    cl_demo_output=>display_data( gs_data ).
+  ENDIF.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

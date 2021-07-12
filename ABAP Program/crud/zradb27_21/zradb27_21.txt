@@ -1,0 +1,37 @@
+*&---------------------------------------------------------------------*
+*& Report ZRADB27_20
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRADB27_21.
+
+DATA: GS_ZTASPFLI27 TYPE ZTASPFLI27.
+
+PERFORM UPDATE_SPFLI ON COMMIT.
+COMMIT WORK.
+
+*&---------------------------------------------------------------------*
+*& Form UPDATE_SPFLI
+*&---------------------------------------------------------------------*
+FORM UPDATE_SPFLI .
+  CLEAR: GS_ZTASPFLI27, SY-SUBRC.
+
+  GS_ZTASPFLI27-CARRID = 'KA'.
+  GS_ZTASPFLI27-CONNID = '0001'.
+
+  INSERT ZTASPFLI27 FROM GS_ZTASPFLI27.
+
+  IF SY-SUBRC IS NOT INITIAL.
+    MESSAGE A016(PN) WITH 'POC WORK'.
+  ENDIF.
+ENDFORM.
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: PN
+*016   & & & &
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,42 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_42
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_42.
+*
+*DATA gs_temp TYPE zscla27_01.
+*DATA gv_stdno TYPE zscla27_01-stdno.
+*DATA gs_info LIKE gs_temp-info.
+*
+*START-OF-SELECTION.
+*
+*  gs_temp-stdno = '2001001'.
+*  gv_stdno = '2001002'.
+*  gs_temp-info-stdno = '2001003'.
+*  gs_info-stdno = '2001004'.
+*
+*  WRITE: gs_temp-stdno,
+*         gv_stdno,
+*         gs_temp-info-stdno,
+*         gs_info-stdno.
+
+DATA gs_info type zscla27_01.
+
+START-OF-SELECTION.
+  select SINGLE *
+    from ztclastd27
+    into CORRESPONDING FIELDS OF gs_info
+    where stdno = '2001001'.
+
+    CASE gs_info-gesch.
+      WHEN 1.
+        gs_info-gesch_t = 'Male'.
+      WHEN 2.
+        gs_info-gesch_t = 'Female'.
+      WHEN OTHERS.
+
+    ENDCASE.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

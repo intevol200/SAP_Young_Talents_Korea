@@ -1,0 +1,31 @@
+*&---------------------------------------------------------------------*
+*& Include MZRCLA9903_TOP                           - Report ZRCLA9903
+*&---------------------------------------------------------------------*
+REPORT ZRCLA9903.
+
+DATA OK_CODE TYPE SY-UCOMM.
+
+* Emp List
+DATA: GT_LIST TYPE TABLE OF ZSA00_ALV04, "TYPE ZSTA00_ALV04, "Table Type
+      GS_LIST LIKE LINE OF GT_LIST.
+
+* Selection Screen
+SELECTION-SCREEN BEGIN OF BLOCK B1 WITH FRAME TITLE TEXT-H01.
+  SELECT-OPTIONS SO_ENO FOR GS_LIST-PERNR. "S / O / L / H
+*  PARAMETERS pa_gen TYPE zsa00_alv04-gesch AS LISTBOX VISIBLE LENGTH 20.
+  SELECTION-SCREEN BEGIN OF BLOCK B_GEN WITH FRAME.
+    PARAMETERS: PA_GEN1 AS CHECKBOX, "## Check Box
+                PA_GEN2 AS CHECKBOX. "## Check Box
+  SELECTION-SCREEN END OF BLOCK B_GEN.
+SELECTION-SCREEN END OF BLOCK B1.
+
+* ALV
+DATA: GO_CON  TYPE REF TO CL_GUI_CUSTOM_CONTAINER,
+      GO_ALV  TYPE REF TO CL_GUI_ALV_GRID,
+      GS_LAYO TYPE LVC_S_LAYO.
+
+DATA: GT_FCAT TYPE LVC_T_FCAT,
+      GS_FCAT LIKE LINE OF GT_FCAT.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

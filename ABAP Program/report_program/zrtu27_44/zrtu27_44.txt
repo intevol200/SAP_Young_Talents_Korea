@@ -1,0 +1,36 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_44
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_44.
+
+*DATA gs_info TYPE ztclastd27.
+*
+*SELECT SINGLE *
+*  FROM ztclastd27
+*  INTO CORRESPONDING FIELDS OF gs_info
+*  WHERE stdno = '20010001'.
+*
+*WRITE: / gs_info-salary, gs_info-waers.
+*WRITE: / gs_info-salary CURRENCY gs_info-waers, gs_info-waers.
+*WRITE: / gs_info-salary CURRENCY 'KRW', gs_info-waers.
+
+*PARAMETERS: pa_sc1 TYPE ztclaclass27-sclass,
+*            pa_sc2 TYPE ztclaclass27t-sclass,
+*            pa_sc3 TYPE ztclaclass27t-sclass
+*                        AS LISTBOX VISIBLE LENGTH 20.
+
+*PARAMETERS: pa_dat1 TYPE sy-datum,
+*            pa_dat2 TYPE sflight-fldate.
+
+*PARAMETERS: pa_car1 TYPE spfli-carrid,
+*            pa_con1 TYPE spfli-connid.
+*
+*PARAMETERS: pa_car2 TYPE sflight-carrid,
+*            pa_con2 TYPE sflight-connid.
+
+PARAMETERS pa_sc TYPE ztclaclass27-sclass MATCHCODE OBJECT zsha27_01.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

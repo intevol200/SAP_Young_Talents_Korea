@@ -1,0 +1,32 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_00
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_00.
+
+PARAMETERS: PA_INT1 TYPE I,
+            PA_INT2 LIKE PA_INT1.
+
+DATA GV_R LIKE PA_INT2.
+DATA GO_ZERO TYPE REF TO CX_SY_ZERODIVIDE.
+DATA GO_ROOT TYPE REF TO CX_ROOT.
+
+START-OF-SELECTION.
+*  IF pa_int2 is NOT INITIAL.
+*    gv_r = pa_int1 / pa_int2.
+*  ENDIF.
+
+  TRY.
+      GV_R = PA_INT1 / PA_INT2.
+*    CATCH Cx_root.
+*    CATCH CX_SY_ZERODIVIDE INTO GO_ZERO.
+*    CATCH CX_root INTO GO_ZERO.
+    CATCH CX_SY_ZERODIVIDE INTO GO_ROOT.
+
+ENDTRY.
+
+      WRITE GV_R.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

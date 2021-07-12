@@ -1,0 +1,35 @@
+*&---------------------------------------------------------------------*
+*& Include MZCLA27_81_TOP                           - Module Pool      SAPMZCLA27_81
+*&---------------------------------------------------------------------*
+PROGRAM SAPMZCLA27_81.
+
+"COMMON
+DATA: OK_CODE    TYPE SY-UCOMM,
+      GV_SUBRC   TYPE SY-SUBRC,
+      GV_REFRESH TYPE C LENGTH 1.
+
+"CONDITION
+TABLES ZSCLA27_81.
+DATA GS_COND TYPE ZSCLA27_81.
+
+"LIST
+DATA: GS_LIST TYPE ZTASCARR27,
+      GT_LIST LIKE TABLE OF GS_LIST.
+
+TABLES ZSCLA27_82.
+
+"ALV
+DATA: GO_CON TYPE REF TO CL_GUI_CUSTOM_CONTAINER,
+      GO_ALV TYPE REF TO CL_GUI_ALV_GRID.
+
+DATA: GT_FCAT TYPE TABLE OF LVC_S_FCAT,
+      GS_FCAT LIKE LINE OF GT_FCAT.
+
+DATA: GT_SORT TYPE LVC_T_SORT,
+      GS_SORT LIKE LINE OF GT_SORT.
+
+DATA: GT_LAYO TYPE TABLE OF LVC_S_LAYO,
+      GS_LAYO LIKE LINE OF GT_LAYO.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

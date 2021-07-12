@@ -1,0 +1,69 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_03
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zrcla27_03_top                          .    " Global Data
+
+INCLUDE zrcla27_03_o01                          .  " PBO-Modules
+INCLUDE zrcla27_03_i01                          .  " PAI-Modules
+INCLUDE zrcla27_03_f01                          .  " FORM-Routines
+
+INITIALIZATION.
+  pa_gen1 = 'X'.
+
+AT SELECTION-SCREEN OUTPUT. "PBO
+
+AT SELECTION-SCREEN. "PAI
+  IF pa_gen1 IS INITIAL AND
+     pa_gen2 IS INITIAL AND
+     pa_gen3 is INITIAL.
+
+    MESSAGE e016(pn) WITH 'Must Check Gender'.
+  ENDIF.
+
+START-OF-SELECTION.
+  " Get Emp
+  PERFORM get_emp_list.
+
+  READ TABLE gt_list INDEX 1 TRANSPORTING NO FIELDS.
+
+  IF sy-subrc <> 0.
+    RETURN.
+  ENDIF.
+
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* T100 --> ALV List ( Employee )
+
+*Text elements
+*----------------------------------------------------------
+* H01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_GEN1         All
+* PA_GEN2         Male
+* PA_GEN3         Female
+* PA_GRADE D       .
+* SO_BEGDA D       .
+* SO_DEPNO D       .
+* SO_ENO D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: PN
+*016   & & & &
+*
+* Message class: ZMCLA27
+*000   & & & Data is not Found.
+*010   ### ## ### #######. ## ######.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=EUC-KR" />
+<title>YEASY_REPORTPRG_PART1_27</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: YEASY_REPORTPRG_PART1_27</h2>
+<h3> Description: Report YEASY_REPORTPRG_PART1_27</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;YEASY_REPORTPRG_PART1_27<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+<br />
+   </div>
+   <div class="code">
+" ------------------------------------<br />
+" #### ## ## ##<br />
+" ------------------------------------<br />
+REPORT yeasy_reportprg_part1_27 NO STANDARD PAGE HEADING.<br />
+   </div>
+   <div class="codeComment">
+*REPORT&nbsp;yeasy_reportprg_part1_27&nbsp;LINE-SIZE&nbsp;50.<br />
+*REPORT&nbsp;yeasy_reportprg_part1_27&nbsp;MESSAGE-ID&nbsp;S000.<br />
+*<br />
+*MESSAGE&nbsp;S000(ZMCLA27).<br />
+*<br />
+*WRITE:&nbsp;'TEST'.<br />
+<br />
+   </div>
+   <div class="code">
+" ------------------------------------<br />
+" PARAMETER ## ##<br />
+" ------------------------------------<br />
+   </div>
+   <div class="codeComment">
+*DATA:&nbsp;l_fname(20)&nbsp;TYPE&nbsp;c.<br />
+*<br />
+*PARAMETERS:&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DEFAULT&nbsp;'A',<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;char10,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;3&nbsp;DEFAULT&nbsp;'123&nbsp;',<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;p&nbsp;DECIMALS&nbsp;2&nbsp;DEFAULT&nbsp;'123.456789',<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LIKE&nbsp;sflight-carrid,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MEMORY&nbsp;ID&nbsp;scl,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MATCHCODE&nbsp;OBJECT&nbsp;zcarrid,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MODIF&nbsp;ID&nbsp;miD,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NO-DISPLAY,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DEFAULT&nbsp;'a'&nbsp;LOWER&nbsp;CASE,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pll&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OBLIGATORY,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AS&nbsp;CHECKBOX,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RADIOBUTTON&nbsp;GROUP&nbsp;radi,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p13_2&nbsp;&nbsp;&nbsp;RADIOBUTTON&nbsp;GROUP&nbsp;radi,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p14(10)&nbsp;VISIBLE&nbsp;LENGTH&nbsp;3&nbsp;DEFAULT&nbsp;'1234567890',<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LIKE&nbsp;sflight-carrid&nbsp;VALUE&nbsp;CHECK,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LIKE&nbsp;(l_fname),<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LIKE&nbsp;sflight-carrid&nbsp;AS&nbsp;LISTBOX&nbsp;VISIBLE&nbsp;LENGTH&nbsp;3,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p18&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AS&nbsp;CHECKBOX&nbsp;USER-COMMAND&nbsp;abc.<br />
+<br />
+   </div>
+   <div class="code">
+" ------------------------------------<br />
+" SELECT-OPTIONS ## ##<br />
+" ------------------------------------<br />
+   </div>
+   <div class="codeComment">
+*TABLES:&nbsp;sflight.<br />
+*DATA:&nbsp;gs_scarr&nbsp;TYPE&nbsp;scarr.<br />
+*DATA:&nbsp;gv_val&nbsp;TYPE&nbsp;char20.<br />
+*SELECT-OPTIONS&nbsp;:&nbsp;s_l&nbsp;FOR&nbsp;sflight-carrid&nbsp;DEFAULT&nbsp;'AC',"###&nbsp;AC<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_2&nbsp;FOR&nbsp;gs_scarr-carrid&nbsp;DEFAULT&nbsp;'AA*'&nbsp;OPTION&nbsp;EQ&nbsp;SIGN&nbsp;I,&nbsp;"AA*#&nbsp;###&nbsp;#<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_3&nbsp;FOR&nbsp;gv_val&nbsp;DEFAULT&nbsp;'1111'&nbsp;TO&nbsp;'9999',&nbsp;"1111##&nbsp;9999##<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_4&nbsp;FOR&nbsp;gv_val&nbsp;DEFAULT&nbsp;'AAAA'&nbsp;TO&nbsp;'ZZZZ'&nbsp;OPTION&nbsp;BT&nbsp;SIGN&nbsp;E,&nbsp;"AAAA##&nbsp;ZZZZ#&nbsp;###&nbsp;#<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_5&nbsp;FOR&nbsp;sflight-carrid&nbsp;MEMORY&nbsp;ID&nbsp;sc1,&nbsp;"###&nbsp;ID&nbsp;##<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_6&nbsp;FOR&nbsp;gv_val&nbsp;MATCHCODE&nbsp;OBJECT&nbsp;zcarrid,&nbsp;"zcarrid&nbsp;##&nbsp;Search&nbsp;Help&nbsp;##<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_7&nbsp;FOR&nbsp;sflight-carrid&nbsp;MODIF&nbsp;ID&nbsp;car,&nbsp;"##&nbsp;##&nbsp;##&nbsp;(####&nbsp;##&nbsp;##&nbsp;##)<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_8&nbsp;FOR&nbsp;sflight-carrid&nbsp;NO-DISPLAY,&nbsp;"####&nbsp;###&nbsp;##&nbsp;#<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_9&nbsp;FOR&nbsp;sflight-carrid&nbsp;LOWER&nbsp;CASE,&nbsp;"####&nbsp;##&nbsp;##<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_10&nbsp;FOR&nbsp;sflight-carrid&nbsp;OBLIGATORY,&nbsp;"###&nbsp;##<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_11&nbsp;FOR&nbsp;sflight-carrid&nbsp;NO-EXTENSION,&nbsp;"####&nbsp;##&nbsp;##&nbsp;##<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_12&nbsp;FOR&nbsp;sflight-carrid&nbsp;NO&nbsp;INTERVALS,&nbsp;"###&nbsp;###(High)&nbsp;##<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_13&nbsp;FOR&nbsp;sflight-carrid&nbsp;VISIBLE&nbsp;LENGTH&nbsp;1.&nbsp;"###&nbsp;#######&nbsp;###&nbsp;##<br />
+<br />
+   </div>
+   <div class="code">
+" ------------------------------------<br />
+" SELECTION-SCREEN ## ## ##<br />
+" ------------------------------------<br />
+   </div>
+   <div class="codeComment">
+*TABLES&nbsp;:&nbsp;scarr,&nbsp;sscrfields.<br />
+*<br />
+*SELECTION-SCREEN&nbsp;BEGIN&nbsp;OF&nbsp;LINE.&nbsp;"##&nbsp;###&nbsp;###&nbsp;###&nbsp;##<br />
+*&nbsp;&nbsp;SELECTION-SCREEN&nbsp;COMMENT&nbsp;1(10)&nbsp;TEXT-001&nbsp;FOR&nbsp;FIELD&nbsp;p_1.&nbsp;"####&nbsp;###&nbsp;###&nbsp;###&nbsp;##<br />
+*&nbsp;&nbsp;PARAMETERS&nbsp;:&nbsp;p_1&nbsp;LIKE&nbsp;scarr-carrid.<br />
+*<br />
+*&nbsp;&nbsp;SELECTION-SCREEN&nbsp;POSITION&nbsp;POS_LOW.&nbsp;"####&nbsp;##<br />
+*&nbsp;&nbsp;PARAMETERS&nbsp;:&nbsp;p_2&nbsp;LIKE&nbsp;scarr-carrname.<br />
+*<br />
+*SELECTION-SCREEN&nbsp;END&nbsp;OF&nbsp;LINE.<br />
+*<br />
+*SELECTION-SCREEN&nbsp;SKIP&nbsp;2.&nbsp;"#&nbsp;##&nbsp;##<br />
+*SELECTION-SCREEN&nbsp;ULINE.&nbsp;"####&nbsp;##<br />
+*SELECTION-SCREEN&nbsp;ULINE&nbsp;/1(10).&nbsp;"10##&nbsp;###&nbsp;###<br />
+*SELECTION-SCREEN&nbsp;ULINE&nbsp;pos_low(10).&nbsp;"#####&nbsp;10####&nbsp;###<br />
+*SELECTION-SCREEN&nbsp;ULINE&nbsp;pos_high(10).&nbsp;"###&nbsp;10####&nbsp;###<br />
+*<br />
+*SELECTION-SCREEN&nbsp;PUSHBUTTON&nbsp;/pos_low(10)&nbsp;TEXT-002&nbsp;USER-COMMAND&nbsp;btn1.<br />
+*<br />
+*SELECTION-SCREEN&nbsp;BEGIN&nbsp;OF&nbsp;BLOCK&nbsp;b1&nbsp;WITH&nbsp;FRAME&nbsp;TITLE&nbsp;TEXT-003.<br />
+*&nbsp;&nbsp;PARAMETERS&nbsp;:&nbsp;p3&nbsp;TYPE&nbsp;c.<br />
+*&nbsp;&nbsp;SELECT-OPTIONS&nbsp;:&nbsp;s1&nbsp;FOR&nbsp;scarr-carrid.<br />
+*SELECTION-SCREEN&nbsp;END&nbsp;OF&nbsp;BLOCK&nbsp;b1.<br />
+*<br />
+*SELECTION-SCREEN&nbsp;BEGIN&nbsp;OF&nbsp;BLOCK&nbsp;b2&nbsp;WITH&nbsp;FRAME&nbsp;TITLE&nbsp;TEXT-004&nbsp;NO&nbsp;INTERVALS.<br />
+*&nbsp;&nbsp;PARAMETERS&nbsp;:&nbsp;p4&nbsp;TYPE&nbsp;c.<br />
+*&nbsp;&nbsp;SELECT-OPTIONS&nbsp;:&nbsp;s2&nbsp;FOR&nbsp;scarr-carrid.<br />
+*SELECTION-SCREEN&nbsp;END&nbsp;OF&nbsp;BLOCK&nbsp;b2.<br />
+*SELECTION-SCREEN&nbsp;FUNCTION&nbsp;KEY&nbsp;1.&nbsp;"##&nbsp;#&nbsp;##<br />
+*<br />
+*INITIALIZATION.<br />
+*&nbsp;&nbsp;MOVE&nbsp;'Function&nbsp;key&nbsp;1'&nbsp;TO&nbsp;sscrfields-functxt_01.&nbsp;"####&nbsp;##&nbsp;function&nbsp;module&nbsp;##<br />
+*<br />
+*AT&nbsp;SELECTION-SCREEN.<br />
+*&nbsp;&nbsp;IF&nbsp;sscrfields-ucomm&nbsp;=&nbsp;'FC01'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;'You&nbsp;clicked&nbsp;Function&nbsp;Key&nbsp;1'&nbsp;TYPE&nbsp;'I'.<br />
+*&nbsp;&nbsp;ENDIF.<br />
+*&nbsp;&nbsp;IF&nbsp;sscrfields-ucomm&nbsp;=&nbsp;'BTN1'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;'You&nbsp;clicked&nbsp;Function&nbsp;Key&nbsp;bnt1'&nbsp;TYPE&nbsp;'I'.<br />
+*&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="code">
+" ------------------------------------<br />
+" INITIALIZATION ##<br />
+" ------------------------------------<br />
+   </div>
+   <div class="codeComment">
+*TABLES:&nbsp;sflight.<br />
+*PARAMETERS:&nbsp;p_carrid&nbsp;LIKE&nbsp;sflight-carrid,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_connid&nbsp;LIKE&nbsp;sflight-connid.<br />
+*<br />
+*SELECT-OPTIONS:&nbsp;s_fldate&nbsp;FOR&nbsp;sflight-fldate.<br />
+*<br />
+*INITIALIZATION.<br />
+*&nbsp;&nbsp;p_carrid&nbsp;=&nbsp;'AA'.<br />
+*&nbsp;&nbsp;p_connid&nbsp;=&nbsp;'17'.<br />
+<br />
+   </div>
+   <div class="code">
+" ------------------------------------<br />
+" AT SELECTION-SCREEN ##<br />
+" ------------------------------------<br />
+TABLES: scarr.<br />
+SELECT-OPTIONS: s_carrid FOR scarr-carrid.<br />
+<br />
+AT SELECTION-SCREEN ON s_carrid.<br />
+&nbsp;&nbsp;IF&nbsp;s_carrid-low&nbsp;NE&nbsp;'AA'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;'It&nbsp;is&nbsp;required&nbsp;to&nbsp;Input&nbsp;AA'&nbsp;TYPE&nbsp;'E'.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;"&nbsp;------------------------------------<br />
+&nbsp;&nbsp;"&nbsp;END-OF-SELECTION&nbsp;##<br />
+&nbsp;&nbsp;"&nbsp;------------------------------------<br />
+   </div>
+   <div class="codeComment">
+*DATA:&nbsp;gs_str&nbsp;&nbsp;TYPE&nbsp;scarr,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_itab&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;scarr.<br />
+*<br />
+*START-OF-SELECTION.<br />
+*&nbsp;&nbsp;SELECT&nbsp;*<br />
+*&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_itab<br />
+*&nbsp;&nbsp;FROM&nbsp;scarr.<br />
+*<br />
+*END-OF-SELECTION.<br />
+*&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;gt_itab&nbsp;INTO&nbsp;gs_str.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE:&nbsp;/&nbsp;gs_str-carrid,&nbsp;gs_str-carrname.<br />
+*&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+<br />
+*Messages<br />
+*----------------------------------------------------------<br />
+*<br />
+*&nbsp;Message&nbsp;class:&nbsp;Hard&nbsp;coded<br />
+*&nbsp;&nbsp;&nbsp;It&nbsp;is&nbsp;required&nbsp;to&nbsp;Input&nbsp;AA<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

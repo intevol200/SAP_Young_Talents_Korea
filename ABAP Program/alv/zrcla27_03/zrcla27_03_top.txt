@@ -1,0 +1,36 @@
+*&---------------------------------------------------------------------*
+*& Include ZRCLA27_03_TOP                           - Report ZRCLA27_03
+*&---------------------------------------------------------------------*
+REPORT zrcla27_03.
+
+DATA: ok_code TYPE sy-ucomm.
+
+* Emp List
+DATA: gt_list TYPE TABLE OF zsa27_alv03,
+      gs_list LIKE LINE OF gt_list.
+
+* Selectin Sceen
+SELECTION-SCREEN BEGIN OF BLOCK b1 WITH FRAME TITLE TEXT-h01.
+  SELECT-OPTIONS so_depno FOR gs_list-depid.
+  SELECT-OPTIONS so_eno FOR gs_list-pernr.
+
+  PARAMETERS: pa_grade LIKE gs_list-grade AS LISTBOX VISIBLE LENGTH 10.
+
+  SELECT-OPTIONS so_begda FOR gs_list-begda.
+*  PARAMETERS: pa_gen TYPE zsa27_alv03-gesch AS LISTBOX VISIBLE LENGTH 20.
+
+  SELECTION-SCREEN BEGIN OF BLOCK b_gen WITH FRAME.
+    PARAMETERS: pa_gen1 RADIOBUTTON GROUP r1, "## radio button
+                pa_gen2 RADIOBUTTON GROUP r1, "## radio button
+                pa_gen3 RADIOBUTTON GROUP r1. "## radio button
+  SELECTION-SCREEN END OF BLOCK b_gen.
+
+SELECTION-SCREEN END OF BLOCK b1.
+
+* ALV
+DATA: go_con  TYPE REF TO cl_gui_custom_container,
+      go_alv  TYPE REF TO cl_gui_alv_grid,
+      gs_layo TYPE lvc_s_layo.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

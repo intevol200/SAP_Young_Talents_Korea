@@ -1,0 +1,29 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_34
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zrtu27_34_top.
+INCLUDE zrtu27_34_f01.
+
+START-OF-SELECTION.
+  PERFORM show_spfli CHANGING gt_info.
+  PERFORM t_modi CHANGING gt_info
+                          gs_info.
+
+PERFORM test .
+
+  LOOP AT gt_info INTO gs_info.
+    SELECT SINGLE carrname
+      FROM scarr
+      INTO gs_info-carrname
+      WHERE carrid = gs_info-carrid.
+    MODIFY gt_info FROM gs_info.
+    CLEAR gs_info.
+  ENDLOOP.
+
+  cl_demo_output=>display_data( gt_info ).
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

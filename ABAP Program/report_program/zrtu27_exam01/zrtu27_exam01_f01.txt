@@ -1,0 +1,68 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRTU27_EXAM01_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form student_check
+*&---------------------------------------------------------------------*
+FORM student_check .
+  IF pa_stdid IS INITIAL.
+    MESSAGE i001(zmcla00).
+    STOP.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_student_data
+*&---------------------------------------------------------------------*
+FORM get_student_data .
+  SELECT a~stdid a~regiyear a~regisemi b~mcode b~stdid b~stgrade b~stdname
+         b~stdgender b~stdnat c~subcode d~profid
+    FROM zinfo_regi AS a JOIN zinfo_student AS b
+      ON a~stdid EQ  b~stdid
+    JOIN zinfo_subject AS c
+      ON a~subcode EQ c~subcode
+    JOIN zinfo_prof AS d
+      ON c~profid EQ d~profid
+    INTO CORRESPONDING FIELDS OF TABLE gt_info
+   WHERE a~stdid = pa_stdid.
+
+  SELECT mcode mcode_t
+    FROM zinfo_major_t
+    INTO CORRESPONDING FIELDS OF TABLE gt_major
+     FOR ALL ENTRIES IN gt_info
+   WHERE mcode = gT_INFO-mcode
+     AND spras = sy-langu.
+
+  SELECT subcode subname
+    FROM zinfo_subject_t
+    INTO CORRESPONDING FIELDS OF TABLE gt_subject
+     FOR ALL ENTRIES IN gt_info
+   WHERE subcode = gT_INFO-subcode
+     AND spras = sy-langu.
+
+  SELECT profid pname
+    FROM zinfo_prof
+    INTO CORRESPONDING FIELDS OF TABLE gt_prof
+     FOR ALL ENTRIES IN gt_info
+   WHERE profid = gt_info-profid.
+
+  DATA: gs_major   LIKE LINE OF gt_info,
+        gs_subject LIKE LINE OF gt_subject,
+        gs_prof    LIKE LINE OF gt_prof.
+
+  LOOP AT gt_info INTO gs_info.
+    READ TABLE gt_major INTO gs_major WITH KEY mcode = gs_info-mcode.
+    gs_info-mcode_t = gs_major-mcode_t.
+
+    READ TABLE gt_subject INTO gs_subject WITH KEY subcode = gs_info-subcode.
+    gs_info-subname = gs_subject-subname.
+
+    READ TABLE gt_prof INTO gs_prof WITH KEY profid = gs_info-profid.
+    gs_info-pname = gs_prof-pname.
+
+    MODIFY gt_info FROM gs_info.
+  ENDLOOP.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

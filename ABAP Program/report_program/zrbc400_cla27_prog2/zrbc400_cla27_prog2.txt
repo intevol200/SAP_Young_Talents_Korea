@@ -1,0 +1,19 @@
+*&---------------------------------------------------------------------*
+*& Report ZRBC400_CLA27_PROG2
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrbc400_cla27_prog2.
+
+PARAMETERS: pa_name TYPE string.
+CONSTANTS: gv_const(5) TYPE c VALUE 'CLOUD'.
+
+WRITE: pa_name, TEXT-001, gv_const, TEXT-002.
+
+*Text elements
+*----------------------------------------------------------
+* 001 of
+* 002 will be able to learn ABAP & SAPUI5.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,94 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRTU27_50_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form condition_check
+*&---------------------------------------------------------------------*
+FORM condition_check .
+  IF pa_car IS INITIAL.
+*    MESSAGE e001(zmcla00). " S, I, E, W, A, X
+    MESSAGE i001(zmcla00).
+    STOP.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_booking_list
+*&---------------------------------------------------------------------*
+FORM get_booking_list .
+  DATA lv_carrname TYPE scarr-carrname.
+  DATA: lt_city TYPE TABLE OF spfli,
+        ls_city LIKE LINE OF lt_city.
+
+  SELECT *
+  FROM zv00_50
+  INTO CORRESPONDING FIELDS OF TABLE gt_book
+ WHERE carrid = pa_car
+   AND connid IN so_con[]
+   AND fldate IN so_dat[]
+   AND custtype = pa_ct.
+
+* get Carrname
+  PERFORM get_carrname USING pa_car
+                       CHANGING lv_carrname.
+
+* get city
+  PERFORM get_city TABLES so_con lt_city
+                   USING pa_car.
+
+  LOOP AT gt_book INTO gs_book.
+    gs_book-carrname = lv_carrname.
+    READ TABLE lt_city WITH KEY carrid = gs_book-carrid
+                                connid = gs_book-connid
+                       INTO ls_city.
+    IF sy-subrc = 0.
+      gs_book-cityfrom = ls_city-cityfrom.
+      gs_book-cityto = ls_city-cityto.
+    ENDIF.
+    MODIFY gt_book FROM gs_book TRANSPORTING carrname cityfrom cityto.
+    CLEAR gs_book.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form default_condition
+*&---------------------------------------------------------------------*
+FORM default_condition .
+  pa_car = 'AA'.
+
+  so_con-sign = 'I'.
+  so_con-option = 'EQ'.
+  so_con-low = '0017'.
+  APPEND so_con TO so_con[].
+  CLEAR so_con.
+
+  so_dat-low = '20201210'.
+  APPEND so_dat.
+
+  pa_ct = 'B'.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_carrname
+*&---------------------------------------------------------------------*
+FORM get_carrname  USING    VALUE(p_code)
+                   CHANGING VALUE(p_text).
+  SELECT SINGLE carrname
+    FROM scarr
+    INTO p_text
+   WHERE carrid = p_code.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_city
+*&---------------------------------------------------------------------*
+FORM get_city  TABLES   t_con STRUCTURE so_con "Internal Table ( Header Line )
+                        t_city STRUCTURE spfli "
+               USING    VALUE(p_car).
+
+  SELECT * "carrid connid cityfrom cityto
+    FROM spfli
+    INTO CORRESPONDING FIELDS OF TABLE t_city[]
+   WHERE carrid = p_car
+     AND connid IN t_con[].
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

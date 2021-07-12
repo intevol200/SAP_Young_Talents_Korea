@@ -1,0 +1,15 @@
+*&---------------------------------------------------------------------*
+*& Include YTEST_ALV27_01_TOP                       - Report YTEST_ALV27_01
+*&---------------------------------------------------------------------*
+REPORT YTEST_ALV27_01.
+
+DATA: OK_CODE TYPE SY-UCOMM.
+
+DATA: GS_SCARR TYPE SCARR,
+      GT_SCARR LIKE TABLE OF GS_SCARR.
+
+DATA: GO_CON TYPE REF TO CL_GUI_CUSTOM_CONTAINER,
+      GO_ALV TYPE REF TO CL_GUI_ALV_GRID.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

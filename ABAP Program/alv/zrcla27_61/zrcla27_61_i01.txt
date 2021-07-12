@@ -1,0 +1,65 @@
+*&---------------------------------------------------------------------*
+*& Include          MZRCLA9960_I01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  EXIT  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE EXIT INPUT.
+  CASE SY-UCOMM.
+    WHEN 'EXIT'.
+      LEAVE PROGRAM.
+    WHEN 'CANC'.
+      PERFORM CLEAR_ALV.
+      LEAVE TO SCREEN 0.
+  ENDCASE.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0100  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE USER_COMMAND_0100 INPUT.
+  CASE OK_CODE.
+    WHEN 'BACK'.
+      PERFORM CLEAR_ALV.
+
+      LEAVE TO SCREEN 0.
+
+    WHEN 'CHG'.
+      DATA LT_ROWS TYPE LVC_T_ROID.
+
+      CALL METHOD GO_ALV->GET_SELECTED_ROWS
+        IMPORTING
+*         et_index_rows =
+          ET_ROW_NO = LT_ROWS.
+
+*  DESCRIBE TABLE lt_rows ...
+ENDCASE.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0101  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE USER_COMMAND_0101 INPUT.
+  CASE OK_CODE.
+    WHEN 'CLOSE'.
+      LEAVE TO SCREEN 0.
+  ENDCASE.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0102  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE USER_COMMAND_0102 INPUT.
+  CASE OK_CODE.
+    WHEN 'CLOSE'.
+      LEAVE TO SCREEN 0.
+  ENDCASE.
+ENDMODULE.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

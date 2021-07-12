@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=EUC-KR" />
+<title>YCLA27_QUEST_2_TOP</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: YCLA27_QUEST_2_TOP</h2>
+<h3> Description: Include YCLA31_FORM1_TOP</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;Include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YCLA31_FORM1_TOP<br />
+*&---------------------------------------------------------------------*<br />
+<br />
+   </div>
+   <div class="code">
+DATA: GV_SUBRC TYPE SY-SUBRC.<br />
+<br />
+TABLES: SSCRFIELDS, SFLIGHT.<br />
+<br />
+TYPE-POOLS: ICON, ABAP.<br />
+<br />
+FIELD-SYMBOLS : &lt;NEW_TAB&gt;  TYPE TABLE,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;NEW_LINE&gt;&nbsp;TYPE&nbsp;ANY.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*----------------------------------------------------------------------*<br />
+*&nbsp;CONSTANTS<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+CONSTANTS: GC_E TYPE C VALUE 'E',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GC_X&nbsp;TYPE&nbsp;C&nbsp;VALUE&nbsp;'X'.<br />
+<br />
+CONSTANTS: GC_GREEN(4)  VALUE '@5B@',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GC_YELLOW(4)&nbsp;VALUE&nbsp;'@5D@',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GC_RED(4)&nbsp;&nbsp;&nbsp;&nbsp;VALUE&nbsp;'@5C@',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GC_INACT(4)&nbsp;&nbsp;VALUE&nbsp;'@BZ@'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*----------------------------------------------------------------------*<br />
+*&nbsp;TYPES<br />
+*----------------------------------------------------------------------*<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;VARIABLE<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+DATA: GV_EXIT   TYPE XFELD,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GV_ANSWER&nbsp;TYPE&nbsp;C,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OK_CODE&nbsp;&nbsp;&nbsp;TYPE&nbsp;SY-UCOMM,&nbsp;&nbsp;&nbsp;"##<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OK_CODE2&nbsp;&nbsp;TYPE&nbsp;SY-UCOMM,&nbsp;&nbsp;&nbsp;"##<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SAVE_OK&nbsp;&nbsp;&nbsp;TYPE&nbsp;SY-UCOMM.&nbsp;&nbsp;&nbsp;"##<br />
+<br />
+DATA: GV_PERCENTAGE TYPE I.<br />
+<br />
+DATA: GV_START   TYPE I,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GV_CURR&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;I,<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GV_HOUR(2)&nbsp;TYPE&nbsp;N,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GV_MIN(2)&nbsp;&nbsp;TYPE&nbsp;N,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GV_SEC(2)&nbsp;&nbsp;TYPE&nbsp;N.<br />
+<br />
+DATA : GV_TIME1   TYPE I,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GV_TIME2&nbsp;&nbsp;&nbsp;TYPE&nbsp;I,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GV_RUNTIME&nbsp;TYPE&nbsp;I.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*----------------------------------------------------------------------*<br />
+*&nbsp;STRUCTURE<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+DATA: BEGIN OF GS_DISPLAY,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEAM&nbsp;&nbsp;LIKE&nbsp;YEDU31T0001-TEAM,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BNAME&nbsp;LIKE&nbsp;YEDU31T0001-BNAME,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NAME&nbsp;&nbsp;LIKE&nbsp;YEDU31T0001-NAME,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;GS_DISPLAY.<br />
+<br />
+DATA: BEGIN OF GS_SUB,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ICON&nbsp;LIKE&nbsp;ICON-ID,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;GS_SUB.<br />
+<br />
+"- Function Key<br />
+DATA: GS_FUNTXT TYPE SMP_DYNTXT.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*----------------------------------------------------------------------*<br />
+*&nbsp;INTERNAL&nbsp;TABLE<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+DATA: GT_DISPLAY LIKE TABLE OF GS_DISPLAY.<br />
+<br />
+DATA: GT_SUB LIKE TABLE OF GS_SUB.<br />
+<br />
+DATA: GS_CELL TYPE LVC_S_SCOL.<br />
+<br />
+"BDC<br />
+DATA : GS_MSG     LIKE FIMSG,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GT_MESSTAB&nbsp;LIKE&nbsp;BDCMSGCOLL&nbsp;OCCURS&nbsp;0&nbsp;WITH&nbsp;HEADER&nbsp;LINE,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GV_OPT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LIKE&nbsp;CTU_PARAMS,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GT_BDCDATA&nbsp;TYPE&nbsp;BDCDATA&nbsp;&nbsp;&nbsp;&nbsp;OCCURS&nbsp;0&nbsp;WITH&nbsp;HEADER&nbsp;LINE.<br />
+   </div>
+   <div class="codeComment">
+*----------------------------------------------------------------------*<br />
+*&nbsp;RANGES<br />
+*----------------------------------------------------------------------*<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;FIELD-SYMBOLS<br />
+*----------------------------------------------------------------------*<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;MACRO&nbsp;(DEFINE)<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+DEFINE _STYLE_DISABLED.<br />
+&nbsp;&nbsp;GS_STYLE-FIELDNAME&nbsp;=&nbsp;&1.<br />
+&nbsp;&nbsp;GS_STYLE-STYLE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;CL_GUI_ALV_GRID=&gt;MC_STYLE_DISABLED.<br />
+&nbsp;&nbsp;INSERT&nbsp;GS_STYLE&nbsp;INTO&nbsp;TABLE&nbsp;GT_STYLE.<br />
+END-OF-DEFINITION.<br />
+<br />
+DEFINE _STYLE_ENABLED.<br />
+&nbsp;&nbsp;GS_STYLE-FIELDNAME&nbsp;=&nbsp;&1.<br />
+&nbsp;&nbsp;GS_STYLE-STYLE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;CL_GUI_ALV_GRID=&gt;MC_STYLE_ENABLED.<br />
+&nbsp;&nbsp;INSERT&nbsp;GS_STYLE&nbsp;INTO&nbsp;TABLE&nbsp;GT_STYLE.<br />
+END-OF-DEFINITION.<br />
+<br />
+DEFINE _CELL_YELLOW.<br />
+&nbsp;&nbsp;GS_CELL-FNAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&1.<br />
+&nbsp;&nbsp;GS_CELL-COLOR-COL&nbsp;=&nbsp;'3'.<br />
+&nbsp;&nbsp;GS_CELL-COLOR-INT&nbsp;=&nbsp;'0'.<br />
+&nbsp;&nbsp;GS_CELL-COLOR-INV&nbsp;=&nbsp;'0'.<br />
+&nbsp;&nbsp;APPEND&nbsp;GS_CELL&nbsp;TO&nbsp;GS_DISPLAY-CTAB.<br />
+END-OF-DEFINITION.<br />
+<br />
+DEFINE _CELL_RED.<br />
+&nbsp;&nbsp;GS_CELL-FNAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&1.<br />
+&nbsp;&nbsp;GS_CELL-COLOR-COL&nbsp;=&nbsp;'6'.<br />
+&nbsp;&nbsp;GS_CELL-COLOR-INT&nbsp;=&nbsp;'1'.<br />
+&nbsp;&nbsp;GS_CELL-COLOR-INV&nbsp;=&nbsp;'0'.<br />
+&nbsp;&nbsp;APPEND&nbsp;GS_CELL&nbsp;TO&nbsp;GS_DISPLAY-CTAB.<br />
+END-OF-DEFINITION.<br />
+<br />
+DEFINE _PROG_INDICATOR.<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'SAPGUI_PROGRESS_INDICATOR'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERCENTAGE&nbsp;=&nbsp;&1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEXT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&2.<br />
+END-OF-DEFINITION.<br />
+<br />
+DEFINE _CALC_TIME.<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;GV_HOUR,&nbsp;GV_MIN,&nbsp;GV_SEC.<br />
+<br />
+&nbsp;&nbsp;GV_HOUR&nbsp;=&nbsp;&nbsp;&nbsp;&1&nbsp;DIV&nbsp;3600.<br />
+&nbsp;&nbsp;GV_MIN&nbsp;&nbsp;=&nbsp;(&nbsp;&1&nbsp;MOD&nbsp;3600&nbsp;)&nbsp;DIV&nbsp;60.<br />
+&nbsp;&nbsp;GV_SEC&nbsp;&nbsp;=&nbsp;(&nbsp;&1&nbsp;MOD&nbsp;3600&nbsp;)&nbsp;MOD&nbsp;60.<br />
+<br />
+&nbsp;&nbsp;&2&nbsp;=&nbsp;GV_HOUR&nbsp;&&&nbsp;':'&nbsp;&&&nbsp;GV_MIN&nbsp;&&&nbsp;':'&nbsp;&&&nbsp;GV_SEC.<br />
+<br />
+END-OF-DEFINITION.<br />
+<br />
+" ### ##.<br />
+DEFINE _NUMERIC_CHECK.<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'CATS_NUMERIC_INPUT_CHECK'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INPUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUTPUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&2<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXCEPTIONS<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NO_NUMERIC&nbsp;=&nbsp;1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;2.<br />
+END-OF-DEFINITION.<br />
+<br />
+<br />
+DATA: GV_DATE   TYPE P0001-BEGDA,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GV_DAYS&nbsp;&nbsp;&nbsp;TYPE&nbsp;P25SOP_HOLD_PRD,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GV_MONTHS&nbsp;TYPE&nbsp;P25SOP_HOLD_PRD&nbsp;VALUE&nbsp;1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GV_YEARS&nbsp;&nbsp;TYPE&nbsp;P25SOP_HOLD_PRD,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GV_CALC&nbsp;&nbsp;&nbsp;TYPE&nbsp;P0001-BEGDA.<br />
+<br />
+" ## + -.<br />
+DEFINE _CALC_DATE.<br />
+<br />
+&nbsp;&nbsp;GV_DATE&nbsp;&nbsp;&nbsp;=&nbsp;&1.<br />
+<br />
+&nbsp;&nbsp;GV_DAYS&nbsp;&nbsp;&nbsp;=&nbsp;&2.<br />
+&nbsp;&nbsp;GV_MONTHS&nbsp;=&nbsp;&3.<br />
+&nbsp;&nbsp;GV_YEARS&nbsp;&nbsp;=&nbsp;&4.<br />
+<br />
+CALL FUNCTION 'RP_CALC_DATE_IN_INTERVAL_SG'<br />
+&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;DATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;GV_DATE<br />
+&nbsp;&nbsp;&nbsp;&nbsp;DAYS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;GV_DAYS<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MONTHS&nbsp;&nbsp;&nbsp;=&nbsp;GV_MONTHS<br />
+&nbsp;&nbsp;&nbsp;&nbsp;YEARS&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;GV_YEARS<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SIGNUM&nbsp;&nbsp;&nbsp;=&nbsp;&5<br />
+&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;CALC_DATE&nbsp;=&nbsp;GV_CALC.<br />
+<br />
+&nbsp;&nbsp;&6&nbsp;=&nbsp;GV_CALC.<br />
+<br />
+END-OF-DEFINITION.<br />
+<br />
+DEFINE _ALPHA_INPUT.<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'CONVERSION_EXIT_ALPHA_INPUT'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INPUT&nbsp;&nbsp;=&nbsp;&1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUTPUT&nbsp;=&nbsp;&2.<br />
+END-OF-DEFINITION.<br />
+<br />
+DEFINE _ALPHA_OUUT.<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'CONVERSION_EXIT_ALPHA_OUTPUT'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INPUT&nbsp;&nbsp;=&nbsp;&1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUTPUT&nbsp;=&nbsp;&2.<br />
+END-OF-DEFINITION.<br />
+<br />
+<br />
+DATA GV_CHAR LIKE FIST-SEARCHW.<br />
+<br />
+" #### ##.<br />
+DEFINE _DEL_SPECIAL.<br />
+<br />
+&nbsp;&nbsp;GV_CHAR&nbsp;=&nbsp;&1.<br />
+<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'SF_SPECIALCHAR_DELETE'<br />
+&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;WITH_SPECIALCHAR&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;GV_CHAR<br />
+&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;WITHOUT_SPECIALCHAR&nbsp;=&nbsp;GV_CHAR<br />
+&nbsp;&nbsp;EXCEPTIONS<br />
+&nbsp;&nbsp;RESULT_WORD_EMPTY&nbsp;&nbsp;&nbsp;=&nbsp;1<br />
+&nbsp;&nbsp;OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;2.<br />
+<br />
+&nbsp;&nbsp;&1&nbsp;=&nbsp;GV_CHAR.<br />
+<br />
+END-OF-DEFINITION.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

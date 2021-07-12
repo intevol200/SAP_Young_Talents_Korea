@@ -1,0 +1,28 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_05
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRTU27_05.
+
+DATA gv_date type sy-datum.
+gv_date = sy-datum.
+
+DO 7 TIMES.
+  gv_date = gv_date + sy-index.
+  WRITE: / gv_date.
+ENDDO.
+
+
+*DO 10 TIMES.
+*  WRITE: / SY-TABIX, SY-INDEX.
+**  DO 9 TIMES.
+**    WRITE SY-INDEX.
+**  ENDDO.
+*  IF SY-INDEX > 5.
+*    EXIT.
+*  ENDIF.
+*ENDDO.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

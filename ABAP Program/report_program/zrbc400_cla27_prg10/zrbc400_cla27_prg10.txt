@@ -1,0 +1,41 @@
+*&---------------------------------------------------------------------*
+*& Report ZRBC400_CLA27_PRG10
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zrbc400_cla27_prg10_top.
+INCLUDE zrbc400_cla27_prg10_f01.
+
+INITIALIZATION.
+  CLEAR: pa_car, so_con, so_dat.
+
+START-OF-SELECTION.
+  PERFORM main USING pa_car
+               CHANGING gt_table.
+
+  PERFORM insert_Data USING gs_data
+                      CHANGING gt_table.
+
+  PERFORM calculate_remain USING gs_data
+                           CHANGING gt_table.
+
+  IF sy-subrc IS INITIAL.
+    cl_demo_output=>display_data( gt_table ).
+  ELSE.
+    MESSAGE i000(zmcla27) WITH pa_car.
+  ENDIF.
+
+*Text elements
+*----------------------------------------------------------
+* 001 DATA NOT FOUND.
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZMCLA27
+*000   & & & Data is not Found.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

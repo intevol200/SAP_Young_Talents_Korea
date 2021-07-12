@@ -1,0 +1,14 @@
+*&---------------------------------------------------------------------*
+*& Include ZRTU27_34_TOP                            - Report ZRTU27_34
+*&---------------------------------------------------------------------*
+REPORT zrtu27_34.
+
+DATA: BEGIN OF gs_info,
+        carrid   TYPE spfli-carrid,
+        carrname TYPE scarr-carrname,
+        connid   TYPE spfli-connid,
+      END OF gs_info,
+      gt_info LIKE TABLE OF gs_info.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

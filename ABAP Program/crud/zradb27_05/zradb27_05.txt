@@ -1,0 +1,26 @@
+*&---------------------------------------------------------------------*
+*& Report ZRADB27_05
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRADB27_05.
+
+SELECTION-SCREEN BEGIN OF BLOCK B1 WITH FRAME TITLE TEXT-H01.
+  PARAMETERS PA_CAR TYPE ZTASCARR27-CARRID.
+SELECTION-SCREEN END OF BLOCK B1.
+
+START-OF-SELECTION.
+
+* ### Airline# ## ## ## Flag# ####
+*  DELETE FROM ztascarr00 WHERE carrid = pa_car.
+  UPDATE ZTASCARR27
+     SET DFLAG = 'X'
+    WHERE CARRID = PA_CAR.
+  IF SY-SUBRC <> 0.
+    ROLLBACK WORK.
+    RETURN.
+  ENDIF.
+  COMMIT WORK.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

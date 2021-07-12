@@ -1,0 +1,96 @@
+*&---------------------------------------------------------------------*
+*& Include          MZRCLA0127_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_emp_list
+*&---------------------------------------------------------------------*
+FORM get_emp_list CHANGING p_subrc.
+  CLEAR: gt_emp, p_subrc.
+
+  SELECT *
+    FROM ztemp
+    INTO CORRESPONDING FIELDS OF TABLE gt_emp
+    WHERE pernr IN so_eid[]
+    AND depid = pa_dep. "Range (SIGN / OPTION / LOW / HIGH )
+
+  IF sy-subrc <> 0. "IS NOT INITIAL.
+    p_subrc = 4.
+
+    "Data is not Found.
+    MESSAGE i000(zmcla27).
+    RETURN.
+  ENDIF.
+
+
+  LOOP AT gt_emp INTO gs_emp.
+    " BUDGET
+    PERFORM get_budget_list CHANGING gs_emp.
+    PERFORM get_dtext_list CHANGING gs_emp.
+
+    MODIFY gt_emp FROM gs_emp.
+    CLEAR gs_emp.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_alv_0100
+*&---------------------------------------------------------------------*
+FORM set_alv_0100 .
+
+  CREATE OBJECT go_con
+    EXPORTING
+      container_name = 'MYCON'.
+
+  CREATE OBJECT go_alv
+    EXPORTING
+      i_parent = go_con.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_alv_0100
+*&---------------------------------------------------------------------*
+FORM display_alv_0100 .
+  CALL METHOD go_alv->set_table_for_first_display
+    EXPORTING
+      i_structure_name = 'zsa21_21_07'
+    CHANGING
+      it_outtab        = gt_emp.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_dtext_list
+*&---------------------------------------------------------------------*
+FORM get_dtext_list CHANGING ps_emp LIKE gs_emp.
+  SELECT SINGLE dtext
+    FROM ztdep_t
+    INTO ps_emp-dtext
+    WHERE depid = ps_emp-depid
+    AND spras EQ sy-langu.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_budget_list
+*&---------------------------------------------------------------------*
+FORM get_budget_list CHANGING ps_emp LIKE gs_emp.
+  SELECT SINGLE budget waers
+    FROM ztdep
+    INTO (ps_emp-budget, ps_emp-waers)
+    WHERE depid = ps_emp-depid.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form error_check
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      <-- GV_SUBRC
+*&---------------------------------------------------------------------*
+FORM error_check  CHANGING p_subrc.
+  IF pa_dep IS INITIAL.
+    p_SUBRC = 4.
+    MESSAGE i016(pn) WITH 'Enter the Depid'.
+
+  ELSEIF so_eid IS INITIAL.
+    p_subrc = 4.
+    MESSAGE i016(pn) DISPLAY LIKE 'E' WITH 'Enter the Eid'.
+  ENDIF.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

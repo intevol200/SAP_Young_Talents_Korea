@@ -1,0 +1,180 @@
+*&---------------------------------------------------------------------*
+*& Include          ZBA27_021_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form GET_FILE_PATH
+*&---------------------------------------------------------------------*
+FORM GET_FILE_PATH .
+  DATA: LT_FILE TYPE FILETABLE,
+        LS_FILE LIKE LINE OF LT_FILE,
+        LV_RC   TYPE I.
+
+  CALL METHOD CL_GUI_FRONTEND_SERVICES=>FILE_OPEN_DIALOG
+*    EXPORTING
+*      WINDOW_TITLE            =
+*      DEFAULT_EXTENSION       =
+*      DEFAULT_FILENAME        =
+*      FILE_FILTER             =
+*      WITH_ENCODING           =
+*      INITIAL_DIRECTORY       =
+*      MULTISELECTION          =
+    CHANGING
+      FILE_TABLE              = LT_FILE
+      RC                      = LV_RC
+*     USER_ACTION             =
+*     FILE_ENCODING           =
+    EXCEPTIONS
+      FILE_OPEN_DIALOG_FAILED = 1
+      CNTL_ERROR              = 2
+      ERROR_NO_GUI            = 3
+      NOT_SUPPORTED_BY_GUI    = 4
+      OTHERS                  = 5.
+  IF SY-SUBRC <> 0.
+*   Implement suitable error handling here
+  ENDIF.
+
+  READ TABLE LT_FILE INDEX 1 INTO LS_FILE.
+  IF SY-SUBRC <> 0.
+    MESSAGE I016(PN) WITH 'FILE ERROR'.
+    RETURN.
+  ENDIF.
+
+  PA_FILE = LS_FILE-FILENAME.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_FILE_DATA
+*&---------------------------------------------------------------------*
+FORM GET_FILE_DATA .
+  DATA: LS_EXCEL TYPE ALSMEX_TABLINE,
+        LT_EXCEL LIKE TABLE OF LS_EXCEL.
+
+  CALL FUNCTION 'ALSM_EXCEL_TO_INTERNAL_TABLE'
+    EXPORTING
+      FILENAME                = PA_FILE "## ###
+      I_BEGIN_COL             = 1 "## #### ### # ##
+      I_BEGIN_ROW             = 2 "## #### ### # ##
+      I_END_COL               = 10
+      I_END_ROW               = 1000
+    TABLES
+      INTERN                  = LT_EXCEL
+    EXCEPTIONS
+      INCONSISTENT_PARAMETERS = 1
+      UPLOAD_OLE              = 2
+      OTHERS                  = 3.
+  IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+  ENDIF.
+
+  CLEAR GT_DATA.
+
+  LOOP AT LT_EXCEL INTO LS_EXCEL.
+    CASE LS_EXCEL-COL.
+      WHEN '1' OR '0001'.
+        GS_DATA-CARRID = LS_EXCEL-VALUE.
+
+      WHEN '2' OR '0002'.
+        GS_DATA-CARRNAME = LS_EXCEL-VALUE.
+
+      WHEN '3' OR '0003'.
+        GS_DATA-CURRCODE = LS_EXCEL-VALUE.
+
+      WHEN '4' OR '0004'.
+        GS_DATA-URL = LS_EXCEL-VALUE.
+
+    ENDCASE.
+
+    AT END OF ROW.
+      APPEND GS_DATA TO GT_DATA.
+      CLEAR GS_DATA.
+    ENDAT.
+
+    CLEAR LS_EXCEL.
+  ENDLOOP.
+
+  CL_DEMO_OUTPUT=>DISPLAY_DATA( GT_DATA ).
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_BDC_DATA
+*&---------------------------------------------------------------------*
+FORM SET_BDC_DATA .
+  LOOP AT GT_DATA INTO GS_DATA.
+    "BDC ##
+    CLEAR: GS_BDC, GT_BDC.
+
+    PERFORM DYNPRO_NUMBER USING 'SAPMZCLA27_81'
+                                '0100'
+                                'X'
+                          CHANGING GS_BDC
+                                   GT_BDC.
+
+    PERFORM FNAM_FVAL USING 'BDC_OKCODE'
+                            '=CREATE'
+                      CHANGING GS_BDC
+                               GT_BDC.
+
+    PERFORM DYNPRO_NUMBER USING 'SAPMZCLA27_81'
+                                '0200'
+                                'X'
+                          CHANGING GS_BDC
+                                   GT_BDC.
+
+    PERFORM FNAM_FVAL USING 'ZSCLA27_82-CARRID'
+                            GS_DATA-CARRID
+                      CHANGING GS_BDC
+                               GT_BDC.
+
+    PERFORM FNAM_FVAL USING 'ZSCLA27_82-CARRNAME'
+                            GS_DATA-CARRNAME
+                      CHANGING GS_BDC
+                               GT_BDC.
+
+    PERFORM FNAM_FVAL USING 'ZSCLA27_82-CURRCODE'
+                            GS_DATA-CURRCODE
+                      CHANGING GS_BDC
+                               GT_BDC.
+
+    PERFORM FNAM_FVAL USING 'ZSCLA27_82-URL'
+                            GS_DATA-URL
+                      CHANGING GS_BDC
+                               GT_BDC.
+
+    PERFORM FNAM_FVAL USING 'BDC_OKCODE'
+                            '=SAVE'
+                      CHANGING GS_BDC
+                               GT_BDC.
+
+    CALL TRANSACTION 'ZCLA27_81' USING GT_BDC MODE 'N'.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form DYNPRO_NUMBER
+*&---------------------------------------------------------------------*
+FORM DYNPRO_NUMBER USING VALUE(P_PROGRAM)
+                         VALUE(P_DYNPRO)
+                         VALUE(P_DYNBEGIN)
+                   CHANGING PS_BDC LIKE GS_BDC
+                            PT_BDC LIKE GT_BDC.
+
+  PS_BDC-PROGRAM = P_PROGRAM.
+  PS_BDC-DYNPRO = P_DYNPRO.
+  PS_BDC-DYNBEGIN = P_DYNBEGIN.
+  APPEND PS_BDC TO PT_BDC.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form FNAM_FVAL
+*&---------------------------------------------------------------------*
+FORM FNAM_FVAL  USING    VALUE(P_FNAM)
+                         VALUE(P_FVAL)
+                CHANGING PS_BDC LIKE GS_BDC
+                         PT_BDC LIKE GT_BDC.
+
+  CLEAR PS_BDC.
+  GS_BDC-FNAM = P_FNAM.
+  GS_BDC-FVAL = P_FVAL.
+  APPEND PS_BDC TO PT_BDC.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

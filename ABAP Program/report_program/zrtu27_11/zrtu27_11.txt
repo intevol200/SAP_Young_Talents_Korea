@@ -1,0 +1,27 @@
+*&---------------------------------------------------------------------*
+*& Report YRBC400_CLA00_PRG04
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_11.
+
+INCLUDE ZRTU27_11_TOP. " Global Data Object
+INCLUDE ZRTU27_11_F01. "FORM ~ ENDFORM
+
+START-OF-SELECTION. "Event
+  "Dudate Cal
+  PERFORM cal_date USING pa_major
+                         pa_skill
+                         sy-datum
+                   CHANGING gv_endda.
+
+  "Dudate display
+  PERFORM display_data USING gv_endda
+                             sy-datum.
+
+*Text elements
+*----------------------------------------------------------
+* E01 This is a wrong value
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

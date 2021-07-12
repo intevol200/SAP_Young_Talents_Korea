@@ -1,0 +1,27 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_14
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zrtu27_14_top                           .    " Global Data
+
+* INCLUDE ZRTU27_14_O01                           .  " PBO-Modules
+* INCLUDE ZRTU27_14_I01                           .  " PAI-Modules
+INCLUDE zrtu27_14_f01                           .  " FORM-Routines
+
+START-OF-SELECTION.
+*  PERFORM s_query USING pa_car
+*                        pa_con
+*                  CHANGING gs_info.
+*
+*  PERFORM show_result USING gs_info.
+
+  PERFORM s_query CHANGING pa_car
+                           pa_con
+                           gs_info.
+
+  PERFORM show_result CHANGING gs_info.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

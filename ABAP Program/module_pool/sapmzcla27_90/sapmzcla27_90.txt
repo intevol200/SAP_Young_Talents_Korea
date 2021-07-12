@@ -1,0 +1,41 @@
+*&---------------------------------------------------------------------*
+*& Module Pool      SAPMZCLA27_90
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE MZCLA27_90_TOP.    " Global Data
+
+INCLUDE MZCLA27_90_O01.  " PBO-Modules
+INCLUDE MZCLA27_90_I01.  " PAI-Modules
+INCLUDE MZCLA27_90_F01.  " FORM-Routines
+
+LOAD-OF-PROGRAM.
+  PERFORM SET_DEFAULT_CONDITION.
+
+*GUI Texts
+*----------------------------------------------------------
+* T100 --> Flight List
+* T200 --> Create Flight Schedule Data
+* T300 --> Change Flight Data
+
+*Text elements
+*----------------------------------------------------------
+* 100 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_DEL         Show Deleted Flight Data
+* SO_CAR         Airline Code
+* SO_CON         Airline Conn
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: PN
+*016   & & & &
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

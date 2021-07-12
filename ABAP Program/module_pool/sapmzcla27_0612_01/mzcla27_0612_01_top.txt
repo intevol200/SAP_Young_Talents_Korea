@@ -1,0 +1,18 @@
+*&---------------------------------------------------------------------*
+*& Include MZCLA27_0612_TOP                         - Module Pool      SAPMZCLA27_0612
+*&---------------------------------------------------------------------*
+PROGRAM sapmzcla27_0612.
+
+TABLES: zteam5_10, t001, zteam5_30.
+
+DATA: gs_person TYPE zteam5_10,
+      gs_table  TYPE zteam5_30,
+      gt_table  LIKE TABLE OF gs_table.
+
+DATA: butxt(40),
+      ok_code TYPE sy-ucomm.
+
+CONTROLS t100 TYPE TABLEVIEW USING SCREEN 0100.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

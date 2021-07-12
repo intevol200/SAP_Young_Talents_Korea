@@ -1,0 +1,25 @@
+*&---------------------------------------------------------------------*
+*& Include MZRCLA0127_TOP                           - Report ZRCLA0127
+*&---------------------------------------------------------------------*
+REPORT zrcla0127.
+
+* List Variable ( Emp )
+DATA: gs_emp  TYPE zsa21_21_07,
+      gt_emp  LIKE TABLE OF gs_emp.
+
+* Common
+DATA: gv_subrc TYPE sy-subrc,
+      ok_code  TYPE sy-ucomm.
+
+* Parameters
+PARAMETERS pa_dep TYPE ztdep-depid.
+
+* Selection Screen
+SELECT-OPTIONS so_eid FOR gs_emp-pernr.
+
+* ALV
+DATA: go_con TYPE REF TO cl_gui_custom_container,
+      go_alv TYPE REF TO cl_gui_alv_grid.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

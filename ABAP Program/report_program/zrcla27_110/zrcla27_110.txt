@@ -1,0 +1,83 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLAC00_10
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrclac27_10.
+
+CLASS lcl_prof DEFINITION.
+  PUBLIC SECTION.
+    METHODS constructor
+      IMPORTING iv_ename TYPE pa0001-ename
+                iv_email TYPE string.
+
+  PROTECTED SECTION.
+
+  PRIVATE SECTION.
+    DATA: pname TYPE pa0001-ename,
+          pernr TYPE pa0001-pernr, "HR
+          email TYPE string.
+    CLASS-DATA tot_prof TYPE i.
+ENDCLASS.
+
+CLASS lcl_prof IMPLEMENTATION.
+  METHOD constructor.
+    DATA: lv_cnt(4) TYPE n.
+    lcl_prof=>tot_prof = lcl_prof=>tot_prof + 1.
+    lv_cnt = lcl_prof=>tot_prof .
+    CONCATENATE sy-datum+0(4) sy-datum+4(2)
+                lv_cnt
+    INTO me->pernr.
+    me->pname = iv_ename.
+    CONCATENATE iv_email '@gmail.com'
+    INTO me->email.
+*    me->email = iv_email && '@gmail.com'.
+
+  ENDMETHOD.
+ENDCLASS.
+
+CLASS lcl_std DEFINITION.
+  PUBLIC SECTION.
+    METHODS constructor
+      IMPORTING iv_stdno TYPE char8
+                iv_sname TYPE char40
+                iv_email TYPE char50
+                iv_class TYPE char2
+                ir_prof  TYPE REF TO lcl_prof.
+  PROTECTED SECTION.
+
+  PRIVATE SECTION.
+    DATA: stdno TYPE char8,
+          sname TYPE char40,
+          email TYPE char50,
+          class TYPE char2.
+    DATA r_prof TYPE REF TO lcl_prof.
+ENDCLASS.
+CLASS lcl_std IMPLEMENTATION.
+  METHOD constructor.
+    me->stdno = iv_stdno.
+    me->sname = iv_sname.
+    me->email = iv_email.
+    me->class = iv_class.
+    me->r_prof = ir_prof.
+  ENDMETHOD.
+ENDCLASS.
+DATA: go_prof TYPE REF TO lcl_prof,
+      go_std  TYPE REF TO lcl_std.
+
+START-OF-SELECTION.
+  CREATE OBJECT go_prof
+    EXPORTING
+      iv_ename = 'Kang'
+      iv_email = 'skkang'.
+
+  CREATE OBJECT go_std
+    EXPORTING
+      iv_stdno = '20010101'
+      iv_sname = 'HongKD'
+      iv_email = 'HKD@gamil.com'
+      iv_class = 'A'
+      ir_prof  = go_prof.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

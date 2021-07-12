@@ -1,0 +1,44 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA0127
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE mzrcla27_01_top.
+
+INCLUDE mzrcla27_01_o01.
+INCLUDE mzrcla27_01_i01.
+INCLUDE mzrcla27_01_f01.
+
+INITIALIZATION.
+
+AT SELECTION-SCREEN OUTPUT. "PBO
+
+AT SELECTION-SCREEN. "PAI
+
+START-OF-SELECTION.
+  PERFORM error_check CHANGING gv_subrc.
+
+  CHECK gv_subrc EQ 0.
+  " Get Emp List.
+  PERFORM get_emp_list CHANGING gv_subrc.
+
+  "ALV
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* T100 --> ALV Demo ( Employee List )
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: PN
+*016   & & & &
+*
+* Message class: ZMCLA27
+*000   & & & Data is not Found.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

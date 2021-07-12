@@ -1,0 +1,51 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA9901
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE MZRCLA27_50_TOP.
+
+INCLUDE MZRCLA27_50_O01.
+INCLUDE MZRCLA27_50_I01.
+INCLUDE MZRCLA27_50_F01.
+
+INITIALIZATION. "LOAD-OF-PROGRAM
+  GS_LAYO-CWIDTH_OPT = 'X'.
+  GS_LAYO-ZEBRA = 'X'.
+  GS_LAYO-CTAB_FNAME = 'IT_COL'.
+*  GS_LAYO-INFO_FNAME = 'COLOR'.
+*  GS_LAYO-EXCP_FNAME = 'LIGHT'.
+
+AT SELECTION-SCREEN OUTPUT. "PBO
+
+AT SELECTION-SCREEN. "PAI
+
+START-OF-SELECTION.
+  " Get Emp List
+  PERFORM GET_EMP_LIST CHANGING GV_SUBRC.
+  IF GV_SUBRC IS NOT INITIAL.
+    RETURN.
+  ENDIF.
+
+  " ALV
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* T100 --> ALV Demo( Emp List )
+
+
+*Selection texts
+*----------------------------------------------------------
+* SO_EID D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZMCLA00
+*000   & & & : Data is not found.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

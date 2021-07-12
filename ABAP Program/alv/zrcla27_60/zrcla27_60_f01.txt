@@ -1,0 +1,141 @@
+*&---------------------------------------------------------------------*
+*& Include          MZRCLA9960_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM GET_DATA .
+  SELECT *
+    FROM SPFLI
+    INTO CORRESPONDING FIELDS OF TABLE GT_LIST
+   WHERE CARRID IN SO_CAR[].
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_alv
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM SET_ALV .
+  IF GO_CON IS INITIAL.
+    CREATE OBJECT GO_CON
+      EXPORTING
+*       parent                      =
+        CONTAINER_NAME              = 'MY_CON'
+*       style                       =
+*       lifetime                    = lifetime_default
+*       repid                       =
+*       dynnr                       =
+*       no_autodef_progid_dynnr     =
+      EXCEPTIONS
+        CNTL_ERROR                  = 1
+        CNTL_SYSTEM_ERROR           = 2
+        CREATE_ERROR                = 3
+        LIFETIME_ERROR              = 4
+        LIFETIME_DYNPRO_DYNPRO_LINK = 5
+        OTHERS                      = 6.
+    IF SY-SUBRC <> 0.
+      MESSAGE A016(PN) WITH 'Create Continar Object Error'.
+* MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*            WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+    ENDIF.
+  ENDIF.
+
+  IF GO_ALV IS INITIAL.
+    CREATE OBJECT GO_ALV
+      EXPORTING
+*       i_shellstyle      = 0
+*       i_lifetime        =
+        I_PARENT          = GO_CON
+*       i_appl_events     = SPACE
+*       i_parentdbg       =
+*       i_applogparent    =
+*       i_graphicsparent  =
+*       i_name            =
+*       i_fcat_complete   = SPACE
+*       o_previous_sral_handler =
+      EXCEPTIONS
+        ERROR_CNTL_CREATE = 1
+        ERROR_CNTL_INIT   = 2
+        ERROR_CNTL_LINK   = 3
+        ERROR_DP_CREATE   = 4
+        OTHERS            = 5.
+    IF SY-SUBRC <> 0.
+      MESSAGE A016(PN) WITH 'Create ALV Object Error'.
+* MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*            WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+    ENDIF.
+
+    CREATE OBJECT GO_EVENT.
+
+    SET HANDLER GO_EVENT->ON_DOUBLE_CLICK FOR ALL INSTANCES.
+
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_alv
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM DISPLAY_ALV .
+  IF GO_ALV IS INITIAL. RETURN. ENDIF.
+
+  CALL METHOD GO_ALV->SET_TABLE_FOR_FIRST_DISPLAY
+    EXPORTING
+*     i_buffer_active               =
+*     i_bypassing_buffer            =
+*     i_consistency_check           =
+      I_STRUCTURE_NAME              = 'SPFLI'
+*     is_variant                    =
+*     i_save                        =
+*     i_default                     = 'X'
+*     is_layout                     =
+*     is_print                      =
+*     it_special_groups             =
+*     it_toolbar_excluding          =
+*     it_hyperlink                  =
+*     it_alv_graphics               =
+*     it_except_qinfo               =
+*     ir_salv_adapter               =
+    CHANGING
+      IT_OUTTAB                     = GT_LIST
+*     it_fieldcatalog               =
+*     it_sort                       =
+*     it_filter                     =
+    EXCEPTIONS
+      INVALID_PARAMETER_COMBINATION = 1
+      PROGRAM_ERROR                 = 2
+      TOO_MANY_LINES                = 3
+      OTHERS                        = 4.
+  IF SY-SUBRC <> 0.
+    MESSAGE A016(PN) WITH 'Display ALV error'.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form clear_alv
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM CLEAR_ALV .
+  CALL METHOD GO_ALV->FREE.
+  GO_CON->FREE( ).
+  CLEAR GO_ALV.
+  CLEAR GO_CON.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

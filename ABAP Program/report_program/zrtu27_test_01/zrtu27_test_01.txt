@@ -1,0 +1,39 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_TEST_01
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zrtu27_test_01_top                      .    " Global Data
+
+* INCLUDE ZRTU27_TEST_01_O01                      .  " PBO-Modules
+* INCLUDE ZRTU27_TEST_01_I01                      .  " PAI-Modules
+* INCLUDE ZRTU27_TEST_01_F01                      .  " FORM-Routines
+
+*TYPES: t_data TYPE zscla00_demo.
+
+DATA: BEGIN OF gs_data,
+        carrid   TYPE sflight-carrid,
+        seats    TYPE sflight-seatsmax,
+        cal_seats like gs_data-seats,
+      END OF gs_data,
+      gt_fli LIKE TABLE OF gs_data.
+
+PARAMETERS: pa_car LIKE gs_data-carrid.
+
+START-OF-SELECTION.
+  SELECT carrid, seatsmax
+    FROM sflight
+    WHERE carrid = @pa_car
+    INTO TABLE @gt_fli.
+
+  LOOP AT gt_fli INTO gs_data.
+    gs_data-cal_seats = gs_data-seats * 2.
+
+    MODIFY gt_fli FROM gs_data.
+  ENDLOOP.
+
+  cl_demo_output=>display_data( gt_fli ).
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

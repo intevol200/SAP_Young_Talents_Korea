@@ -1,0 +1,47 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_50
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zrtu27_50_top.
+
+INCLUDE zrtu27_50_o01.
+INCLUDE zrtu27_50_i01.
+INCLUDE zrtu27_50_f01.
+
+LOAD-OF-PROGRAM.
+
+INITIALIZATION.
+  PERFORM default_condition.
+
+AT SELECTION-SCREEN OUTPUT. "PBO
+
+AT SELECTION-SCREEN. "PAI
+  PERFORM condition_check.
+
+
+START-OF-SELECTION.
+  " Get Booking List( Open SQL )
+  PERFORM get_booking_list.
+
+END-OF-SELECTION.
+  cl_demo_output=>display_data( gt_book ).
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_CAR D       .
+* PA_CT D       .
+* SO_CON D       .
+* SO_DAT D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZMCLA00
+*001   Must Input value
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

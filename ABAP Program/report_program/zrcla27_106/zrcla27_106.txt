@@ -1,0 +1,59 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_106
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_106.
+
+CLASS LCL_CREW DEFINITION.
+  PUBLIC SECTION.
+    METHODS CONSTRUCTOR IMPORTING IV_CNAME TYPE STRING.
+    METHODS GET_INFO EXPORTING EV_INFO TYPE STRING.
+
+  PRIVATE SECTION.
+    DATA CNAME TYPE STRING.
+    DATA CREW_NO TYPE STRING.
+    CLASS-DATA CREW_CNT TYPE I.
+
+    METHODS SET_CREW IMPORTING IV_CNAME TYPE STRING.
+ENDCLASS.
+
+CLASS LCL_CREW IMPLEMENTATION.
+  METHOD CONSTRUCTOR.
+    ME->SET_CREW( EXPORTING IV_CNAME = IV_CNAME ).
+  ENDMETHOD.
+
+  METHOD SET_CREW.
+    ME->CNAME = IV_CNAME.
+    LCL_CREW=>CREW_CNT = LCL_CREW=>CREW_CNT + 1.
+    ME->CREW_NO = SY-DATUM+0(4) && LCL_CREW=>CREW_CNT .
+  ENDMETHOD.
+
+  METHOD GET_INFO.
+    EV_INFO = ME->CREW_NO && ME->CNAME.
+  ENDMETHOD.
+ENDCLASS.
+
+DATA: GO_CREW TYPE REF TO LCL_CREW,
+      GT_CREW LIKE TABLE OF GO_CREW,
+      GV_INFO TYPE STRING.
+
+START-OF-SELECTION.
+  CREATE OBJECT GO_CREW
+    EXPORTING
+      IV_CNAME = 'KANG'.
+  APPEND GO_CREW TO GT_CREW.
+
+  CREATE OBJECT GO_CREW
+    EXPORTING
+      IV_CNAME = 'LEE'.
+  APPEND GO_CREW TO GT_CREW.
+
+  LOOP AT GT_CREW INTO GO_CREW.
+    GO_CREW->GET_INFO( IMPORTING EV_INFO = GV_INFO ).
+    WRITE:/ GV_INFO.
+    CLEAR: GV_INFO, GO_CREW.
+  ENDLOOP.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,38 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_102
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_102.
+
+CLASS LCL_CREW DEFINITION.
+  PUBLIC SECTION.
+    DATA CNAME TYPE STRING.
+
+  PRIVATE SECTION.
+    DATA CRENO(8) TYPE N VALUE '2001'.
+
+ENDCLASS.
+
+DATA: GO_CREW TYPE REF TO LCL_CREW.
+DATA: GO_CREW2 LIKE GO_CREW.
+
+CREATE OBJECT GO_CREW.
+GO_CREW->CNAME = 'CHOI'.
+
+GO_CREW2 = GO_CREW. "Casting
+
+GO_CREW2->CNAME = 'LEE'.
+
+WRITE GO_CREW->CNAME.
+CLEAR GO_CREW.
+
+GO_CREW = GO_CREW2.
+
+CREATE OBJECT GO_CREW2.
+GO_CREW2->CNAME = 'KANG'.
+
+WRITE GO_CREW2->CNAME.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

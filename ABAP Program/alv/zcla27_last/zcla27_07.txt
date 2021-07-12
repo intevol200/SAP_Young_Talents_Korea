@@ -1,0 +1,58 @@
+*&---------------------------------------------------------------------*
+*& Report ZCLA27_07
+*&---------------------------------------------------------------------*
+
+INCLUDE ZCLA27_07_TOP.   " Global Data
+INCLUDE ZCLA27_07_C01.  " Class
+INCLUDE ZCLA27_07_O01.  " PBO-Modules
+INCLUDE ZCLA27_07_I01.  " PAI-Modules
+INCLUDE ZCLA27_07_F01.  " FORM-Routines
+
+INITIALIZATION.
+  PERFORM SET_DEFAULT.
+
+START-OF-SELECTION.
+  IF R_01 = 'X'.
+    PERFORM GET_BOOK_DATA USING 'C'.
+  ELSEIF R_02 = 'X'.
+    PERFORM GET_BOOK_DATA USING 'Y'.
+  ELSEIF R_03 = 'X'.
+    PERFORM GET_BOOK_DATA USING 'F'.
+  ENDIF.
+
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* T100 --> Flight Booking List
+* T200 --> Menu Selection
+
+*Text elements
+*----------------------------------------------------------
+* 100 Booking List Condition
+* 200 First Class
+* 300 etc
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_CAR D       .
+* PA_CON D       .
+* PA_CUST D       .
+* PA_NSMK         Non-Smoker
+* PA_SMK         Smoker
+* R_01         Business Class
+* R_02         Economy Class
+* R_03         First Class
+* SO_BID D       .
+* SO_FLD D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: PN
+*016   & & & &
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

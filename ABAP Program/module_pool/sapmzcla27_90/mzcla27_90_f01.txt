@@ -1,0 +1,308 @@
+*&---------------------------------------------------------------------*
+*& Include          MZCLA27_90_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form GET_DATA
+*&---------------------------------------------------------------------*
+FORM GET_DATA USING VALUE(P_CHECK).
+  CLEAR GT_LIST.
+
+  SELECT A~CARRID B~CARRNAME A~CONNID
+         A~CITYFROM A~CITYTO A~AIRPFROM
+         A~AIRPTO A~FLTIME A~DFLAG
+    FROM ZTASPFLI27 AS A LEFT JOIN ZTASCARR27 AS B
+      ON A~CARRID = B~CARRID
+    INTO CORRESPONDING FIELDS OF TABLE GT_LIST
+    WHERE A~CARRID IN SO_CAR
+      AND A~CONNID IN SO_CON
+      AND A~DFLAG EQ P_CHECK.
+
+  LOOP AT GT_LIST INTO GS_LIST.
+    CASE GS_LIST-DFLAG.
+      WHEN ''.
+        GS_LIST-LIGHT = 3.
+      WHEN 'X'.
+        GS_LIST-LIGHT = 1.
+    ENDCASE.
+    MODIFY GT_LIST FROM GS_LIST.
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_ALV
+*&---------------------------------------------------------------------*
+FORM SET_ALV .
+  CREATE OBJECT GO_CON
+    EXPORTING
+*     PARENT                      =
+      CONTAINER_NAME              = 'CON_SPFLI'
+*     STYLE                       =
+*     LIFETIME                    = lifetime_default
+*     REPID                       =
+*     DYNNR                       =
+*     NO_AUTODEF_PROGID_DYNNR     =
+    EXCEPTIONS
+      CNTL_ERROR                  = 1
+      CNTL_SYSTEM_ERROR           = 2
+      CREATE_ERROR                = 3
+      LIFETIME_ERROR              = 4
+      LIFETIME_DYNPRO_DYNPRO_LINK = 5
+      OTHERS                      = 6.
+  IF SY-SUBRC <> 0.
+*   MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*              WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+  CREATE OBJECT GO_ALV
+    EXPORTING
+*     I_SHELLSTYLE      = 0
+*     I_LIFETIME        =
+      I_PARENT          = GO_CON
+*     I_APPL_EVENTS     = SPACE
+*     I_PARENTDBG       =
+*     I_APPLOGPARENT    =
+*     I_GRAPHICSPARENT  =
+*     I_NAME            =
+*     I_FCAT_COMPLETE   = SPACE
+*     O_PREVIOUS_SRAL_HANDLER =
+    EXCEPTIONS
+      ERROR_CNTL_CREATE = 1
+      ERROR_CNTL_INIT   = 2
+      ERROR_CNTL_LINK   = 3
+      ERROR_DP_CREATE   = 4
+      OTHERS            = 5.
+  IF SY-SUBRC <> 0.
+*   MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*              WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form DISPLAY_ALV
+*&---------------------------------------------------------------------*
+FORM DISPLAY_ALV .
+  IF GO_ALV IS INITIAL. RETURN. ENDIF.
+
+  GS_LAYO-ZEBRA = 'X'.
+  GS_LAYO-COL_OPT = 'X'.
+  GS_LAYO-SEL_MODE = 'A'.
+  GS_LAYO-EXCP_FNAME = 'LIGHT'.
+
+  GS_FCAT-FIELDNAME = 'DFLAG'.
+  GS_FCAT-NO_OUT = 'X'.
+  APPEND GS_FCAT TO GT_FCAT.
+
+  CALL METHOD GO_ALV->SET_TABLE_FOR_FIRST_DISPLAY
+    EXPORTING
+*     I_BUFFER_ACTIVE               =
+*     I_BYPASSING_BUFFER            =
+*     I_CONSISTENCY_CHECK           =
+      I_STRUCTURE_NAME              = 'ZSCLA27_90'
+*     IS_VARIANT                    =
+*     I_SAVE                        =
+*     I_DEFAULT                     = 'X'
+      IS_LAYOUT                     = GS_LAYO
+*     IS_PRINT                      =
+*     IT_SPECIAL_GROUPS             =
+*     IT_TOOLBAR_EXCLUDING          =
+*     IT_HYPERLINK                  =
+*     IT_ALV_GRAPHICS               =
+*     IT_EXCEPT_QINFO               =
+*     IR_SALV_ADAPTER               =
+    CHANGING
+      IT_OUTTAB                     = GT_LIST
+      IT_FIELDCATALOG               = GT_FCAT
+*     IT_SORT                       =
+*     IT_FILTER                     =
+    EXCEPTIONS
+      INVALID_PARAMETER_COMBINATION = 1
+      PROGRAM_ERROR                 = 2
+      TOO_MANY_LINES                = 3
+      OTHERS                        = 4.
+  IF SY-SUBRC <> 0.
+*   Implement suitable error handling here
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form FREE_ALV_RESOURCES
+*&---------------------------------------------------------------------*
+FORM FREE_ALV_RESOURCES .
+  GO_ALV->FREE( ).
+  GO_CON->FREE( ).
+
+  FREE: GO_CON, GO_ALV.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_DEFAULT_CONDITION
+*&---------------------------------------------------------------------*
+FORM SET_DEFAULT_CONDITION .
+  SO_CAR-LOW = 'AA'.
+  SO_CAR-HIGH = 'ZZ'.
+  APPEND SO_CAR TO SO_CAR[].
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_SELECTED_DATA
+*&---------------------------------------------------------------------*
+FORM GET_SELECTED_DATA .
+  DATA: LT_ROWS  TYPE LVC_T_ROID,
+        LS_ROWS  LIKE LINE OF LT_ROWS,
+        LV_COUNT TYPE I.
+
+  CLEAR GV_SUBRC.
+
+  CALL METHOD GO_ALV->GET_SELECTED_ROWS
+    IMPORTING
+      ET_ROW_NO = LT_ROWS.
+
+  LV_COUNT = LINES( LT_ROWS ).
+
+  IF LV_COUNT > 1.
+    MESSAGE I016(PN) WITH 'Please Select Only One Data'.
+    GV_SUBRC = 4.
+    RETURN.
+  ELSE.
+    READ TABLE LT_ROWS INDEX 1 INTO LS_ROWS.
+  ENDIF.
+
+  READ TABLE GT_LIST INDEX LS_ROWS-ROW_ID INTO GS_LIST.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form LOCK
+*&---------------------------------------------------------------------*
+FORM LOCK  USING VALUE(P_CARRID)
+                 VALUE(P_MODE).
+
+  CALL FUNCTION 'ENQUEUE_EZ_ZTASCARR27'
+    EXPORTING
+      MODE_ZTASCARR27 = P_MODE
+*     MANDT           = SY-MANDT
+      CARRID          = P_CARRID
+*     X_CARRID        = ' '
+*     _SCOPE          = '2'
+*     _WAIT           = ' '
+*     _COLLECT        = ' '
+    EXCEPTIONS
+      FOREIGN_LOCK    = 1
+      SYSTEM_FAILURE  = 2
+      OTHERS          = 3.
+  IF SY-SUBRC = 1.
+    GV_SUBRC = 4.
+    MESSAGE I016(PN) WITH 'Lock Object Activated'.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form DELETE_SELECTED_LIST
+*&---------------------------------------------------------------------*
+FORM DELETE_SELECTED_LIST  CHANGING P_SUBRC.
+  DATA: LT_ROWS   TYPE LVC_T_ROID,
+        LS_ROWS   LIKE LINE OF LT_ROWS,
+        LS_DELETE LIKE GS_LIST,
+        LT_DELETE LIKE TABLE OF LS_DELETE.
+
+  CLEAR P_SUBRC.
+
+  CALL METHOD GO_ALV->GET_SELECTED_ROWS
+    IMPORTING
+      ET_ROW_NO = LT_ROWS.
+
+  LOOP AT LT_ROWS INTO LS_ROWS.
+    READ TABLE GT_LIST INDEX LS_ROWS-ROW_ID INTO LS_DELETE.
+
+    UPDATE ZTASPFLI27 SET DFLAG = 'X'
+                      WHERE CARRID = LS_DELETE-CARRID
+                        AND CONNID = LS_DELETE-CONNID.
+
+      PERFORM MOVE_TO_LOG USING 'D' P_SUBRC LS_DELETE.
+  ENDLOOP.
+
+  MESSAGE I016(PN) WITH 'Delete Completed'.
+  CLEAR: LS_DELETE, LT_DELETE.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_CONNID_NUMBER
+*&---------------------------------------------------------------------*
+FORM SET_CONNID_NUMBER .
+  DATA: LV_NR TYPE INRI-NRRANGENR VALUE '01'.
+  CALL FUNCTION 'NUMBER_GET_NEXT'
+    EXPORTING
+      NR_RANGE_NR             = LV_NR
+      OBJECT                  = 'ZA27_01'
+    IMPORTING
+      NUMBER                  = GS_LIST-CONNID
+    EXCEPTIONS
+      INTERVAL_NOT_FOUND      = 1
+      NUMBER_RANGE_NOT_INTERN = 2
+      OBJECT_NOT_FOUND        = 3
+      QUANTITY_IS_0           = 4
+      QUANTITY_IS_NOT_1       = 5
+      INTERVAL_OVERFLOW       = 6
+      BUFFER_OVERFLOW         = 7.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form MOVE_TO_LOG
+*&---------------------------------------------------------------------*
+FORM MOVE_TO_LOG USING VALUE(P_LOG)
+                       VALUE(P_SUBRC)
+                       VALUE(P_LIST) LIKE GS_LIST.
+  DATA: LS_LIST LIKE ZTASPFLI27_D,
+        LT_LIST LIKE TABLE OF LS_LIST.
+
+  LS_LIST-CARRID   = P_LIST-CARRID.
+  LS_LIST-CONNID   = P_LIST-CONNID.
+  LS_LIST-AIRPFROM = P_LIST-AIRPFROM.
+  LS_LIST-AIRPTO   = P_LIST-AIRPTO.
+  LS_LIST-CITYFROM = P_LIST-CITYFROM.
+  LS_LIST-CITYTO   = P_LIST-CITYTO.
+
+  IF P_LOG = 'D'.
+    LS_LIST-DEL_TIME = SY-DATUM.
+
+    INSERT ZTASPFLI27_D FROM LS_LIST.
+
+  ELSEIF P_LOG = 'R'.
+    LS_LIST-REC_TIME = SY-DATUM.
+
+    UPDATE ZTASPFLI27_D SET REC_TIME = LS_LIST-REC_TIME
+                        WHERE CARRID = LS_LIST-CARRID
+                          AND CONNID = LS_LIST-CONNID.
+  ENDIF.
+
+  COMMIT WORK.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form RECOVER_DELETED_DATA
+*&---------------------------------------------------------------------*
+FORM RECOVER_DELETED_DATA CHANGING P_SUBRC.
+  DATA: LT_ROWS    TYPE LVC_T_ROID,
+        LS_ROWS    LIKE LINE OF LT_ROWS,
+        LS_RECOVER LIKE GS_LIST,
+        LT_RECOVER LIKE TABLE OF LS_RECOVER.
+
+  CLEAR P_SUBRC.
+
+  CALL METHOD GO_ALV->GET_SELECTED_ROWS
+    IMPORTING
+      ET_ROW_NO = LT_ROWS.
+
+  LOOP AT LT_ROWS INTO LS_ROWS.
+    READ TABLE GT_LIST INDEX LS_ROWS-ROW_ID INTO LS_RECOVER.
+
+    UPDATE ZTASPFLI27 SET DFLAG = ''
+                    WHERE CARRID = LS_RECOVER-CARRID
+                      AND CONNID = LS_RECOVER-CONNID.
+
+    PERFORM MOVE_TO_LOG USING 'R' P_SUBRC LS_RECOVER.
+  ENDLOOP.
+
+  MESSAGE I016(PN) WITH 'Recovery Completed'.
+
+  CLEAR: LS_RECOVER, LT_RECOVER.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,144 @@
+*&---------------------------------------------------------------------*
+*& Include          MZCLA27_70_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form SET_DEFAULT_DATA
+*&---------------------------------------------------------------------*
+FORM SET_DEFAULT_DATA CHANGING S_DEFAULT LIKE ZSA27_70.
+  CLEAR S_DEFAULT.
+
+  S_DEFAULT-CARRID = 'AA'.
+  S_DEFAULT-CONNID = '0017'.
+  S_DEFAULT-FLDATE_B = '20210601'.
+  S_DEFAULT-FLDATE_E = '20210630'.
+
+  SELECT SINGLE CARRNAME
+    FROM SCARR
+    INTO S_DEFAULT-CARRNAME
+    WHERE CARRID = S_DEFAULT-CARRID.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_ALV_0100
+*&---------------------------------------------------------------------*
+FORM SET_ALV_0100 .
+  CREATE OBJECT GO_CON
+    EXPORTING
+      CONTAINER_NAME = 'MYCON'.
+
+  CREATE OBJECT GO_ALV
+    EXPORTING
+      I_PARENT = GO_CON.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form DISPLAY_ALV_0100
+*&---------------------------------------------------------------------*
+FORM DISPLAY_ALV_0100 .
+
+  "Layout
+  GS_LAYO-ZEBRA = 'X'.
+  GS_LAYO-CWIDTH_OPT = 'X'.
+
+  "Field Catalog
+*  GS_FCAT-FIELDNAME = 'CUSTTYPE'.
+*  GS_FCAT-COLTEXT = 'Customer Type'.
+*  APPEND GS_FCAT TO GT_FCAT.
+*
+*  CLEAR GS_FCAT.
+
+  CALL METHOD GO_ALV->SET_TABLE_FOR_FIRST_DISPLAY
+    EXPORTING
+      I_STRUCTURE_NAME              = 'ZSA27_70_ALV'
+      IS_LAYOUT                     = GS_LAYO
+    CHANGING
+      IT_OUTTAB                     = GT_INFO
+*     IT_FIELDCATALOG               = GT_FCAT
+    EXCEPTIONS
+      INVALID_PARAMETER_COMBINATION = 1
+      PROGRAM_ERROR                 = 2
+      TOO_MANY_LINES                = 3
+      OTHERS                        = 4.
+  IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+  ENDIF.
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form FREE_CONTROL_RESOURCES
+*&---------------------------------------------------------------------*
+FORM FREE_CONTROL_RESOURCES .
+  CALL METHOD GO_ALV->FREE.
+  CALL METHOD GO_CON->FREE.
+
+  FREE: GO_CON, GO_ALV.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_INFO
+*&---------------------------------------------------------------------*
+FORM GET_INFO USING VALUE(P_BOOK) LIKE ZSA27_70
+              CHANGING PT_INFO LIKE GT_INFO.
+
+  SELECT *
+    FROM SBOOK AS A JOIN SFLIGHT AS B
+      ON A~CARRID = B~CARRID
+     AND A~CONNID = B~CONNID
+     AND A~FLDATE = B~FLDATE
+    INTO CORRESPONDING FIELDS OF TABLE PT_INFO
+   WHERE A~CARRID = P_BOOK-CARRID
+     AND A~CONNID = P_BOOK-CONNID
+     AND A~FLDATE BETWEEN P_BOOK-FLDATE_B
+                      AND P_BOOK-FLDATE_E.
+
+  IF SY-SUBRC IS NOT INITIAL.
+    MESSAGE I016(PN) WITH 'Data Not Found!!'.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_carrname
+*&---------------------------------------------------------------------*
+FORM GET_CARRNAME CHANGING P_CARR LIKE ZSA27_70
+                           PT_INFO LIKE GT_INFO.
+
+  DATA: LS_INFO LIKE LINE OF PT_INFO.
+
+  SELECT SINGLE CARRNAME
+    FROM SCARR
+    INTO P_CARR-CARRNAME
+   WHERE CARRID = P_CARR-CARRID.
+
+  LOOP AT PT_INFO INTO LS_INFO.
+    LS_INFO-CARRNAME = P_CARR-CARRNAME.
+
+    MODIFY PT_INFO FROM LS_INFO.
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_CUSTOMER_INFO
+*&---------------------------------------------------------------------*
+FORM GET_CUSTOMER_INFO CHANGING P_CUSTOM LIKE ZSA27_16.
+  DATA: LV_FIELD(30),
+        LV_VALUE     TYPE SBOOK-CUSTOMID.
+
+  GET CURSOR VALUE LV_VALUE
+             FIELD LV_FIELD.
+
+  IF LV_FIELD = 'ZSA27_41-CUSTOMID'.
+
+    SELECT SINGLE *
+      FROM SCUSTOM
+      INTO CORRESPONDING FIELDS OF P_CUSTOM
+     WHERE ID = LV_VALUE.
+
+    CALL SCREEN 101 STARTING AT 10 10.
+
+  ELSE.
+    RETURN.
+  ENDIF.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

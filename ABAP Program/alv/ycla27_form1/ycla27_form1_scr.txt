@@ -1,0 +1,22 @@
+*&---------------------------------------------------------------------*
+*& Include          YCLA31_FORM1_SCR
+*&---------------------------------------------------------------------*
+*----------------------------------------------------------------------*
+* SCREEN 1000
+*----------------------------------------------------------------------*
+* - Prefix ##
+*   1. PA_  : Parameters (checkbox, radiobutton... )
+*   2. S_  : Selection-options
+* EX) PARAMETER: PA_DATUM TYPE DATUM DEFAULT SY-DATUM OBLIGATORY.
+
+SELECTION-SCREEN FUNCTION KEY 1.
+
+SELECTION-SCREEN BEGIN OF BLOCK BL1 WITH FRAME TITLE TEXT-B01.
+
+  SELECT-OPTIONS: S_TEAM FOR YEDU31T0001-TEAM .
+  PARAMETERS: P_DATUM TYPE YEDU31T0002-DATUM OBLIGATORY.
+
+SELECTION-SCREEN END OF BLOCK BL1.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,29 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_EXAM01
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zrtu27_exam01_top.
+
+INCLUDE zrtu27_exam01_o01.
+INCLUDE zrtu27_exam01_i01.
+INCLUDE zrtu27_exam01_f01.
+
+AT SELECTION-SCREEN. "PAI
+  PERFORM student_check .
+
+START-OF-SELECTION.
+  PERFORM get_student_data .
+
+  cl_demo_output=>display_data( gt_info ).
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZMCLA00
+*001   Must Input value
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

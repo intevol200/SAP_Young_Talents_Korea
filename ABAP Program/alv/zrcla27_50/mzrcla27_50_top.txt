@@ -1,0 +1,23 @@
+*&---------------------------------------------------------------------*
+*& Include MZRCLA9901TOP                            - Report ZRCLA9901
+*&---------------------------------------------------------------------*
+REPORT zrcla9901.
+* Common
+DATA: gv_subrc TYPE sy-subrc, " 0, 4 ( 1, 2, 3, .. )
+      ok_code  TYPE sy-ucomm.
+
+* List Variable ( Emp )
+DATA: gs_emp TYPE zsa27_alv01,
+      gt_emp LIKE TABLE OF gs_emp.
+
+* Selection Screen
+SELECT-OPTIONS so_eid FOR gs_emp-pernr.
+
+
+* ALV
+DATA: go_con  TYPE REF TO cl_gui_custom_container,
+      go_alv  TYPE REF TO cl_gui_alv_grid,
+      gs_layo TYPE lvc_s_layo.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,22 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_62
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_62.
+
+PARAMETERS PA_CAR TYPE SCARR-CARRID.
+
+START-OF-SELECTION.
+
+  SUBMIT ZRCLA27_61 WITH SO_CAR EQ PA_CAR. "### ### # ##
+*  SUBMIT ZRCLA27_61. "###### ## # ##
+*  SUBMIT ZRCLA27_61 AND RETURN. "###### ## # PA_CAR ##
+*  SUBMIT ZRCLA27_61 VIA SELECTION-SCREEN. "### ### ##
+*  CALL TRANSACTION 'ZRCLA9961'. "## ##
+*  CALL TRANSACTION 'ZRCLA9961' AND SKIP FIRST SCREEN. "### ##### ##
+*  LEAVE TO TRANSACTION 'ZRCLA9961'. "## #### ##
+  WRITE PA_CAR.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

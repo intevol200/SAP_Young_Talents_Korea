@@ -1,0 +1,410 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCLA27_07_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form DISPLAY_ALV_0100
+*&---------------------------------------------------------------------*
+FORM DISPLAY_ALV_0100 .
+  IF GO_ALV IS INITIAL. RETURN. ENDIF.
+
+  GS_LAYO-ZEBRA = 'X'.
+  GS_LAYO-CWIDTH_OPT = 'X'.
+  GS_LAYO-SEL_MODE = 'A'.
+  GS_LAYO-EXCP_FNAME = 'LIGHT'.
+  GS_LAYO-EXCP_LED = 'X'.
+  GS_LAYO-INFO_FNAME = 'COLOR'.
+
+  PERFORM SORT_LIGHT.
+  PERFORM FIELD_CAT.
+
+  CALL METHOD GO_ALV->SET_TABLE_FOR_FIRST_DISPLAY
+    EXPORTING
+*     I_BUFFER_ACTIVE               =
+*     I_BYPASSING_BUFFER            =
+*     I_CONSISTENCY_CHECK           =
+      I_STRUCTURE_NAME              = 'ZSCLA27LAST_1'
+*     IS_VARIANT                    =
+*     I_SAVE                        =
+*     I_DEFAULT                     = 'X'
+      IS_LAYOUT                     = GS_LAYO
+*     IS_PRINT                      =
+*     IT_SPECIAL_GROUPS             =
+*     IT_TOOLBAR_EXCLUDING          =
+*     IT_HYPERLINK                  =
+*     IT_ALV_GRAPHICS               =
+*     IT_EXCEPT_QINFO               =
+*     IR_SALV_ADAPTER               =
+    CHANGING
+      IT_OUTTAB                     = GT_LIST
+      IT_FIELDCATALOG               = GT_FCAT
+      IT_SORT                       = GT_SORT
+*     IT_FILTER                     =
+    EXCEPTIONS
+      INVALID_PARAMETER_COMBINATION = 1
+      PROGRAM_ERROR                 = 2
+      TOO_MANY_LINES                = 3
+      OTHERS                        = 4.
+  IF SY-SUBRC <> 0.
+*   Implement suitable error handling here
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form FIELD_CAT
+*&---------------------------------------------------------------------*
+FORM FIELD_CAT .
+  CLEAR: GS_FCAT, GT_FCAT.
+
+  GS_FCAT-FIELDNAME = 'S_CUSTTYPE'.
+  GS_FCAT-NO_OUT = 'X'.
+  APPEND GS_FCAT TO GT_FCAT.
+
+  CLEAR GS_FCAT.
+  GS_FCAT-FIELDNAME = 'SMOKER'.
+  GS_FCAT-NO_OUT = 'X'.
+  APPEND GS_FCAT TO GT_FCAT.
+
+  CLEAR GS_FCAT.
+  GS_FCAT-FIELDNAME = 'CUSTTYPE'.
+  GS_FCAT-COLTEXT = 'Customer Type'.
+  APPEND GS_FCAT TO GT_FCAT.
+
+  CLEAR GS_FCAT.
+  GS_FCAT-FIELDNAME = 'CLASS'.
+  GS_FCAT-COLTEXT = 'Class Type'.
+  APPEND GS_FCAT TO GT_FCAT.
+
+  CLEAR GS_FCAT.
+  GS_FCAT-FIELDNAME = 'LIGHT'.
+  GS_FCAT-COLTEXT = 'Status'.
+  APPEND GS_FCAT TO GT_FCAT.
+
+  LOOP AT GT_FCAT INTO GS_FCAT.
+    CASE GS_FCAT-FIELDNAME.
+      WHEN 'CARRID' OR 'LIGHT'.
+        GS_FCAT-HOTSPOT = 'X'.
+    ENDCASE.
+
+    MODIFY GT_FCAT FROM GS_FCAT TRANSPORTING HOTSPOT.
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_DEFAULT
+*&---------------------------------------------------------------------*
+FORM SET_DEFAULT .
+  CLEAR: GT_LIST, GT_MENU.
+
+  PA_CAR = 'AA'.
+  PA_CON = '0017'.
+
+  SO_FLD-SIGN = 'I'.
+  SO_FLD-LOW = '20210121'.
+  APPEND SO_FLD TO SO_FLD[].
+
+  SO_BID-SIGN = 'I'.
+  SO_BID-OPTION = 'BT'.
+  SO_BID-LOW = '1'.
+  SO_BID-HIGH = '428'.
+  APPEND SO_BID TO SO_BID[].
+
+  PA_SMK = 'X'.
+  PA_NSMK = 'X'.
+  PA_CUST = 'P'.
+
+  GS_SORT-SPOS = '1'.
+  GS_SORT-FIELDNAME = 'LIGHT'.
+  GS_SORT-UP = 'X'.
+  APPEND GS_SORT TO GT_SORT.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_ALV_0200
+*&---------------------------------------------------------------------*
+FORM SET_ALV_0200 .
+  CREATE OBJECT MU_CON
+    EXPORTING
+      CONTAINER_NAME              = 'CON_MENU'
+    EXCEPTIONS
+      CNTL_ERROR                  = 1
+      CNTL_SYSTEM_ERROR           = 2
+      CREATE_ERROR                = 3
+      LIFETIME_ERROR              = 4
+      LIFETIME_DYNPRO_DYNPRO_LINK = 5
+      OTHERS                      = 6.
+  IF SY-SUBRC <> 0.
+*   MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*              WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+  CREATE OBJECT MU_ALV
+    EXPORTING
+      I_PARENT          = MU_CON
+    EXCEPTIONS
+      ERROR_CNTL_CREATE = 1
+      ERROR_CNTL_INIT   = 2
+      ERROR_CNTL_LINK   = 3
+      ERROR_DP_CREATE   = 4
+      OTHERS            = 5.
+  IF SY-SUBRC <> 0.
+*   MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*              WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form DISPLAY_ALV_0200
+*&---------------------------------------------------------------------*
+FORM DISPLAY_ALV_0200 .
+  IF MU_ALV IS INITIAL. RETURN. ENDIF.
+
+  GS_LAYO2-SEL_MODE = 'A'.
+
+  CALL METHOD MU_ALV->SET_TABLE_FOR_FIRST_DISPLAY
+    EXPORTING
+*     I_BUFFER_ACTIVE  =
+*     I_BYPASSING_BUFFER            =
+*     I_CONSISTENCY_CHECK           =
+      I_STRUCTURE_NAME = 'ZSCLA27_MENU'
+*     IS_VARIANT       =
+*     I_SAVE           =
+*     I_DEFAULT        = 'X'
+      IS_LAYOUT        = GS_LAYO2
+*     IS_PRINT         =
+*     IT_SPECIAL_GROUPS             =
+*     IT_TOOLBAR_EXCLUDING          =
+*     IT_HYPERLINK     =
+*     IT_ALV_GRAPHICS  =
+*     IT_EXCEPT_QINFO  =
+*     IR_SALV_ADAPTER  =
+    CHANGING
+      IT_OUTTAB        = GT_MENU
+*     IT_FIELDCATALOG  =
+*     IT_SORT          =
+*     IT_FILTER        =
+*    EXCEPTIONS
+*     INVALID_PARAMETER_COMBINATION = 1
+*     PROGRAM_ERROR    = 2
+*     TOO_MANY_LINES   = 3
+*     OTHERS           = 4
+    .
+  IF SY-SUBRC <> 0.
+*   Implement suitable error handling here
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_BOOK_DATA
+*&---------------------------------------------------------------------*
+FORM GET_BOOK_DATA USING VALUE(P_RADIO).
+  PERFORM SELECT_DATA.
+  CASE PA_CUST.
+    WHEN 'B'.
+      PERFORM CHECK_CUSTTYPE USING P_RADIO 'B'.
+    WHEN 'P'.
+      PERFORM CHECK_CUSTTYPE USING P_RADIO 'P'.
+  ENDCASE.
+
+  LOOP AT GT_LIST INTO GS_LIST.
+    IF GS_LIST-S_CUSTTYPE = 'B' AND
+       GS_LIST-CUSTTYPE = 'P'.
+
+      GS_LIST-CUSTTYPE = 'B'.
+    ELSEIF GS_LIST-S_CUSTTYPE <> GS_LIST-CUSTTYPE.
+      GS_LIST-COLOR = 'C611'.
+    ENDIF.
+
+    PERFORM GET_DOMAIN_VALUE USING 'S_CLASS'
+                             CHANGING GS_LIST-CLASS.
+    PERFORM GET_DOMAIN_VALUE USING 'S_CUSTTYPE'
+                             CHANGING GS_LIST-CUSTTYPE.
+
+    MODIFY GT_LIST FROM GS_LIST.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SELECT_DATA
+*&---------------------------------------------------------------------*
+FORM SELECT_DATA .
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form CHECK_CUSTTYPE
+*&---------------------------------------------------------------------*
+FORM CHECK_CUSTTYPE USING VALUE(P_RADIO)
+                          VALUE(P_CUST).
+
+  SELECT A~CARRID A~CONNID A~FLDATE A~BOOKID
+         A~LOCCURAM A~LOCCURKEY
+         A~CUSTOMID B~NAME A~CUSTTYPE
+         A~CLASS B~CUSTTYPE A~SMOKER
+  FROM SBOOK AS A JOIN SCUSTOM AS B
+    ON A~CUSTOMID = B~ID
+    INTO TABLE GT_LIST
+    WHERE A~CARRID = PA_CAR
+      AND A~CONNID = PA_CON
+      AND A~FLDATE IN SO_FLD
+      AND A~BOOKID IN SO_BID
+      AND A~CLASS = P_RADIO
+      AND A~CUSTTYPE = P_CUST.
+
+  SELECT *
+    FROM ZTCLA27REQ_1
+    INTO CORRESPONDING FIELDS OF TABLE GT_JOIN.
+
+  LOOP AT GT_LIST INTO GS_LIST.
+    READ TABLE GT_JOIN INTO GS_JOIN WITH KEY CARRID = GS_LIST-CARRID
+                                             CONNID = GS_LIST-CARRID
+                                             BOOKID = GS_LIST-BOOKID.
+
+    IF GS_LIST-STATUS IS INITIAL.
+      GS_LIST-STATUS = 'Not Requsted'.
+      GS_LIST-LIGHT = 1.
+    ELSE.
+      GS_LIST-STATUS = GS_JOIN-MSTAT.
+      GS_LIST-LIGHT = 3.
+    ENDIF.
+
+    MODIFY GT_LIST FROM GS_LIST.
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_MENU
+*&---------------------------------------------------------------------*
+FORM GET_MENU .
+  SELECT *
+    FROM SMENU AS A JOIN SCARR AS B
+    ON A~CARRID = B~CARRID
+    INTO CORRESPONDING FIELDS OF TABLE GT_MENU
+    WHERE A~CARRID = GS_LIST-CARRID.
+
+  SELECT *
+  FROM SMEALT
+  INTO CORRESPONDING FIELDS OF TABLE GT_MEAL.
+
+  LOOP AT GT_MENU INTO GS_MENU.
+    PERFORM GET_MENU_NAME USING GS_MENU-STARTER
+                          CHANGING GS_MENU-ADISH.
+
+    PERFORM GET_MENU_NAME USING GS_MENU-MAINCOURSE
+                          CHANGING GS_MENU-MDISH.
+
+    PERFORM GET_MENU_NAME USING GS_MENU-DESSERT
+                          CHANGING GS_MENU-DDISH.
+
+    MODIFY GT_MENU FROM GS_MENU.
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_DOMAIN_VALUE
+*&---------------------------------------------------------------------*
+FORM GET_DOMAIN_VALUE USING VALUE(P_DOM)
+                      CHANGING P_STR.
+
+  DATA: LS_DOM TYPE DD07V,
+        LT_DOM LIKE TABLE OF LS_DOM.
+
+  CALL FUNCTION 'GET_DOMAIN_VALUES'
+    EXPORTING
+      DOMNAME         = P_DOM
+      TEXT            = 'X'
+    TABLES
+      VALUES_TAB      = LT_DOM
+    EXCEPTIONS
+      NO_VALUES_FOUND = 1
+      OTHERS          = 2.
+  IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+  ENDIF.
+
+  READ TABLE LT_DOM INTO LS_DOM WITH KEY DOMVALUE_L = P_STR.
+  P_STR = LS_DOM-DDTEXT.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_SELECTED_ROWS
+*&---------------------------------------------------------------------*
+FORM GET_SELECTED_ROWS.
+  DATA: LT_ROWS  TYPE LVC_T_ROID,
+        LS_ROWS  LIKE LINE OF LT_ROWS,
+        LV_COUNT TYPE I.
+
+  CLEAR GV_SUBRC.
+
+  CALL METHOD GO_ALV->GET_SELECTED_ROWS
+    IMPORTING
+      ET_ROW_NO = LT_ROWS.
+
+  LV_COUNT = LINES( LT_ROWS ).
+
+  IF LV_COUNT > 1.
+    MESSAGE I016(PN) WITH 'Please Select Only One Data'.
+    GV_SUBRC = 4.
+    RETURN.
+  ELSEIF LV_COUNT IS INITIAL.
+    MESSAGE I016(PN) WITH 'Please Select a Line'.
+    GV_SUBRC = 4.
+    RETURN.
+  ELSE.
+    READ TABLE LT_ROWS INDEX 1 INTO LS_ROWS.
+  ENDIF.
+
+  READ TABLE GT_LIST INDEX LS_ROWS-ROW_ID INTO GS_LIST.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_menu_name
+*&---------------------------------------------------------------------*
+FORM GET_MENU_NAME USING VALUE(P_MENU)
+                   CHANGING P_TEXT.
+
+  READ TABLE GT_MEAL INTO GS_MEAL WITH KEY CARRID = GS_MENU-CARRID
+                                           MEALNUMBER = P_MENU.
+
+  P_TEXT = GS_MEAL-TEXT.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_MENU_ROWS
+*&---------------------------------------------------------------------*
+FORM GET_MENU_ROWS .
+  DATA: LT_ROWS  TYPE LVC_T_ROID,
+        LS_ROWS  LIKE LINE OF LT_ROWS,
+        LV_COUNT TYPE I.
+
+  CLEAR GV_SUBRC.
+
+  CALL METHOD MU_ALV->GET_SELECTED_ROWS
+    IMPORTING
+      ET_ROW_NO = LT_ROWS.
+
+  LV_COUNT = LINES( LT_ROWS ).
+
+  IF LV_COUNT > 1.
+    MESSAGE I016(PN) WITH 'Please Select Only One Menu'.
+    GV_SUBRC = 4.
+    RETURN.
+  ELSEIF LV_COUNT IS INITIAL.
+    MESSAGE I016(PN) WITH 'Please Select a Menu'.
+    GV_SUBRC = 4.
+    RETURN.
+  ELSE.
+    READ TABLE LT_ROWS INDEX 1 INTO LS_ROWS.
+  ENDIF.
+
+  READ TABLE GT_MENU INDEX LS_ROWS-ROW_ID INTO GS_MENU.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SORT_LIGHT
+*&---------------------------------------------------------------------*
+FORM SORT_LIGHT .
+  CLEAR: GS_SORT, GT_SORT.
+
+  GS_SORT-FIELDNAME = 'LIGHT'.
+  GS_SORT-DOWN = 'X'.
+  APPEND GS_SORT TO GT_SORT.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

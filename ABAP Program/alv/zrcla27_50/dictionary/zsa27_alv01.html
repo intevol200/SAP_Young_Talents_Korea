@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=EUC-KR" />
+<title>Dictionary object- ZSA27_ALV01</title>
+<style type="text/css">
+  th{text-align:left}
+  .cell{
+     font-family:"Courier New", Courier, monospace;
+     color:#000;
+     font-size:12px;
+     background-color:#F2F4F7;
+  }
+  .cell td { border: thin solid #ccc; }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+  <table class="outerTable">
+    <tr>
+      <td><h2>Table: ZSA27_ALV01</h2>
+  <h3>Description: [CLA00] Emp List</h3></td>
+    </tr>
+    <tr>
+      <td><!--This is where our main table begins  -->
+<table class="innerTable">
+<tr>
+  <th>Row</th>
+  <th>Field name</th>
+  <th>Position</th>
+  <th>Key</th>
+  <th>Data element</th>
+  <th>Domain</th>
+  <th>Datatype</th>
+  <th>Length</th>
+  <th>Lowercase</th>
+  <th>Domain text</th>
+</tr>
+<tr class="cell">
+  <td> 1</td>
+  <td>.INCLUDE</td>
+  <td>1</td>
+  <td>&nbsp;</td>
+  <td>ZTEMP</td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+  <td>0</td>
+  <td>&nbsp;</td>
+  <td>[UX410] Demo Table: Employee</td>
+</tr>
+<tr class="cell">
+  <td> 2</td>
+  <td>MANDT</td>
+  <td>2</td>
+  <td>&nbsp;</td>
+  <td>MANDT</td>
+  <td>MANDT</td>
+  <td>CLNT</td>
+  <td>3</td>
+  <td>&nbsp;</td>
+  <td>Client</td>
+</tr>
+<tr class="cell">
+  <td> 3</td>
+  <td>PERNR</td>
+  <td>3</td>
+  <td>&nbsp;</td>
+  <td>ZEPERNR</td>
+  <td>ZDPERNR</td>
+  <td>NUMC</td>
+  <td>8</td>
+  <td>&nbsp;</td>
+  <td>[CLA00] Personal Number</td>
+</tr>
+<tr class="cell">
+  <td> 4</td>
+  <td>ENAME</td>
+  <td>4</td>
+  <td>&nbsp;</td>
+  <td>EMNAM</td>
+  <td>TEXT40</td>
+  <td>CHAR</td>
+  <td>40</td>
+  <td>X</td>
+  <td>Formatted Name of Employee or Applicant</td>
+</tr>
+<tr class="cell">
+  <td> 5</td>
+  <td>BEGDA</td>
+  <td>5</td>
+  <td>&nbsp;</td>
+  <td>BEGDA</td>
+  <td>DATUM</td>
+  <td>DATS</td>
+  <td>8</td>
+  <td>&nbsp;</td>
+  <td>Start Date</td>
+</tr>
+<tr class="cell">
+  <td> 6</td>
+  <td>GRADE</td>
+  <td>6</td>
+  <td>&nbsp;</td>
+  <td>ZEGRADE</td>
+  <td>ZDGRADE</td>
+  <td>CHAR</td>
+  <td>1</td>
+  <td>&nbsp;</td>
+  <td>Grade</td>
+</tr>
+<tr class="cell">
+  <td> 7</td>
+  <td>DEPID</td>
+  <td>7</td>
+  <td>&nbsp;</td>
+  <td>ZEDEPID</td>
+  <td>ZDDEPID</td>
+  <td>CHAR</td>
+  <td>4</td>
+  <td>&nbsp;</td>
+  <td>Department ID</td>
+</tr>
+<tr class="cell">
+  <td> 8</td>
+  <td>SALARY</td>
+  <td>8</td>
+  <td>&nbsp;</td>
+  <td>ZDEASAL00</td>
+  <td>&nbsp;</td>
+  <td>CURR</td>
+  <td>15</td>
+  <td>&nbsp;</td>
+  <td>[CLA00] Salary</td>
+</tr>
+<tr class="cell">
+  <td> 9</td>
+  <td>WAERS</td>
+  <td>9</td>
+  <td>&nbsp;</td>
+  <td>WAERS</td>
+  <td>WAERS</td>
+  <td>CUKY</td>
+  <td>5</td>
+  <td>&nbsp;</td>
+  <td>Currency Key</td>
+</tr>
+<tr class="cell">
+  <td>10</td>
+  <td>SKILL</td>
+  <td>10</td>
+  <td>&nbsp;</td>
+  <td>ZEASKILL</td>
+  <td>ZDASKILL</td>
+  <td>CHAR</td>
+  <td>2</td>
+  <td>&nbsp;</td>
+  <td>[CLA00] Skill</td>
+</tr>
+<tr class="cell">
+  <td>11</td>
+  <td>GESCH</td>
+  <td>11</td>
+  <td>&nbsp;</td>
+  <td>GESCH</td>
+  <td>GESCH</td>
+  <td>CHAR</td>
+  <td>1</td>
+  <td>&nbsp;</td>
+  <td>Gender Key</td>
+</tr>
+<tr class="cell">
+  <td>12</td>
+  <td>BUDGET</td>
+  <td>12</td>
+  <td>&nbsp;</td>
+  <td>ZEABUDGET</td>
+  <td>&nbsp;</td>
+  <td>CURR</td>
+  <td>16</td>
+  <td>&nbsp;</td>
+  <td>[ClA00] Dep Budget</td>
+</tr>
+<tr class="cell">
+  <td>13</td>
+  <td>WAERS_DEP</td>
+  <td>13</td>
+  <td>&nbsp;</td>
+  <td>WAERS</td>
+  <td>WAERS</td>
+  <td>CUKY</td>
+  <td>5</td>
+  <td>&nbsp;</td>
+  <td>Currency Key</td>
+</tr>
+<tr class="cell">
+  <td>14</td>
+  <td>DTEXT</td>
+  <td>14</td>
+  <td>&nbsp;</td>
+  <td>ZEDTEXT</td>
+  <td>TEXT40</td>
+  <td>CHAR</td>
+  <td>40</td>
+  <td>X</td>
+  <td>Department Name</td>
+</tr>
+<tr class="cell">
+  <td>15</td>
+  <td>IT_COL</td>
+  <td>15</td>
+  <td>&nbsp;</td>
+  <td>LVC_T_SCOL</td>
+  <td>&nbsp;</td>
+  <td>TTYP</td>
+  <td>0</td>
+  <td>&nbsp;</td>
+  <td>ALV control: Table for cell coloring</td>
+</tr>
+      </table>
+     </td>
+   </tr>
+<br/>
+  <table class="outerTable">
+    <tr>
+      <td><h2>Fixed Domain Values </h2>
+    </tr>
+    <tr>
+      <td><!--This is where our main table begins  -->
+<table class="innerTable">
+<tr>
+  <th>Domain Name</th>
+  <th>Value Low</th>
+  <th>Value High</th>
+  <th>Text</th>
+</tr>
+<tr class="cell">
+  <td>ZDGRADE</td>
+  <td>E</td>
+  <td>&nbsp;</td>
+  <td>Employee</td>
+</tr>
+<tr class="cell">
+  <td>ZDGRADE</td>
+  <td>M</td>
+  <td>&nbsp;</td>
+  <td>Manager</td>
+</tr>
+<tr class="cell">
+  <td>ZDGRADE</td>
+  <td>C</td>
+  <td>&nbsp;</td>
+  <td>Chief</td>
+</tr>
+<tr class="cell">
+  <td>ZDASKILL</td>
+  <td>S1</td>
+  <td>&nbsp;</td>
+  <td>ABAP</td>
+</tr>
+<tr class="cell">
+  <td>ZDASKILL</td>
+  <td>S2</td>
+  <td>&nbsp;</td>
+  <td>ABAP for HANA</td>
+</tr>
+<tr class="cell">
+  <td>ZDASKILL</td>
+  <td>S3</td>
+  <td>&nbsp;</td>
+  <td>Fiori and SAPUI5</td>
+</tr>
+<tr class="cell">
+  <td>ZDASKILL</td>
+  <td>S4</td>
+  <td>&nbsp;</td>
+  <td>Module</td>
+</tr>
+<tr class="cell">
+  <td>ZDASKILL</td>
+  <td>S5</td>
+  <td>&nbsp;</td>
+  <td>Non-SAP</td>
+</tr>
+<tr class="cell">
+  <td>GESCH</td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+  <td>unknown</td>
+</tr>
+<tr class="cell">
+  <td>GESCH</td>
+  <td>1</td>
+  <td>&nbsp;</td>
+  <td>Male</td>
+</tr>
+<tr class="cell">
+  <td>GESCH</td>
+  <td>2</td>
+  <td>&nbsp;</td>
+  <td>Female</td>
+</tr>
+      </table>
+     </td>
+   </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

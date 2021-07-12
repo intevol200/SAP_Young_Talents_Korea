@@ -1,0 +1,21 @@
+*&---------------------------------------------------------------------*
+*& Include ZBA27_021_TOP                            - Report ZBA27_021
+*&---------------------------------------------------------------------*
+REPORT ZBA27_021.
+
+DATA: BEGIN OF GS_DATA,
+        CARRID(2),
+        CARRNAME(30),
+        CURRCODE(3),
+        URL(50),
+      END OF GS_DATA,
+      GT_DATA LIKE TABLE OF GS_DATA.
+
+DATA: GS_BDC TYPE BDCDATA,
+      GT_BDC LIKE TABLE OF GS_BDC.
+
+
+PARAMETERS PA_FILE TYPE RLGRAP-FILENAME.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

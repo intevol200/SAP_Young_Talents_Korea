@@ -1,0 +1,41 @@
+*&---------------------------------------------------------------------*
+*& Report ZRADB27_20
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRADB27_20.
+
+DATA: GS_ZTASCARR27 TYPE ZTASCARR27.
+CLEAR: GS_ZTASCARR27, SY-SUBRC.
+
+GS_ZTASCARR27-CARRID = 'KA'.
+GS_ZTASCARR27-CARRNAME = 'Korea Airline'.
+
+INSERT ZTASCARR27 FROM GS_ZTASCARR27.
+
+"ALL OR NOTHING ### ##
+"COMMIT# ### ##
+IF SY-SUBRC IS NOT INITIAL.
+  ROLLBACK WORK.
+  RETURN.
+*ELSE.
+*  COMMIT WORK.
+ENDIF.
+
+*--------------------------------------------------------------------*
+DATA: GS_ZTASPFLI27 TYPE ZTASPFLI27.
+CLEAR: GS_ZTASPFLI27, SY-SUBRC.
+
+GS_ZTASPFLI27-CARRID = 'KA'.
+GS_ZTASPFLI27-CONNID = '0001'.
+
+INSERT ZTASPFLI27 FROM GS_ZTASPFLI27.
+
+IF SY-SUBRC IS NOT INITIAL.
+  ROLLBACK WORK.
+ELSE.
+  COMMIT WORK.
+ENDIF.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

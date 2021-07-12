@@ -1,0 +1,31 @@
+*&---------------------------------------------------------------------*
+*& Report SAPMZCLA27_82
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE MZCLA27_82_TOP                          .    " Global Data
+
+INCLUDE MZCLA27_82_O01                          .  " PBO-Modules
+INCLUDE MZCLA27_82_I01                          .  " PAI-Modules
+INCLUDE MZCLA27_82_F01                          .  " FORM-Routines
+
+START-OF-SELECTION.
+  PERFORM GET_DATA.
+
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* T100 --> SPFLI Demo
+* T200 --> CREATE DATA
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: PN
+*016   & & & &
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,36 @@
+*&---------------------------------------------------------------------*
+*& Include MZRCLA9901TOP                            - Report ZRCLA9901
+*&---------------------------------------------------------------------*
+REPORT ZRCLA9901.
+* Common
+DATA: GV_SUBRC TYPE SY-SUBRC, " 0, 4 ( 1, 2, 3, .. )
+      OK_CODE  TYPE SY-UCOMM.
+
+* List Variable ( Emp )
+*DATA: GS_EMP TYPE ZSA00_ALV01,
+*      GT_EMP LIKE TABLE OF GS_EMP.
+DATA: BEGIN OF GS_EMP.
+        INCLUDE TYPE ZSA00_ALV01.
+DATA: LIGHT,
+      COLOR TYPE C LENGTH 4,
+      SKILL_T TYPE DDTEXT,
+      END OF GS_EMP,
+      GT_EMP LIKE TABLE OF GS_EMP.
+
+
+* Selection Screen
+SELECT-OPTIONS SO_EID FOR GS_EMP-PERNR NO-EXTENSION NO INTERVALS.
+
+
+* ALV
+DATA: GO_CON TYPE REF TO CL_GUI_CUSTOM_CONTAINER,
+      GO_ALV TYPE REF TO CL_GUI_ALV_GRID.
+
+DATA: GT_FCAT TYPE LVC_T_FCAT,
+      GS_FCAT LIKE LINE OF GT_FCAT.
+
+DATA: GT_SORT TYPE LVC_T_SORT,
+      GS_SORT LIKE LINE OF GT_SORT.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

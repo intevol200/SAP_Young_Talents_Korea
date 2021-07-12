@@ -1,0 +1,12 @@
+*&---------------------------------------------------------------------*
+*& Include ZRTU27_14_TOP                            - Report ZRTU27_14
+*&---------------------------------------------------------------------*
+REPORT ZRTU27_14.
+
+PARAMETERS: pa_car TYPE spfli-carrid,
+            pa_con TYPE spfli-connid.
+
+DATA: gs_info TYPE spfli.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

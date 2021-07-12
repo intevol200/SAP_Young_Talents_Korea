@@ -1,0 +1,48 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA9960
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE ZRCLA27_61_TOP.
+
+INCLUDE ZRCLA27_61_O01.
+INCLUDE ZRCLA27_61_I01.
+INCLUDE ZRCLA27_61_C01.
+INCLUDE ZRCLA27_61_F01.
+
+INITIALIZATION.
+
+AT SELECTION-SCREEN OUTPUT.
+
+AT SELECTION-SCREEN.
+
+START-OF-SELECTION.
+  PERFORM GET_DATA.
+
+  CALL SCREEN 0100.
+
+*GUI Texts
+*----------------------------------------------------------
+* T100 --> ALV Event
+* T101 --> Airline Info
+* T102 --> Airport Info
+
+*Text elements
+*----------------------------------------------------------
+* H01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* SO_CAR D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: PN
+*016   & & & &
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

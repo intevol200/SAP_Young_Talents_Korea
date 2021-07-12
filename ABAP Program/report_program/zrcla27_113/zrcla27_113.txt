@@ -1,0 +1,36 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_113
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_113.
+
+DATA: GO_CREW TYPE REF TO ZCL_A27_CREW01,
+      GV_SAL  TYPE INT4.
+
+START-OF-SELECTION.
+  CREATE OBJECT GO_CREW
+    EXPORTING
+      IV_PERNR = '20210001'
+      IV_ENAME = 'CHOI'.
+*    IV_BOFFICE =
+  .
+
+*  CALL METHOD GO_CREW->PAY_SALARY
+*    EXPORTING
+*      IV_DAYS   = 20
+*    RECEIVING
+*      RE_SALARY = GV_SAL.
+*  GV_SAL = GO_CREW->PAY_SALARY( 20 ).
+*  IF go_crew->pay_salary( EXPORTING iv_days = 10 ) < 1000000.
+*    WRITE 'Bad'.
+*  ENDIF.
+  GV_SAL = GO_CREW->PAY_SALARY( EXPORTING IV_DAYS = 10 ).
+  IF GV_SAL < 1000000.
+    WRITE 'Bad'.
+  ENDIF.
+
+  WRITE GV_SAL.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

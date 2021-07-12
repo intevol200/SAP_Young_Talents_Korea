@@ -1,0 +1,49 @@
+*&---------------------------------------------------------------------*
+*& Report ZRADB27_08
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRADB27_08.
+
+*PERFORM LOCK USING 'AA' 'S'. "READ
+*PERFORM LOCK USING 'AA' 'O'.
+*PERFORM LOCK USING 'AA' 'E'. "WRITE
+PERFORM LOCK USING 'AA' 'E'.
+
+
+WRITE 'TEST'.
+
+*&---------------------------------------------------------------------*
+*& Form LOCK
+*&---------------------------------------------------------------------*
+FORM LOCK  USING VALUE(P_CARRID)
+                 VALUE(P_MODE).
+
+  CALL FUNCTION 'ENQUEUE_EZ_ZTASCARR27'
+    EXPORTING
+      MODE_ZTASCARR27 = P_MODE
+*     MANDT           = SY-MANDT
+      CARRID          = P_CARRID
+*     X_CARRID        = ' '
+*     _SCOPE          = '2'
+*     _WAIT           = ' '
+*     _COLLECT        = ' '
+    EXCEPTIONS
+      FOREIGN_LOCK    = 1
+      SYSTEM_FAILURE  = 2
+      OTHERS          = 3.
+  IF SY-SUBRC <> 0.
+    MESSAGE I016(pn) with 'Error'.
+  ENDIF.
+
+ENDFORM.
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: PN
+*016   & & & &
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

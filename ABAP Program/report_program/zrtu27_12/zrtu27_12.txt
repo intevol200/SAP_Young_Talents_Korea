@@ -1,0 +1,33 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU00_06
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_12.
+
+* Global Data Object
+DATA gs_scarr TYPE scarr. " C, N , I, P
+PARAMETERS pa_carr LIKE gs_scarr-carrid.
+
+START-OF-SELECTION. " Event
+  " Open SQL
+  SELECT SINGLE * "carrname url
+    FROM scarr "DB Table
+    INTO CORRESPONDING FIELDS OF gs_scarr
+   WHERE carrid = pa_carr. "KK
+  IF sy-subrc <> 0.
+    MESSAGE i000(zmcla00) WITH pa_carr.
+    EXIT. "RETURN.
+  ENDIF.
+
+  cl_demo_output=>display_data( gs_scarr ).
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZMCLA00
+*000   & & & : Data is not found.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

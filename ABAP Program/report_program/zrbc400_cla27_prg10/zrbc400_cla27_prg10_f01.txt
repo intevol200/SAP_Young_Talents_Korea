@@ -1,0 +1,60 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRBC400_CLA27_PRG10_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form main
+*&---------------------------------------------------------------------*
+SELECT-OPTIONS: so_con FOR gs_data-connid,
+                so_dat FOR gs_data-fldate.
+
+FORM main USING VALUE(la_car)
+          CHANGING lt_table LIKE gt_table.
+  SELECT *
+    FROM sflight
+    INTO CORRESPONDING FIELDS OF TABLE lt_table
+    WHERE carrid = la_car
+    AND connid IN so_con
+    AND fldate IN so_dat.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form insert_Data
+*&---------------------------------------------------------------------*
+FORM insert_Data USING VALUE(ls_data) LIKE gs_data
+                 CHANGING lt_table LIKE gt_table.
+  LOOP AT lt_table INTO ls_data.
+    SELECT SINGLE carrname
+      FROM scarr
+      INTO ls_data-carrname
+      WHERE carrid = ls_data-carrid.
+
+    SELECT SINGLE cityfrom cityto
+      FROM spfli
+      INTO ( ls_data-cityfrom, ls_data-cityto )
+      WHERE carrid = ls_data-carrid.
+
+    MODIFY lt_table FROM ls_data.
+    CLEAR ls_data.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form calculate_remain
+*&---------------------------------------------------------------------*
+FORM calculate_remain USING VALUE(ls_data) LIKE gs_data
+                      CHANGING lt_table LIKE gt_table.
+  LOOP AT lt_table INTO ls_data.
+    ls_data-seatremain = ls_data-seatsmax - ls_data-seatsocc.
+    ls_data-seatremain_b = ls_data-seatsmax_b - ls_data-seatsocc_b.
+    ls_data-seatremain_f = ls_data-seatsmax_f - ls_data-seatsocc_f.
+
+    IF ls_data-seatremain <= 10.
+      ls_data-seatremain = 0.
+      ls_data-seatremain_b = 0.
+      ls_data-seatremain_f = 0.
+    ENDIF.
+
+    MODIFY lt_table FROM ls_data.
+  ENDLOOP.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

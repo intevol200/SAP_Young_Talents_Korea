@@ -1,0 +1,27 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_13
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_13.
+
+DATA: gv_a TYPE i,
+      gv_b TYPE p DECIMALS 2,
+      gv_c,
+      gv_d TYPE d.
+
+PERFORM display CHANGING gv_a.
+PERFORM display CHANGING gv_b.
+PERFORM display CHANGING gv_c.
+PERFORM display CHANGING gv_d.
+*&---------------------------------------------------------------------*
+*& Form display
+*&---------------------------------------------------------------------*
+FORM display  CHANGING VALUE(p_a).
+  DATA lv_a VALUE 'A'.
+  DATA gv_a(2) VALUE 'lv'.
+  p_a = '1'.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

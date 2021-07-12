@@ -1,0 +1,22 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_202
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_202.
+
+DATA GT_SCARR TYPE TABLE OF SCARR.
+DATA GV_TEST(10).
+
+GET PARAMETER ID 'SCLA27' FIELD GV_TEST.
+
+WRITE GV_TEST.
+
+*IMPORT
+*  AT_SCARR TO GT_SCARR
+*  FROM MEMORY ID 'CLA27'.
+*
+*CL_DEMO_OUTPUT=>DISPLAY_DATA( GT_SCARR ).
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

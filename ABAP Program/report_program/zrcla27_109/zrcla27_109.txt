@@ -1,0 +1,115 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_109
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_109.
+
+CLASS LCL_PROF DEFINITION.
+  PUBLIC SECTION.
+    METHODS CONSTRUCTOR IMPORTING IV_PNAME TYPE STRING
+                                  IV_EMAIL TYPE STRING.
+
+    METHODS SET_PROF IMPORTING IV_PNAME TYPE STRING
+                               IV_EMAIL TYPE STRING.
+
+    METHODS GET_INFO EXPORTING EV_INFO TYPE STRING.
+
+  PRIVATE SECTION.
+    DATA PERNR TYPE STRING.
+    DATA PNAME TYPE STRING.
+    DATA EMAIL TYPE STRING.
+    CLASS-DATA PROF_CNT TYPE I.
+ENDCLASS.
+
+CLASS LCL_PROF IMPLEMENTATION.
+  METHOD CONSTRUCTOR.
+    ME->SET_PROF( EXPORTING IV_PNAME = IV_PNAME
+                            IV_EMAIL = IV_EMAIL ).
+  ENDMETHOD.
+
+  METHOD SET_PROF.
+    ME->PNAME = IV_PNAME.
+    ME->EMAIL = IV_EMAIL.
+    LCL_PROF=>PROF_CNT = LCL_PROF=>PROF_CNT + 1.
+  ENDMETHOD.
+
+  METHOD GET_INFO.
+    EV_INFO = SY-DATUM+0(6) &&
+              LCL_PROF=>PROF_CNT && ':' &&
+              ME->PNAME && ',' &&
+              ME->EMAIL.
+  ENDMETHOD.
+ENDCLASS.
+
+CLASS LCL_STUDENT DEFINITION.
+  PUBLIC SECTION.
+    METHODS CONSTRUCTOR IMPORTING IV_STDNO TYPE STRING
+                                  IV_SNAME TYPE STRING
+                                  IV_EMAIL TYPE STRING
+                                  IR_PROF  TYPE REF TO LCL_PROF.
+
+    METHODS SET_STUDENT IMPORTING IV_STDNO TYPE STRING
+                                  IV_SNAME TYPE STRING
+                                  IV_EMAIL TYPE STRING
+                                  IR_PROF  TYPE REF TO LCL_PROF.
+
+    METHODS GET_INFO EXPORTING EV_INFO TYPE STRING.
+
+  PRIVATE SECTION.
+    DATA STDNO TYPE STRING.
+    DATA SNAME TYPE STRING.
+    DATA EMAIL TYPE STRING.
+    DATA R_PROF TYPE REF TO LCL_PROF.
+    CLASS-DATA PROF_CNT TYPE I.
+ENDCLASS.
+
+CLASS LCL_STUDENT IMPLEMENTATION.
+  METHOD CONSTRUCTOR.
+    ME->SET_STUDENT( EXPORTING IV_STDNO = IV_STDNO
+                               IV_SNAME = IV_SNAME
+                               IV_EMAIL = IV_EMAIL
+                               IR_PROF = R_PROF ).
+  ENDMETHOD.
+
+  METHOD SET_STUDENT.
+    ME->STDNO = IV_STDNO.
+    ME->SNAME = IV_SNAME.
+    ME->EMAIL = IV_EMAIL.
+    ME->R_PROF = IR_PROF.
+  ENDMETHOD.
+
+  METHOD GET_INFO.
+    R_PROF->GET_INFO( IMPORTING EV_INFO = EV_INFO ).
+    EV_INFO = EV_INFO && STDNO && SNAME &&
+              EMAIL.
+  ENDMETHOD.
+ENDCLASS.
+
+DATA: GO_PROF TYPE REF TO LCL_PROF,
+      GV_INFO TYPE STRING,
+      GO_STD  TYPE REF TO LCL_STUDENT.
+
+START-OF-SELECTION.
+  CREATE OBJECT GO_PROF
+    EXPORTING
+      IV_PNAME = '###'
+      IV_EMAIL = 'intevol200@gmail.com'.
+
+  CALL METHOD GO_PROF->GET_INFO
+    IMPORTING
+      EV_INFO = GV_INFO.
+
+  CREATE OBJECT GO_STD
+    EXPORTING
+      IV_STDNO = '1000'
+      IV_SNAME = '###'
+      IV_EMAIL = 'hongildong@naver.com'
+      IR_PROF  = GO_PROF.
+
+  GO_STD->GET_INFO( IMPORTING EV_INFO = GV_INFO ).
+
+  WRITE GV_INFO.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

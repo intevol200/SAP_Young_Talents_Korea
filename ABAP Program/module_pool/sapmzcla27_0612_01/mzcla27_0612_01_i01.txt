@@ -1,0 +1,51 @@
+*&---------------------------------------------------------------------*
+*& Include          MZCLA27_0612_I01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0100  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0100 INPUT.
+
+  CASE ok_code.
+    WHEN 'ENTER'.
+      PERFORM get_list.
+      PERFORM get_table_list.
+
+    WHEN 'EXIT'.
+      LEAVE PROGRAM.
+
+    WHEN 'BACK'.
+      LEAVE TO SCREEN 0.
+
+    WHEN 'SAVE'.
+      SELECT SINGLE *
+        FROM zteam5_10
+        INTO CORRESPONDING FIELDS OF gs_person
+        WHERE pernr = zteam5_10-pernr.
+
+      IF gs_person-pernr = zteam5_10-pernr.
+        MODIFY zteam5_10.
+
+        CLEAR: gs_person, butxt.
+        MESSAGE i016(pn) WITH 'Data Changed.'.
+
+      ELSEIF gs_person-pernr = zteam5_10-pernr AND
+             gs_person-pname = zteam5_10-pname AND
+             gs_person-bukrs = zteam5_10-bukrs AND
+             gs_person-indat = zteam5_10-indat.
+
+        CLEAR: gs_person, butxt.
+        MESSAGE i016(pn) WITH 'Data Already Exist.'.
+
+      ELSE.
+        MESSAGE i016(pn) WITH 'Data Added.'.
+      ENDIF.
+
+
+  ENDCASE.
+ENDMODULE.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,34 @@
+*&---------------------------------------------------------------------*
+*& Report ZBA27_01
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE ZBA27_01_TOP                            .    " Global Data
+
+INCLUDE ZBA27_01_O01                            .  " PBO-Modules
+INCLUDE ZBA27_01_I01                            .  " PAI-Modules
+INCLUDE ZBA27_01_F01                            .  " FORM-Routines
+
+START-OF-SELECTION.
+  SELECT *
+    FROM SCARR
+    INTO CORRESPONDING FIELDS OF TABLE GT_SCARR.
+
+  LOOP AT GT_SCARR INTO GS_SCARR.
+    PERFORM SET_BDC_DATA .
+
+    CALL TRANSACTION 'ZCLA27_81' USING GT_BDC MODE 'N'.
+  ENDLOOP.
+
+  MESSAGE I016(PN) WITH 'Data Insert Process Completed'.
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: PN
+*016   & & & &
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

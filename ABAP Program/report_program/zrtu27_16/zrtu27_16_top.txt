@@ -1,0 +1,11 @@
+*&---------------------------------------------------------------------*
+*& Include ZRTU27_16_TOP                            - Report ZRTU27_16
+*&---------------------------------------------------------------------*
+REPORT zrtu27_16.
+
+PARAMETERS: gv_airid LIKE scarr-carrid.
+
+DATA: gs_data TYPE zstuinfo.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

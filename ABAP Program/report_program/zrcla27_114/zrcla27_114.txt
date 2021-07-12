@@ -1,0 +1,42 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_114
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_114.
+
+DATA GO_EMP TYPE REF TO ZCL_A27_EMP02.
+DATA GO_CREW TYPE REF TO ZCL_A27_CREW02.
+DATA GO_CREW2 LIKE GO_CREW.
+DATA GV_SAL TYPE INT4.
+
+START-OF-SELECTION.
+  CREATE OBJECT GO_EMP
+    EXPORTING
+      IV_PERNR = '20210001'
+      IV_ENAME = 'CHOI'.
+
+  GV_SAL = GO_EMP->PAY_SALARY( EXPORTING IV_DAYS = 20 ).
+
+  WRITE: 'EMP :', GV_SAL.
+
+  CREATE OBJECT GO_CREW
+    EXPORTING
+      IV_PERNR = '20210001'
+      IV_ENAME = 'CHOI CREW'.
+
+  GV_SAL = GO_CREW->PAY_SALARY( EXPORTING IV_DAYS = 20 ).
+
+  WRITE: 'CREW :', GV_SAL.
+
+  GO_EMP = GO_CREW. "Up Casting
+  GV_SAL = GO_EMP->PAY_SALARY( EXPORTING IV_DAYS = 20 ).
+  WRITE: / '??? :', GV_SAL.
+
+  GO_CREW2 ?= GO_EMP. "Down Casting
+  GV_SAL = GO_CREW2->PAY_SALARY( EXPORTING IV_DAYS = 20 ).
+
+  WRITE: / 'DOWN :', GV_SAL.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

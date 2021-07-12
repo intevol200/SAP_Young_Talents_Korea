@@ -1,0 +1,55 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLAC00_10
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_11.
+
+DATA: GO_PROF TYPE REF TO ZCL_A27_PROF,
+      GO_STD  TYPE REF TO ZCL_A27_STD,
+      GT_STD  LIKE TABLE OF GO_STD,
+      GV_INFO TYPE STRING,
+      GV_H    TYPE INT1.
+
+START-OF-SELECTION.
+  CREATE OBJECT GO_PROF
+    EXPORTING
+      IV_ENAME = 'Kang'
+      IV_EMAIL = 'skkang'.
+
+  CALL METHOD GO_PROF->GET_INFO
+    IMPORTING
+      EV_INFO = GV_INFO.
+
+  CALL METHOD GO_PROF->GET_HOURS
+    IMPORTING
+      EV_HOURS = GV_H.
+  WRITE:/ GV_INFO, GV_H.
+
+  CREATE OBJECT GO_STD
+    EXPORTING
+      IV_STDNO = '20010101'
+      IV_SNAME = 'HongKD'
+      IV_EMAIL = 'HKD@gamil.com'
+      IV_CLASS = 'A'
+      IR_PROF  = GO_PROF.
+  APPEND GO_STD TO GT_STD.
+
+  CREATE OBJECT GO_STD
+    EXPORTING
+      IV_STDNO = '20010102'
+      IV_SNAME = 'ABAP'
+      IV_EMAIL = 'abap@gamil.com'
+      IV_CLASS = 'B'
+      IR_PROF  = GO_PROF.
+  APPEND GO_STD TO GT_STD.
+
+  LOOP AT GT_STD INTO GO_STD.
+    CLEAR: GV_H, GV_INFO.
+    GO_STD->GET_INFO( IMPORTING EV_INFO = GV_INFO ).
+    GO_STD->GET_HOURS( IMPORTING EV_HOURS = GV_H ).
+    WRITE:/ GV_INFO, GV_H.
+  ENDLOOP.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

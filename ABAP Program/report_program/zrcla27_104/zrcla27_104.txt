@@ -1,0 +1,35 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_104
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_104.
+
+CLASS LCL_CREW DEFINITION.
+  PUBLIC SECTION.
+    DATA CNAME TYPE STRING.
+    CLASS-DATA CREW_CNT TYPE I.
+ENDCLASS.
+
+DATA GO_CREW TYPE REF TO LCL_CREW.
+DATA GT_CREW LIKE TABLE OF GO_CREW.
+
+CREATE OBJECT GO_CREW.
+GO_CREW->CNAME = 'KANG'.
+LCL_CREW=>CREW_CNT = '1'.
+APPEND GO_CREW TO GT_CREW.
+
+CREATE OBJECT GO_CREW.
+APPEND GO_CREW TO GT_CREW.
+LCL_CREW=>CREW_CNT = '2'.
+
+LOOP AT GT_CREW INTO GO_CREW.
+  IF GO_CREW->CNAME IS INITIAL.
+    GO_CREW->CNAME = 'ABAP'.
+  ENDIF.
+ENDLOOP.
+
+WRITE: GO_CREW->CREW_CNT, GO_CREW->CNAME.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

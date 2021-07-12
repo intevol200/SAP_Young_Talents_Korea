@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=EUC-KR" />
+<title>YEASY_REPORTPRG_PART2_27</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: YEASY_REPORTPRG_PART2_27</h2>
+<h3> Description: Program YEASY_REPORTPRG_PART2_27</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;YEASY_REPORTPRG_PART2_27<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT yeasy_reportprg_part2_27. "LINE-COUNT 11(2). "11# ## # ### ##<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;(N)#&nbsp;##&nbsp;###&nbsp;###&nbsp;##&nbsp;#<br />
+<br />
+*&nbsp;------------------------------------<br />
+*&nbsp;IOP-OF-PAGE&nbsp;##<br />
+*&nbsp;------------------------------------<br />
+*TOP-OF-PAGE.&nbsp;"###&nbsp;###&nbsp;###&nbsp;##<br />
+*"###&nbsp;##<br />
+*&nbsp;&nbsp;WRITE:&nbsp;sy-title,&nbsp;60&nbsp;'Page&nbsp;no&nbsp;:',&nbsp;sy-pagno.&nbsp;"######&nbsp;##&nbsp;###&nbsp;###<br />
+*&nbsp;&nbsp;ULINE.<br />
+*<br />
+*"###&nbsp;##<br />
+*&nbsp;&nbsp;WRITE:&nbsp;/&nbsp;'Enjoy&nbsp;ABAP',&nbsp;sy-datum.<br />
+*&nbsp;&nbsp;ULINE.<br />
+*<br />
+*START-OF-SELECTION.<br />
+*&nbsp;&nbsp;DO&nbsp;5&nbsp;TIMES.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;/&nbsp;sy-index.<br />
+*&nbsp;&nbsp;ENDDO.<br />
+<br />
+*&nbsp;------------------------------------<br />
+*&nbsp;END-OF-PAGE&nbsp;##<br />
+*&nbsp;------------------------------------<br />
+*TOP-OF-PAGE.<br />
+*&nbsp;&nbsp;WRITE:&nbsp;'Top&nbsp;of&nbsp;Page'.&nbsp;"##&nbsp;###&nbsp;###&nbsp;##<br />
+*&nbsp;&nbsp;ULINE&nbsp;AT&nbsp;/(10).&nbsp;"10##&nbsp;####&nbsp;##<br />
+*<br />
+*END-OF-PAGE.&nbsp;"##&nbsp;##<br />
+*&nbsp;&nbsp;ULINE.<br />
+*&nbsp;&nbsp;WRITE:&nbsp;/30&nbsp;'Page&nbsp;no&nbsp;:',&nbsp;sy-pagno.&nbsp;"30##&nbsp;####&nbsp;##,&nbsp;###&nbsp;#&nbsp;##<br />
+*<br />
+*START-OF-SELECTION.<br />
+*&nbsp;&nbsp;DO&nbsp;10&nbsp;TIMES.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;/&nbsp;sy-index.<br />
+*&nbsp;&nbsp;ENDDO.<br />
+<br />
+*&nbsp;------------------------------------<br />
+*&nbsp;AT&nbsp;LINE-SELECTION&nbsp;##<br />
+*&nbsp;------------------------------------<br />
+   </div>
+   <div class="code">
+DATA : gs_scarr     TYPE scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_scarr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_fname(20)&nbsp;TYPE&nbsp;c,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_value(20)&nbsp;TYPE&nbsp;c,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_carrid&nbsp;&nbsp;&nbsp;&nbsp;LIKE&nbsp;scarr-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_carrname&nbsp;&nbsp;LIKE&nbsp;scarr-carrname.<br />
+<br />
+AT LINE-SELECTION .<br />
+&nbsp;&nbsp;"##(##)&nbsp;####&nbsp;####&nbsp;#&nbsp;##&nbsp;###&nbsp;##&nbsp;##&nbsp;#&nbsp;##&nbsp;##<br />
+&nbsp;&nbsp;GET&nbsp;CURSOR&nbsp;FIELD&nbsp;gv_fname&nbsp;VALUE&nbsp;gv_value.<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;gv_fname.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'GS_SCARR-CARRID'.&nbsp;"###&nbsp;###&nbsp;SCARR#&nbsp;CARRID#&nbsp;####&nbsp;##&nbsp;##<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SPLIT&nbsp;sy-lisel&nbsp;AT&nbsp;'&nbsp;&nbsp;'&nbsp;INTO&nbsp;gv_carrid&nbsp;gv_carrname.&nbsp;"SY-LISEL&nbsp;=&nbsp;###&nbsp;###&nbsp;##&nbsp;##<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;gv_carrid,&nbsp;gv_carrname.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+<br />
+START-OF-SELECTION. "### #### SCARR ### ##<br />
+&nbsp;&nbsp;SELECT&nbsp;*<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF<br />
+&nbsp;&nbsp;&nbsp;&nbsp;TABLE&nbsp;&nbsp;gt_scarr<br />
+&nbsp;&nbsp;FROM&nbsp;scarr.<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;gt_scarr&nbsp;INTO&nbsp;gs_scarr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_scarr-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_scarr-carrname.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;------------------------------------<br />
+*&nbsp;AT&nbsp;PF&lt;NN&gt;&nbsp;##<br />
+*&nbsp;------------------------------------<br />
+*START-OF-SELECTION.<br />
+*&nbsp;&nbsp;WRITE&nbsp;'Function&nbsp;Key&nbsp;Test&nbsp;PF5,&nbsp;PF6,&nbsp;PF7'.<br />
+*<br />
+*AT&nbsp;PF5.&nbsp;"F5&nbsp;###&nbsp;#<br />
+*&nbsp;&nbsp;PERFORM&nbsp;wlist.<br />
+*<br />
+*AT&nbsp;PF6.&nbsp;"F6&nbsp;###&nbsp;#<br />
+*&nbsp;&nbsp;PERFORM&nbsp;wlist.<br />
+*<br />
+*AT&nbsp;PF7.&nbsp;"F7&nbsp;###&nbsp;#<br />
+*&nbsp;&nbsp;PERFORM&nbsp;wlist.<br />
+*<br />
+*FORM&nbsp;wlist.<br />
+*&nbsp;&nbsp;WRITE:<br />
+*&nbsp;&nbsp;/&nbsp;'You&nbsp;selected&nbsp;below&nbsp;Function&nbsp;Key',<br />
+*&nbsp;&nbsp;/&nbsp;'SY-UCOMM&nbsp;=',&nbsp;sy-ucomm.<br />
+*ENDFORM.<br />
+<br />
+*&nbsp;------------------------------------<br />
+*&nbsp;AT&nbsp;USER-COMMAND&nbsp;##<br />
+*&nbsp;------------------------------------<br />
+*START-OF-SELECTION.<br />
+*&nbsp;&nbsp;SET&nbsp;PF-STATUS&nbsp;'TEST'.&nbsp;"####&nbsp;GUI&nbsp;STATUS&nbsp;##<br />
+*&nbsp;&nbsp;WRITE:&nbsp;'Click&nbsp;the&nbsp;button'.&nbsp;"##&nbsp;GUI&nbsp;STATUS#&nbsp;####&nbsp;###&nbsp;##&nbsp;##&nbsp;##<br />
+*<br />
+*AT&nbsp;USER-COMMAND.<br />
+*&nbsp;&nbsp;CASE&nbsp;SY-UCOMM.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'FC1'.&nbsp;"FC1&nbsp;###&nbsp;###<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LEAVE&nbsp;PROGRAM.<br />
+*&nbsp;&nbsp;ENDCASE.<br />
+<br />
+<br />
+*&nbsp;------------------------------------<br />
+*&nbsp;TOP-OF-PAGE&nbsp;DURING&nbsp;LINE-SELECTION&nbsp;##<br />
+*&nbsp;------------------------------------<br />
+*TOP-OF-PAGE.&nbsp;"##&nbsp;##<br />
+*&nbsp;&nbsp;WRITE&nbsp;'First&nbsp;List&nbsp;TOP-OF-PAGE'.<br />
+*&nbsp;&nbsp;ULINE.<br />
+*<br />
+*TOP-OF-PAGE&nbsp;DURING&nbsp;LINE-SELECTION.&nbsp;"###&nbsp;###&nbsp;##<br />
+*&nbsp;&nbsp;WRITE&nbsp;'Secondary&nbsp;List&nbsp;TOP-OF-PAGE'.<br />
+*&nbsp;&nbsp;ULINE.<br />
+*<br />
+*AT&nbsp;LINE-SELECTION.&nbsp;"####&nbsp;##&nbsp;#&nbsp;###&nbsp;###<br />
+*&nbsp;&nbsp;PERFORM&nbsp;write_list.<br />
+*<br />
+*START-OF-SELECTION.<br />
+*&nbsp;&nbsp;WRITE:&nbsp;'Double-click&nbsp;this&nbsp;line'.<br />
+*<br />
+*FORM&nbsp;write_list.<br />
+*&nbsp;&nbsp;WRITE:&nbsp;'Secondary&nbsp;List',<br />
+*<br />
+*/&nbsp;'&nbsp;&nbsp;sy-pfkey:',&nbsp;sy-pfkey.&nbsp;"######&nbsp;#&nbsp;##&nbsp;##<br />
+*ENDFORM.<br />
+<br />
+<br />
+*&nbsp;------------------------------------<br />
+*&nbsp;AT&nbsp;pl&nbsp;##<br />
+*&nbsp;------------------------------------<br />
+*DATA&nbsp;:&nbsp;GT_DATA&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;SFLIGHT&nbsp;WITH&nbsp;HEADER&nbsp;LINE.<br />
+*<br />
+*TOP-OF-PAGE.<br />
+*&nbsp;&nbsp;WRITE:/50&nbsp;'Report&nbsp;Format'&nbsp;CENTERED.<br />
+*&nbsp;&nbsp;WRITE:/48&nbsp;'------------------'&nbsp;CENTERED.<br />
+*&nbsp;&nbsp;SKIP.<br />
+*<br />
+*<br />
+*START-OF-SELECTION.<br />
+*&nbsp;&nbsp;WRITE:/(51)&nbsp;SY-ULINE,&nbsp;53(68)&nbsp;SY-ULINE,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SY-VLINE&nbsp;NO-GAP,&nbsp;51&nbsp;SY-VLINE&nbsp;NO-GAP,&nbsp;53&nbsp;SY-VLINE&nbsp;NO-GAP,&nbsp;120&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*<br />
+*&nbsp;&nbsp;WRITE:&nbsp;2(9)&nbsp;'Report&nbsp;No'&nbsp;NO-GAP&nbsp;CENTERED,&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*&nbsp;&nbsp;WRITE:&nbsp;12(5)&nbsp;'00001'&nbsp;NO-GAP,&nbsp;&nbsp;51&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*<br />
+*&nbsp;&nbsp;WRITE:&nbsp;54(11)&nbsp;'Report&nbsp;Date'&nbsp;NO-GAP&nbsp;CENTERED,&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*&nbsp;&nbsp;WRITE:&nbsp;66(10)&nbsp;SY-DATUM&nbsp;NO-GAP&nbsp;CENTERED,&nbsp;&nbsp;120&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*&nbsp;&nbsp;WRITE:/(51)&nbsp;SY-ULINE,&nbsp;53(68)&nbsp;SY-ULINE.<br />
+*&nbsp;&nbsp;SKIP.<br />
+*<br />
+*&nbsp;&nbsp;WRITE:/(120)&nbsp;SY-ULINE.<br />
+*<br />
+*&nbsp;&nbsp;SELECT&nbsp;*&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;GT_DATA<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;SFLIGHT&nbsp;UP&nbsp;TO&nbsp;10&nbsp;ROWS.<br />
+*<br />
+*&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;GT_DATA.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:/&nbsp;SY-VLINE&nbsp;NO-GAP,&nbsp;2(10)&nbsp;'Carrier&nbsp;ID',&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;14(4)&nbsp;GT_DATA-CARRID,&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;20(18)&nbsp;'Connection&nbsp;Number',&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;40(4)&nbsp;GT_DATA-CONNID,&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;46(12)&nbsp;'Flight&nbsp;date',&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;60(12)&nbsp;GT_DATA-FLDATE,&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;74(10)&nbsp;'Air&nbsp;Fare',&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;86(11)&nbsp;GT_DATA-PRICE,&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;100(15)&nbsp;'Local&nbsp;currency',&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;116(3)&nbsp;GT_DATA-CURRENCY,&nbsp;SY-VLINE&nbsp;NO-GAP.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/(120)&nbsp;SY-ULINE.<br />
+*&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+<br />
+*&nbsp;------------------------------------<br />
+*&nbsp;###&nbsp;####&nbsp;##&nbsp;##<br />
+*&nbsp;------------------------------------<br />
+*TABLES:&nbsp;sflight.<br />
+*<br />
+*DATA&nbsp;:&nbsp;gt_seltab&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;rsparams&nbsp;WITH&nbsp;HEADER&nbsp;LINE.<br />
+*<br />
+*DATA&nbsp;:&nbsp;gs_report(40)&nbsp;TYPE&nbsp;c.&nbsp;"####&nbsp;###&nbsp;##&nbsp;##<br />
+*gs_report&nbsp;=&nbsp;'YEASY_REPORTPRG_ETC'.&nbsp;"##&nbsp;####&nbsp;###&nbsp;###&nbsp;##<br />
+*<br />
+*CLEAR&nbsp;gt_seltab.<br />
+*<br />
+*gt_seltab-selname&nbsp;=&nbsp;'SEL_CARR'.&nbsp;"select-options#&nbsp;###&nbsp;##&nbsp;##<br />
+*gt_seltab-kind&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;'S'.<br />
+*gt_seltab-sign&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'I'.<br />
+*gt_seltab-option&nbsp;&nbsp;=&nbsp;'EQ'.<br />
+*gt_seltab-low&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'AA'.<br />
+*APPEND&nbsp;gt_seltab.<br />
+*<br />
+*SUBMIT&nbsp;(gs_report)&nbsp;"####&nbsp;#&nbsp;##<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WITH&nbsp;SELECTION-TABLE&nbsp;gt_seltab&nbsp;"####&nbsp;##<br />
+**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VIA&nbsp;SELECTION-SCREEN.&nbsp;"###&nbsp;####&nbsp;###&nbsp;##&nbsp;##<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;RETURN.&nbsp;"##&nbsp;###&nbsp;####&nbsp;##<br />
+*<br />
+*WRITE:&nbsp;'AAA'.&nbsp;"###&nbsp;#####&nbsp;##&nbsp;##&nbsp;##&nbsp;##&nbsp;##<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

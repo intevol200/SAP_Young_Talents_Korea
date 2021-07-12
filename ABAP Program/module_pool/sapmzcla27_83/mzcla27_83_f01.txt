@@ -1,0 +1,251 @@
+*&---------------------------------------------------------------------*
+*& Include          MZCLA27_81_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form SET_ALV_0100
+*&---------------------------------------------------------------------*
+FORM SET_ALV_0100 .
+  IF GO_CON IS INITIAL.
+
+    CREATE OBJECT GO_CON
+      EXPORTING
+        CONTAINER_NAME              = 'CON_AIR'
+      EXCEPTIONS
+        CNTL_ERROR                  = 1
+        CNTL_SYSTEM_ERROR           = 2
+        CREATE_ERROR                = 3
+        LIFETIME_ERROR              = 4
+        LIFETIME_DYNPRO_DYNPRO_LINK = 5
+        OTHERS                      = 6.
+    IF SY-SUBRC <> 0.
+      MESSAGE A016(PN) WITH 'Create Container Error'.
+    ENDIF.
+  ENDIF.
+
+  IF GO_ALV IS INITIAL.
+    CREATE OBJECT GO_ALV
+      EXPORTING
+        I_PARENT          = GO_CON
+      EXCEPTIONS
+        ERROR_CNTL_CREATE = 1
+        ERROR_CNTL_INIT   = 2
+        ERROR_CNTL_LINK   = 3
+        ERROR_DP_CREATE   = 4
+        OTHERS            = 5.
+    IF SY-SUBRC <> 0.
+      MESSAGE I016(PN) WITH 'Create ALV Error'.
+    ENDIF.
+  ENDIF.
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form DISPLAY_ALV_0100
+*&---------------------------------------------------------------------*
+FORM DISPLAY_ALV_0100 .
+
+  GS_LAYO-ZEBRA = 'X'.
+  GS_LAYO-CWIDTH_OPT = ''.
+  GS_LAYO-SEL_MODE = 'A'.
+
+  IF GV_REFRESH IS NOT INITIAL.
+    DATA: BEGIN OF GS_STABLE,
+            ROW TYPE LVC_ROWST,
+            COL TYPE LVC_COLST,
+          END OF GS_STABLE.
+
+    GS_STABLE-COL = ''.
+    GS_STABLE-ROW = ''.
+
+    CALL METHOD GO_ALV->REFRESH_TABLE_DISPLAY
+      EXPORTING
+        IS_STABLE      = GS_STABLE
+        I_SOFT_REFRESH = GV_REFRESH
+      EXCEPTIONS
+        FINISHED       = 1
+        OTHERS         = 2.
+    IF SY-SUBRC <> 0.
+*     Implement suitable error handling here
+    ENDIF.
+
+  ELSE.
+    CALL METHOD GO_ALV->SET_TABLE_FOR_FIRST_DISPLAY
+      EXPORTING
+*       I_BUFFER_ACTIVE               =
+*       I_BYPASSING_BUFFER            =
+*       I_CONSISTENCY_CHECK           =
+        I_STRUCTURE_NAME              = 'ZTASCARR27'
+*       IS_VARIANT                    =
+*       I_SAVE                        =
+*       I_DEFAULT                     = 'X'
+        IS_LAYOUT                     = GS_LAYO
+*       IS_PRINT                      =
+*       IT_SPECIAL_GROUPS             =
+*       IT_TOOLBAR_EXCLUDING          =
+*       IT_HYPERLINK                  =
+*       IT_ALV_GRAPHICS               =
+*       IT_EXCEPT_QINFO               =
+*       IR_SALV_ADAPTER               =
+      CHANGING
+        IT_OUTTAB                     = GT_LIST
+*       IT_FIELDCATALOG               =
+*       IT_SORT                       =
+*       IT_FILTER                     =
+      EXCEPTIONS
+        INVALID_PARAMETER_COMBINATION = 1
+        PROGRAM_ERROR                 = 2
+        TOO_MANY_LINES                = 3
+        OTHERS                        = 4.
+    IF SY-SUBRC <> 0.
+*   Implement suitable error handling here
+    ENDIF.
+
+    GV_REFRESH = 'X'.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_AIRLINE_LIST
+*&---------------------------------------------------------------------*
+FORM GET_AIRLINE_LIST  USING VALUE(P_CARRID_B)
+                             VALUE(P_CARRID_E).
+  CLEAR GT_LIST.
+
+  SELECT CARRID CARRNAME CURRCODE URL
+    FROM ZTASCARR27
+    INTO CORRESPONDING FIELDS OF TABLE GT_LIST
+    WHERE CARRID BETWEEN P_CARRID_B AND P_CARRID_E.
+
+  IF SY-SUBRC IS NOT INITIAL.
+    MESSAGE I016(PN) WITH 'Data is not Found'.
+    RETURN.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_SELECTED_LIST
+*&---------------------------------------------------------------------*
+FORM GET_SELECTED_LIST  CHANGING P_SUBRC.
+  DATA: LT_ROWS TYPE LVC_T_ROID,
+        LS_ROWS LIKE LINE OF LT_ROWS.
+
+  CLEAR P_SUBRC.
+
+  CALL METHOD GO_ALV->GET_SELECTED_ROWS
+    IMPORTING
+      ET_ROW_NO = LT_ROWS.
+
+  READ TABLE LT_ROWS INDEX 1 INTO LS_ROWS.
+  IF SY-SUBRC IS NOT INITIAL.
+    MESSAGE I016(PN) WITH 'Must Single Select'.
+    P_SUBRC = 4.
+    RETURN.
+  ENDIF.
+
+  READ TABLE GT_LIST INDEX LS_ROWS-ROW_ID INTO GS_LIST.
+  CLEAR ZSCLA27_82.
+  MOVE-CORRESPONDING GS_LIST TO ZSCLA27_82.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form CREATE_AIRLINE
+*&---------------------------------------------------------------------*
+FORM CREATE_AIRLINE .
+  DATA LS_ZTASCARR27 TYPE ZTASCARR27.
+
+  LS_ZTASCARR27-CARRID = ZSCLA27_82-CARRID.
+  LS_ZTASCARR27-CARRNAME = ZSCLA27_82-CARRNAME.
+  LS_ZTASCARR27-CURRCODE = ZSCLA27_82-CURRCODE.
+  LS_ZTASCARR27-URL = ZSCLA27_82-URL.
+
+  INSERT ZTASCARR27 FROM LS_ZTASCARR27.
+
+  IF SY-SUBRC IS INITIAL.
+    MESSAGE I016(PN) WITH 'Insert Success'.
+    COMMIT WORK.
+
+  ELSE.
+    MESSAGE I016(PN) WITH 'Insert Fail'.
+    ROLLBACK WORK.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form update_airline
+*&---------------------------------------------------------------------*
+FORM UPDATE_AIRLINE .
+  DATA: LS_ZTASCARR27 TYPE ZTASCARR27.
+
+  LS_ZTASCARR27-CARRID = ZSCLA27_82-CARRID.
+  LS_ZTASCARR27-CARRNAME = ZSCLA27_82-CARRNAME.
+  LS_ZTASCARR27-CURRCODE = ZSCLA27_82-CURRCODE.
+  LS_ZTASCARR27-URL = ZSCLA27_82-URL.
+
+
+*  MODIFY ZTASCARR27 FROM LS_ZTASCARR27. "#### ##.
+  UPDATE ZTASCARR27 SET CARRNAME = LS_ZTASCARR27-CARRNAME
+                        CURRCODE = LS_ZTASCARR27-CURRCODE
+                        URL      = LS_ZTASCARR27-URL
+                  WHERE CARRID   = LS_ZTASCARR27-CARRID.
+
+  IF SY-SUBRC IS NOT INITIAL.
+    ROLLBACK WORK.
+    MESSAGE I016(PN) WITH 'Update Fail'.
+    RETURN.
+  ENDIF.
+
+  COMMIT WORK.
+  MESSAGE I016(PN) WITH 'Update Success'.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form LOCK
+*&---------------------------------------------------------------------*
+FORM LOCK  USING VALUE(P_CARRID)
+                 VALUE(P_MODE).
+
+  CALL FUNCTION 'ENQUEUE_EZ_ZTASCARR27'
+    EXPORTING
+      MODE_ZTASCARR27 = P_MODE
+*     MANDT           = SY-MANDT
+      CARRID          = P_CARRID
+*     X_CARRID        = ' '
+*     _SCOPE          = '2'
+*     _WAIT           = ' '
+*     _COLLECT        = ' '
+    EXCEPTIONS
+      FOREIGN_LOCK    = 1
+      SYSTEM_FAILURE  = 2
+      OTHERS          = 3.
+  IF SY-SUBRC = 1.
+    GV_SUBRC = 4.
+    MESSAGE I016(PN) WITH 'Lock Object Activated'.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form DELETE_SELECTED_LIST
+*&---------------------------------------------------------------------*
+FORM DELETE_SELECTED_LIST  CHANGING P_SUBRC.
+  DATA: LT_ROWS   TYPE LVC_T_ROID,
+        LS_ROWS   LIKE LINE OF LT_ROWS,
+        LS_DELETE LIKE GS_LIST,
+        LT_DELETE LIKE TABLE OF LS_DELETE.
+
+  CLEAR P_SUBRC.
+
+  CALL METHOD GO_ALV->GET_SELECTED_ROWS
+    IMPORTING
+      ET_ROW_NO = LT_ROWS.
+
+  LOOP AT LT_ROWS INTO LS_ROWS.
+    READ TABLE GT_LIST INDEX LS_ROWS-ROW_ID INTO LS_DELETE.
+
+    APPEND LS_DELETE TO LT_DELETE.
+  ENDLOOP.
+
+  DELETE ZTASCARR27 FROM TABLE LT_DELETE.
+  MESSAGE I016(PN) WITH 'Delete Completed'.
+  CLEAR: LS_DELETE, LT_DELETE.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

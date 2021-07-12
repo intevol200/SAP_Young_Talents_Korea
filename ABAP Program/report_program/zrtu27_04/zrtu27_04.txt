@@ -1,0 +1,52 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_04
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_04.
+
+DATA gv_flag TYPE c.
+
+* gv_flag# ##### ##
+IF gv_flag IS INITIAL. "gv_flag = 0.
+
+ELSE.
+
+ENDIF.
+
+
+*DATA: gv_datum TYPE sy-datum.
+*
+*gv_datum = sy-datum + ( 365 * 2 ).
+*
+*WRITE gv_datum.
+
+*PARAMETERS pa_grade(1).
+*
+** 1### 1### ## #### ##
+*IF pa_grade = '1'.
+*  WRITE: '1##'.
+*ELSE.
+*  WRITE: '1### ##'.
+*ENDIF.
+*
+** # #### ##
+*CASE pa_grade.
+*  WHEN '1'.
+*    WRITE: '1st'.
+*  WHEN '2'.
+*    WRITE: '2nd'.
+*  WHEN '3'.
+*    WRITE: '3rd'.
+*  WHEN '4'.
+*    WRITE: '4th'.
+*  WHEN '5'.
+*    WRITE: '5th'.
+*  WHEN '6'.
+*    WRITE: '6th'.
+*  WHEN OTHERS.
+*    WRITE: 'ERROR'.
+*ENDCASE.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

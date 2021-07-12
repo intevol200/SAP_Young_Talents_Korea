@@ -1,0 +1,32 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_33
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_33.
+
+DATA: BEGIN OF gs_info,
+        carrid   TYPE spfli-carrid,
+        carrname TYPE scarr-carrname,
+        connid   TYPE spfli-connid,
+      END OF gs_info,
+      gt_info LIKE TABLE OF gs_info.
+
+START-OF-SELECTION.
+  SELECT *
+    FROM spfli
+    INTO CORRESPONDING FIELDS OF TABLE gt_info.
+
+  LOOP AT gt_info INTO gs_info.
+    SELECT SINGLE carrname
+      FROM scarr
+      INTO gs_info-carrname
+      WHERE carrid = gs_info-carrid.
+    MODIFY gt_info FROM gs_info.
+    CLEAR gs_info.
+  ENDLOOP.
+
+  cl_demo_output=>display_data( gt_info ).
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

@@ -1,0 +1,26 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCLA27_201
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZRCLA27_201.
+
+DATA GT_LIST TYPE TABLE OF SCARR.
+DATA GV_NAME(10).
+
+GV_NAME = 'CHOI'.
+SET PARAMETER ID 'SCLA27' FIELD GV_NAME.
+
+*SELECT *
+*  FROM SCARR
+*  INTO CORRESPONDING FIELDS OF TABLE GT_LIST.
+*
+*  EXPORT
+*  AT_SCARR FROM GT_LIST
+*  TO MEMORY ID 'CLA27'.
+*
+*  SUBMIT ZRCLA27_202 AND RETURN.
+*  WRITE 'PROGRAM ZRCLA27_201'.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

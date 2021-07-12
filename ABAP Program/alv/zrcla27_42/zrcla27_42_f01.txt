@@ -1,0 +1,272 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRCLA27_10_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form set_dafault_data
+*&---------------------------------------------------------------------*
+FORM SET_DAFAULT_DATA.
+  PA_CARR = 'AA'.
+  PA_CONN = '0017'.
+  PA_FLD = '20201231'.
+
+  R01 = 'X'.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form OBLIGATORY_CHECK
+*&---------------------------------------------------------------------*
+FORM OBLIGATORY_CHECK.
+  IF PA_CARR IS INITIAL OR
+     PA_CONN IS INITIAL OR
+     PA_FLD IS INITIAL.
+
+    MESSAGE I016(PN) WITH 'Please Fill Out Remained Condition'
+                     DISPLAY LIKE 'E'.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_LIST_DATA
+*&---------------------------------------------------------------------*
+FORM GET_LIST_DATA .
+  CLEAR GT_INFO.
+
+  PERFORM SET_MAIN_DATA.
+  PERFORM ADD_TO_MAIN_DATA.
+
+  PERFORM RADIO_CONTROL.
+
+  PERFORM GET_TEXT_DOM.
+
+  LOOP AT GT_INFO INTO GS_INFO.
+    DATA: LV_COMPARE LIKE GS_INFO-PRICE.
+
+    LV_COMPARE = GS_INFO-PRICE - GS_INFO-LOCCURAM.
+
+    IF LV_COMPARE > 100.
+      GS_INFO-LIGHT = 1.
+    ELSEIF LV_COMPARE =< 100 AND LV_COMPARE > 50.
+      GS_INFO-LIGHT = 2.
+    ELSE.
+      GS_INFO-LIGHT = 3.
+    ENDIF.
+
+    MODIFY GT_INFO FROM GS_INFO.
+  ENDLOOP.
+
+  IF SY-SUBRC <> 0.
+    MESSAGE I000(ZMCLA27).
+    RETURN.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_MAIN_DATA
+*&---------------------------------------------------------------------*
+FORM SET_MAIN_DATA .
+  SELECT *
+    FROM SBOOK AS A JOIN SCARR AS B
+    ON A~CARRID = B~CARRID
+    JOIN SFLIGHT AS C
+    ON A~CARRID = C~CARRID
+    AND A~CONNID = C~CONNID
+    AND A~FLDATE = C~FLDATE
+    INTO CORRESPONDING FIELDS OF TABLE GT_INFO
+    WHERE A~CARRID = PA_CARR
+    AND A~CONNID = PA_CONN
+    AND A~FLDATE = PA_FLD
+    AND A~BOOKID IN SO_BID.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form ADD_TO_MAIN_DATA
+*&---------------------------------------------------------------------*
+FORM ADD_TO_MAIN_DATA .
+  SELECT CARRID CONNID AIRPFROM AIRPTO
+    FROM SPFLI
+    INTO TABLE GT_SPFLI.
+
+  SELECT ID NAME
+    FROM SCUSTOM
+    INTO TABLE GT_SCUSTOM.
+
+  LOOP AT GT_INFO INTO GS_INFO.
+    READ TABLE GT_SPFLI INTO GS_SPFLI WITH KEY CARRID = GS_INFO-CARRID
+                                               CONNID = GS_INFO-CONNID.
+    GS_INFO-AIRPFROM = GS_SPFLI-AIRPFROM.
+    GS_INFO-AIRPTO = GS_SPFLI-AIRPTO.
+
+    READ TABLE GT_SCUSTOM INTO GS_SCUSTOM WITH KEY ID = GS_INFO-CUSTOMID.
+    GS_INFO-NAME = GS_SCUSTOM-NAME.
+
+    MODIFY GT_INFO FROM GS_INFO.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_DOM_VALUE
+*&---------------------------------------------------------------------*
+FORM GET_DOM_VALUE USING VALUE(P_DONAME)
+                         VALUE(P_CODE)
+                         CHANGING VALUE(P_TEXT).
+
+  DATA: LS_DOMAIN  TYPE DD07V,
+        LT_DOMAIN  LIKE TABLE OF LS_DOMAIN,
+        LV_DOMNAME TYPE DD07V-DOMNAME.
+
+  LV_DOMNAME = P_DONAME.
+
+  CALL FUNCTION 'GET_DOMAIN_VALUES'
+    EXPORTING
+      DOMNAME         = LV_DOMNAME
+    TABLES
+      VALUES_TAB      = LT_DOMAIN
+    EXCEPTIONS
+      NO_VALUES_FOUND = 1
+      OTHERS          = 2.
+
+  IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+  ENDIF.
+
+  READ TABLE LT_DOMAIN INTO LS_DOMAIN WITH KEY DOMVALUE_L = P_CODE.
+
+  IF SY-SUBRC = 0.
+    P_TEXT = LS_DOMAIN-DDTEXT.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form GET_TEXT_DOM
+*&---------------------------------------------------------------------*
+FORM GET_TEXT_DOM .
+  LOOP AT GT_INFO INTO GS_INFO.
+    PERFORM GET_DOM_VALUE USING 'S_CLASS'
+                                GS_INFO-CLASS
+                          CHANGING GS_INFO-CLASS_T.
+
+    PERFORM GET_DOM_VALUE USING 'S_CUSTTYPE'
+                                GS_INFO-CUSTTYPE
+                        CHANGING GS_INFO-CUSTTYPE_T.
+
+    MODIFY GT_INFO FROM GS_INFO.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form RADIO_CONTROL
+*&---------------------------------------------------------------------*
+FORM RADIO_CONTROL .
+  IF R01 = 'X'. "Economy Class
+    DELETE GT_INFO WHERE CLASS <> 'Y'.
+
+  ELSEIF R02 = 'X'. "Business Class
+    DELETE GT_INFO WHERE CLASS <> 'C'.
+
+  ELSEIF R03 = 'X'. "First Class
+    DELETE GT_INFO WHERE CLASS <> 'F'.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form SET_ALV_0100
+*&---------------------------------------------------------------------*
+FORM SET_ALV_0100 .
+  CREATE OBJECT GO_CON
+    EXPORTING
+      CONTAINER_NAME              = 'ALV_FLIGHT'
+    EXCEPTIONS
+      CNTL_ERROR                  = 1
+      CNTL_SYSTEM_ERROR           = 2
+      CREATE_ERROR                = 3
+      LIFETIME_ERROR              = 4
+      LIFETIME_DYNPRO_DYNPRO_LINK = 5
+      OTHERS                      = 6.
+  IF SY-SUBRC <> 0.
+    "### ## ### #######. ## ######.
+    MESSAGE A010(ZMCLA27).
+  ENDIF.
+
+  IF GO_ALV IS NOT INITIAL.
+    RETURN.
+  ENDIF.
+
+  CREATE OBJECT GO_ALV
+    EXPORTING
+      I_PARENT          = GO_CON
+    EXCEPTIONS
+      ERROR_CNTL_CREATE = 1
+      ERROR_CNTL_INIT   = 2
+      ERROR_CNTL_LINK   = 3
+      ERROR_DP_CREATE   = 4
+      OTHERS            = 5.
+
+  IF SY-SUBRC <> 0.
+
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form DISPLAY_ALV_0100
+*&---------------------------------------------------------------------*
+FORM DISPLAY_ALV_0100 .
+  IF GO_ALV IS INITIAL.
+    RETURN.
+  ENDIF.
+
+  DATA LS_LAYO TYPE LVC_S_LAYO.
+
+  GS_LAYO-ZEBRA = 'X'.
+  GS_LAYO-CWIDTH_OPT = 'X'.
+  GS_LAYO-EXCP_FNAME = 'LIGHT'.
+  GS_LAYO-INFO_FNAME = 'COLOR'.
+
+*  GS_SORT-SPOS = '1'.
+*  GS_SORT-FIELDNAME = 'LIGHT'.
+*  GS_SORT-UP = 'X'.
+*  APPEND GS_SORT TO GT_SORT.
+
+  SORT GT_INFO BY LOCCURAM DESCENDING.
+  READ TABLE GT_INFO INTO GS_INFO INDEX 1.
+  GS_INFO-COLOR = 'C611'.
+  MODIFY GT_INFO FROM GS_INFO INDEX 1.
+
+  CLEAR: GS_FCAT.
+
+  GS_FCAT-FIELDNAME = 'CLASS'.
+  GS_FCAT-NO_OUT = 'X'.
+  APPEND GS_FCAT TO GT_FCAT.
+
+  CLEAR GS_FCAT.
+
+  GS_FCAT-FIELDNAME = 'CUSTTYPE'.
+  GS_FCAT-NO_OUT = 'X'.
+  APPEND GS_FCAT TO GT_FCAT.
+
+  CALL METHOD GO_ALV->SET_TABLE_FOR_FIRST_DISPLAY
+    EXPORTING
+*     i_buffer_active               =
+*     i_bypassing_buffer            =
+*     i_consistency_check           =
+      I_STRUCTURE_NAME              = 'ZSA27_ALV05'
+*     is_variant                    =
+*     i_save                        =
+*     i_default                     = 'X'
+      IS_LAYOUT                     = GS_LAYO
+*     is_print                      =
+*     it_special_groups             =
+*     it_toolbar_excluding          =
+*     it_hyperlink                  =
+*     it_alv_graphics               =
+*     it_except_qinfo               =
+*     ir_salv_adapter               =
+    CHANGING
+      IT_OUTTAB                     = GT_INFO
+      IT_FIELDCATALOG               = GT_FCAT
+      IT_SORT                       = GT_SORT
+    EXCEPTIONS
+      INVALID_PARAMETER_COMBINATION = 1
+      PROGRAM_ERROR                 = 2
+      TOO_MANY_LINES                = 3
+      OTHERS                        = 4.
+  IF SY-SUBRC <> 0.
+*   Implement suitable error handling here
+  ENDIF.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

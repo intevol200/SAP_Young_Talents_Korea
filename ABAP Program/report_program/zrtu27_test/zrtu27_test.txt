@@ -1,0 +1,39 @@
+*&---------------------------------------------------------------------*
+*& Report ZRTU27_TEST
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zrtu27_test.
+
+DATA: BEGIN OF gs_list,
+        carrid   TYPE spfli-carrid,
+        carrname TYPE scarr-carrname,
+        connid   TYPE spfli-connid,
+      END OF gs_list,
+      gt_list LIKE TABLE OF gs_list.
+
+DATA gv_carrname TYPE scarr-carrname.
+
+PARAMETERS: pa_car LIKE gs_list-carrid.
+
+START-OF-SELECTION.
+  SELECT carrid connid
+    FROM spfli "DB Table
+    INTO CORRESPONDING FIELDS OF TABLE gt_list
+    WHERE carrid = pa_car.
+
+  SELECT SINGLE carrname
+    FROM scarr
+    INTO gv_carrname
+    WHERE carrid = pa_car.
+
+  LOOP AT gt_list INTO gs_list.
+    gs_list-carrname = gv_carrname.
+    MODIFY gt_list FROM gs_list.
+    CLEAR gs_list.
+  ENDLOOP.
+
+  cl_demo_output=>display_data( gt_list ).
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

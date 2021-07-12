@@ -1,0 +1,42 @@
+*&---------------------------------------------------------------------*
+*& Report YMENTORING_002
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT YMENTORING27_002.
+
+TABLES: bkpf.
+
+SELECTION-SCREEN BEGIN OF BLOCK bl01 WITH FRAME TITLE TEXT-001.
+
+  SELECT-OPTIONS: s_int FOR bkpf-monat.
+
+SELECTION-SCREEN END OF BLOCK bl01.
+
+
+DATA: s_cnt     TYPE i, " 1 ~ 9.
+      lv_result TYPE i, " ###.
+      lv_count TYPE i.
+
+lv_count = s_int-high - s_int-low + 1. "high## low # ## ## ##(do## ##)
+s_cnt = s_int-low.
+
+IF s_int-high IS INITIAL.
+    DO 9 TIMES.
+      lv_result = s_cnt * sy-index.
+      WRITE : s_cnt, 'x', sy-index, '=', lv_result, /.
+    ENDDO.
+
+ELSE.
+  DO lv_count TIMES.
+    DO 9 TIMES.
+      lv_result = s_cnt * sy-index.
+      WRITE : s_cnt, 'x', sy-index, '=', lv_result, /.
+    ENDDO.
+
+    s_cnt = s_cnt + 1.
+  ENDDO.
+ENDIF.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754

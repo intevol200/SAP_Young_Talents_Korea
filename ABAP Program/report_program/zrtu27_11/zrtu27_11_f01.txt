@@ -1,0 +1,57 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRTU27_11_F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form cal_date
+*&---------------------------------------------------------------------*
+FORM cal_date USING VALUE(pv_major)
+                    VALUE(pv_skill)
+                    VALUE(pv_date)
+              CHANGING cv_endda.
+  CASE pv_major. "pa_major = global ##
+    WHEN 'Y'.
+      CASE pv_skill.
+        WHEN 'ABAP'.
+          PERFORM calculate USING pv_date
+                                  '30'
+                            CHANGING cv_endda.
+
+        WHEN 'SAPUI5'.
+          PERFORM calculate USING pv_date
+                                  '10'
+                            CHANGING cv_endda.
+
+        WHEN 'ETC'.
+          PERFORM calculate USING pv_date
+                                  '7'
+                            CHANGING cv_endda.
+
+        WHEN OTHERS.
+          WRITE 'This is a wrong value'(e01).
+
+      ENDCASE.
+    WHEN OTHERS.
+
+  ENDCASE.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_data
+*&---------------------------------------------------------------------*
+FORM display_data USING VALUE(pa_endda)
+                        VALUE(pv_date).
+  IF pa_endda IS NOT INITIAL.
+    WRITE: '###: ', pv_date, ', End Date: ', pa_endda.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form calculate
+*&---------------------------------------------------------------------*
+
+FORM calculate USING VALUE(ps_date)
+                     VALUE(plus_date)
+               CHANGING cs_endda.
+  cs_endda = ps_date + plus_date.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2021. Sap Release 754
